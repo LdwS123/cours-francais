@@ -501,9 +501,47 @@
     text-align: center;
     font-weight: bold;
   }
+  /* ===== EN TRANSLATIONS ===== */
+  .en-translation { display: none; }
+  body.show-en .en-translation {
+    display: block;
+    background: #f0f7ff;
+    border-left: 3px solid #1e90ff;
+    padding: 0.6rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    color: #1a3a5c;
+    font-size: 0.95em;
+  }
+  body.show-en .en-translation::before {
+    content: "🇬🇧 ";
+    font-style: normal;
+    font-weight: bold;
+  }
+  .lang-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    background: var(--rouge);
+    color: var(--blanc);
+    border: 2px solid var(--blanc);
+    padding: 0.6rem 1.1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    font-size: 0.9em;
+    transition: all 0.2s;
+  }
+  .lang-toggle:hover { transform: scale(1.05); }
+  body.show-en .lang-toggle { background: var(--vert); }
 </style>
 </head>
 <body>
+
+<button class="lang-toggle" id="lang-toggle" onclick="toggleLanguage()">🇬🇧 Show English</button>
 
 <header>
   <h1>Cours de Français Avancé</h1>
@@ -528,6 +566,7 @@
   <button class="tab-btn" data-tab="fauxamis">Faux amis EN↔FR</button>
   <button class="tab-btn" data-tab="vraifaux">Vrai / Faux</button>
   <button class="tab-btn" data-tab="jeux">🎮 Jeux</button>
+  <button class="tab-btn" data-tab="memo">📋 Memo Card 🇬🇧</button>
   <button class="tab-btn" data-tab="creation">Création</button>
   <button class="tab-btn" data-tab="bilan">Bilan</button>
 </nav>
@@ -538,6 +577,9 @@
 <section id="accueil" class="section active">
   <h2>Bienvenue dans ton cours</h2>
   <p>Ce cours est conçu pour te faire passer du <strong>français correct</strong> au <strong>français natif</strong>. On ne va pas réviser les conjugaisons (tu les connais déjà) — on va travailler ce qui sépare un B2 d'un C2&nbsp;:</p>
+  <div class="en-translation">
+    <strong>Welcome to your course.</strong> This course is designed to take you from <em>correct French</em> to <em>native-like French</em>. We won't review verb conjugations (you know them already) — we'll work on what separates a B2 from a C2: rare logical connectors, register shifts, native idioms, stylistic devices (emphasis, inversion, litotes, irony), the imperfect and pluperfect subjunctive, and the spoken French with all its contractions and tics. Click the <strong>🇫🇷 Masquer anglais</strong> button (top right) to hide English again at any time.
+  </div>
 
   <div class="lesson-card">
     <h3>📚 18 onglets · 40 exercices · 172 questions</h3>
@@ -589,6 +631,9 @@
   <p>On consolide les fondations avancées&nbsp;: connecteurs, subjonctif, pronoms relatifs composés.</p>
 
   <h3>1. Les connecteurs logiques au-delà de « mais » et « donc »</h3>
+  <div class="en-translation">
+    <strong>Logical connectors beyond "but" and "so".</strong> At B2 level, you must move past basic connectors. The table below shows the essentials grouped by function: opposition (strong / concession), consequence, cause, addition, and reformulation. Each French connector listed here has a slightly different register or nuance — for example, <em>néanmoins</em> (nevertheless) sounds more written than <em>cependant</em> (however), and <em>qui plus est</em> (what's more) is more elegant than <em>en plus</em> (also).
+  </div>
 
   <div class="lesson-card">
     <p>En B2, tu dois sortir des connecteurs basiques. Voici les <strong>essentiels à maîtriser</strong>&nbsp;:</p>
@@ -634,6 +679,9 @@
   </div>
 
   <h3>2. Le subjonctif&nbsp;: au-delà du « il faut que »</h3>
+  <div class="en-translation">
+    <strong>The subjunctive: beyond "il faut que".</strong> The subjunctive mood expresses uncertainty, emotion, will, or hypothesis. You probably know it after <em>il faut que</em> (it is necessary that). But it is also used after: doubt or negated opinion (<em>I don't think that he comes</em> = subjunctive), emotion (<em>I'm happy that you are here</em>), will (<em>I want him to leave</em>), certain conjunctions (<em>before, until, although, so that, without, provided that</em>), and indefinite or superlative antecedents (<em>I'm looking for someone who can code; the best book that I know</em>). <strong>Watch out:</strong> "après que" (after) takes the indicative, not the subjunctive — even though many native speakers get this wrong!
+  </div>
 
   <div class="lesson-card">
     <p>Tu connais le subjonctif après <em>il faut que</em>. Mais il s'utilise aussi après&nbsp;:</p>
@@ -646,6 +694,9 @@
     </ul>
     <div class="tip">
       <strong>Piège classique&nbsp;:</strong> <em>après que</em> est suivi de l'<strong>indicatif</strong>, pas du subjonctif (même si beaucoup de natifs se trompent&nbsp;!). <em>Après qu'il <u>est</u> parti</em>, pas <em>soit parti</em>.
+    </div>
+    <div class="en-translation">
+      <strong>Classic trap:</strong> "après que" (after) is followed by the <em>indicative</em>, NOT the subjunctive — even though many native French speakers get this wrong! Say <em>"après qu'il est parti"</em>, not <em>"après qu'il soit parti"</em>. The logic: "after" describes a real action that has happened, so it doesn't need the subjunctive (which expresses uncertainty).
     </div>
   </div>
 
@@ -672,6 +723,9 @@
   </div>
 
   <h3>3. Les pronoms relatifs composés</h3>
+  <div class="en-translation">
+    <strong>Compound relative pronouns.</strong> When the antecedent (the noun the pronoun refers to) is preceded by a preposition, you don't use <em>qui / que / dont</em>. Instead, use <strong>lequel</strong> (masculine singular), <strong>laquelle</strong> (feminine singular), <strong>lesquels</strong> (masculine plural), <strong>lesquelles</strong> (feminine plural). They agree in gender and number with the noun they replace. With "à" and "de" they contract: <em>à + lequel = auquel · à + lesquels = auxquels · de + lequel = duquel · de + lesquels = desquels</em>. Example: <em>The company for which I work = L'entreprise <strong>pour laquelle</strong> je travaille</em>.
+  </div>
 
   <div class="lesson-card">
     <p>Quand l'antécédent est précédé d'une préposition, on n'utilise pas <em>qui/que/dont</em>, mais <strong>lequel / laquelle / lesquels / lesquelles</strong>&nbsp;:</p>
@@ -713,6 +767,9 @@
   <p>Ici on travaille les <strong>registres</strong> et les <strong>tournures stylistiques</strong>. C'est le saut qualitatif vers le natif.</p>
 
   <h3>1. Les trois registres</h3>
+  <div class="en-translation">
+    <strong>The three registers.</strong> The same idea can be expressed three different ways in French depending on the context. A C1 speaker knows how to <em>choose</em>: <strong>soutenu</strong> (formal/literary, used in writing or with strangers in elegant settings), <strong>courant</strong> (standard, neutral, used in most conversations), and <strong>familier</strong> (informal, used with friends and family). <strong>Warning:</strong> in casual conversation, formal register sounds pedantic or even mocking; in professional writing, informal register is unacceptable; standard register is safe but can feel "flat".
+  </div>
 
   <div class="lesson-card">
     <p>Une même idée peut se dire de trois manières. Un C1 sait <strong>choisir</strong> selon le contexte.</p>
@@ -763,6 +820,9 @@
   </div>
 
   <h3>2. Les tournures emphatiques</h3>
+  <div class="en-translation">
+    <strong>Emphatic structures (cleft sentences).</strong> French loves to <em>shift the element you want to emphasize</em>. This is a marker of fluency. The most common patterns are: <em>"C'est X que..."</em> (It's X that...) — emphasizes the object; <em>"C'est X qui..."</em> (It's X who...) — emphasizes the subject; <em>"Ce que... c'est X"</em> (What... is X) — emphasizes the whole idea. Another spoken structure is <strong>dislocation</strong>: putting an element at the start or end and resuming it with a pronoun (<em>"Moi, ce film, je l'ai trouvé nul"</em> = literally "Me, that movie, I found it crap" = "I thought that movie was awful").
+  </div>
 
   <div class="lesson-card">
     <p>Le français adore <strong>déplacer l'élément qu'on veut souligner</strong>. C'est une marque de fluidité.</p>
@@ -797,6 +857,9 @@
   </div>
 
   <h3>3. La nuance entre synonymes</h3>
+  <div class="en-translation">
+    <strong>Distinguishing near-synonyms.</strong> At C1, you must feel the difference between near-synonyms. French has many verbs that all roughly translate to "to begin" (<em>commencer, débuter, entamer, amorcer, entreprendre</em>) but each carries a distinct nuance. Same with "to look" (<em>regarder, voir, observer, contempler, apercevoir, distinguer</em>) or "to say" (<em>parler, dire, raconter, prononcer, énoncer, proférer</em>). Click each summary below to see the breakdown — these distinctions are what separate B2 from C2 vocabulary.
+  </div>
 
   <div class="lesson-card">
     <p>En C1, tu dois sentir la différence entre des mots presque synonymes.</p>
@@ -871,6 +934,9 @@
   <p>Le sommet&nbsp;: style littéraire, subjonctif imparfait, figures de rhétorique, subtilités.</p>
 
   <h3>1. Le subjonctif imparfait et plus-que-parfait</h3>
+  <div class="en-translation">
+    <strong>Imperfect and pluperfect subjunctive.</strong> These tenses have almost disappeared from spoken French, but they remain alive in <em>literature</em>, <em>refined journalism</em>, and certain <em>fixed expressions</em>. You don't need to <strong>produce</strong> them — but you must <strong>recognize</strong> and <strong>understand</strong> them when reading. The imperfect subjunctive is built from the simple past (passé simple) — for example: <em>qu'il parlât</em> (instead of modern <em>qu'il parle</em>), <em>qu'il fût</em> (instead of <em>qu'il soit</em>), <em>qu'il eût</em> (instead of <em>qu'il ait</em>). The pluperfect subjunctive (<em>eût/fût + past participle</em>) is often used as a literary alternative to the past conditional: <em>"Il eût aimé rester"</em> = "He would have liked to stay".
+  </div>
 
   <div class="lesson-card">
     <p>Ces temps ont quasiment disparu de l'oral, mais restent vivants dans la <strong>littérature</strong>, le <strong>journalisme soutenu</strong>, et certaines <strong>formules figées</strong>. Tu dois pouvoir les <strong>reconnaître</strong> et les <strong>comprendre</strong>.</p>
@@ -913,9 +979,15 @@
     <div class="tip">
       Bonus&nbsp;: le <strong>« ne explétif »</strong> (« qu'elle <em>ne</em> fût en retard ») n'est pas une négation&nbsp;! C'est un tic stylistique après les verbes de crainte, d'empêchement, ou les comparatifs. On peut l'omettre&nbsp;: <em>Je crains qu'il (ne) soit en retard.</em>
     </div>
+    <div class="en-translation">
+      <strong>Bonus — the "expletive ne":</strong> in formal French, you'll see <em>"qu'elle ne fût en retard"</em>. This "ne" is NOT a negation! It's a stylistic tic that appears after verbs of fear (craindre), prevention (empêcher), or in comparatives. You can omit it without changing the meaning: <em>"Je crains qu'il (ne) soit en retard"</em> = "I fear he might be late". Recognize it when reading literature so you don't misread positive statements as negative.
+    </div>
   </div>
 
   <h3>2. Litote, hyperbole, ironie</h3>
+  <div class="en-translation">
+    <strong>Litotes, hyperbole, irony.</strong> Three figures of speech that French uses constantly. <strong>Litotes</strong> means saying less to imply more — typically by negating the opposite. <em>"Ce n'est pas mauvais"</em> ("It's not bad") often means "it's excellent". <strong>Hyperbole</strong> is deliberate exaggeration: <em>"Je te l'ai dit mille fois"</em> ("I told you a thousand times"), <em>"Je meurs de faim"</em> ("I'm starving"). <strong>Irony</strong> is saying the opposite of what you mean, often with a sarcastic tone: <em>"Bravo, c'est malin"</em> said angrily means "That's stupid". Recognizing these is essential — French humor relies heavily on them.
+  </div>
 
   <div class="lesson-card">
     <p><strong>Litote</strong>&nbsp;: dire moins pour suggérer plus. Très français.</p>
@@ -937,6 +1009,9 @@
   </div>
 
   <h3>3. L'inversion stylistique</h3>
+  <div class="en-translation">
+    <strong>Stylistic inversion.</strong> In formal or literary style, certain structures trigger a <em>subject-verb inversion</em> (the verb comes before the subject). This happens after adverbs like <em>peut-être</em> (perhaps), <em>sans doute</em> (probably), <em>à peine</em> (hardly), <em>ainsi</em> (thus), and <em>aussi</em> (= "therefore" in this context, not "also"). Example: <em>"Peut-être avait-il raison"</em> = "Perhaps he was right" (note the inverted "avait-il"). It also occurs in literary reporting clauses (<em>"dit-elle"</em> = "she said") and in formal questions (<em>"Que fait-il?"</em> instead of casual <em>"Il fait quoi?"</em>).
+  </div>
 
   <div class="lesson-card">
     <p>Dans un style soutenu ou littéraire, certaines structures déclenchent une <strong>inversion sujet-verbe</strong>.</p>
@@ -981,6 +1056,9 @@
 <section id="natif" class="section">
   <h2>Trucs de natifs 🇫🇷</h2>
   <p>Les expressions, tics et subtilités que tu n'apprends nulle part dans les manuels.</p>
+  <div class="en-translation">
+    <strong>Native speaker tricks.</strong> The expressions, tics, and subtleties you won't find in any textbook. This is the single most important section to <em>sound</em> French rather than just being grammatically correct. There are <strong>406 idioms</strong> here organized by 19 themes — animals, colors, body parts, food, money, weather, work, anger, intelligence, parties, lies, surprise, places, youth slang (verlan), literary references, comparisons, regional variations (Belgium, Quebec, Switzerland), movie quotes, professional vocabulary, sports, health, shopping, modern communication, family, and theater. <strong>Pro tip:</strong> don't try to memorize them all at once. Pick one theme per week, use 3-4 expressions in real conversations, and they'll stick.
+  </div>
 
   <h3>1. Expressions imagées du quotidien</h3>
 
@@ -2095,6 +2173,9 @@
 <section id="oral" class="section">
   <h2>Atelier oral 🎤</h2>
   <p>Active ton micro et entraîne-toi à prononcer. Le navigateur écoute, transcrit, et compare.</p>
+  <div class="en-translation">
+    <strong>Speaking workshop.</strong> Turn on your microphone and practice pronunciation. The browser listens, transcribes what it hears using its built-in Web Speech API, and compares it to the target sentence. <strong>How it works:</strong> click the 🎤 button, allow microphone access (first time only), speak the target sentence clearly, and you'll get a percentage score showing how many words were recognized. <strong>Privacy:</strong> nothing is sent to any server — everything is processed locally in your browser. The 🔊 button lets you hear the target sentence first if you're unsure of the pronunciation.
+  </div>
 
   <div class="tip">
     Cette fonctionnalité utilise la <strong>Web Speech API</strong> de ton navigateur (Chrome / Edge recommandés). Au premier essai, autorise l'accès au micro. Aucune donnée n'est envoyée à l'extérieur — tout est traité localement.
@@ -2222,6 +2303,9 @@
 <section id="dictee" class="section">
   <h2>Dictée 📝</h2>
   <p>L'exercice ultime : tu écoutes, tu écris, on compare. Le piège classique du français : <strong>les accords</strong>, <strong>les liaisons que tu écris</strong> alors qu'elles ne se prononcent pas, les <strong>homophones</strong> (a / à, ou / où, et / est, ces / ses / c'est / s'est…).</p>
+  <div class="en-translation">
+    <strong>Dictation.</strong> The ultimate exercise: you listen, you write, we compare. The classic French traps are: <strong>agreements</strong> (adjectives and past participles must agree in gender and number), <strong>silent letters</strong> you must still write even though you don't hear them, and <strong>homophones</strong> — words that sound identical but spell differently. Examples: a (has) vs. à (to); ou (or) vs. où (where); et (and) vs. est (is); ces (these) vs. ses (his/her) vs. c'est (it is) vs. s'est (himself/herself). Mastering dictation is mastering written French.
+  </div>
 
   <div class="tip">
     Active le son. Clique « Écouter », écoute attentivement (deux fois si besoin), puis tape exactement ce que tu entends. Ponctuation comprise. Compare ensuite à la phrase modèle.
@@ -2305,6 +2389,9 @@
 <section id="images" class="section">
   <h2>Décris l'image 🎨</h2>
   <p>Exercice phare du <strong>DALF C1/C2</strong> : tu observes une scène, tu la décris à l'oral ou à l'écrit en 5-10 phrases. On évalue ton vocabulaire précis, ta capacité à organiser ton discours (premier plan / arrière-plan), et tes hypothèses sur la situation.</p>
+  <div class="en-translation">
+    <strong>Describe the image.</strong> A flagship exercise of the <em>DALF C1/C2</em> exams: you observe a scene and describe it (orally or in writing) in 5-10 sentences. You're evaluated on precise vocabulary, ability to organize your discourse (foreground / background), and hypotheses about the situation. <strong>Method:</strong> 1) Locate the image (place, time of day) — 2) Describe what you see (foreground / background, right / left) — 3) Describe the people and their actions — 4) Imagine the context — 5) Give your impression. Each scene below comes with topic-specific vocabulary and a model description (hidden — try first, then compare).
+  </div>
 
   <div class="tip">
     Méthode : 1) Situe l'image (lieu, moment) — 2) Décris ce qu'on voit (au premier plan, à l'arrière-plan, à droite, à gauche) — 3) Décris les personnes et leurs actions — 4) Imagine le contexte ou l'atmosphère — 5) Donne ton ressenti.
@@ -2647,8 +2734,14 @@
 <section id="phonetique" class="section">
   <h2>Phonétique 🔊</h2>
   <p>Le français a des sons que peu de langues partagent. Maîtriser <strong>les liaisons</strong>, le <strong>e muet</strong>, et les <strong>voyelles nasales</strong> est ce qui te fera passer pour un natif (ou pas).</p>
+  <div class="en-translation">
+    <strong>Phonetics.</strong> French has sounds that few other languages share. Mastering <em>liaisons</em> (linking sounds between words), the <em>silent e</em> (e muet), and the <em>nasal vowels</em> is what determines whether you sound native or not. The good news: these rules are systematic. The bad news: there are many exceptions.
+  </div>
 
   <h3>1. Les liaisons</h3>
+  <div class="en-translation">
+    <strong>Liaisons (linking).</strong> A "liaison" is when you pronounce a normally silent final consonant because the next word starts with a vowel. <em>"Les amis"</em> is pronounced "lay-ZAH-mee" (the silent S becomes a Z sound). There are three categories: <strong>obligatory</strong> (must do), <strong>forbidden</strong> (must NOT do — like before words with "aspirated H" such as "haricot"), and <strong>optional</strong> (depends on register). Important pronunciation shifts: in liaison, S and X sound like Z, D sounds like T, and the F in "neuf" becomes V (in "neuf heures, neuf ans" only).
+  </div>
 
   <div class="lesson-card">
     <p>Une <strong>liaison</strong>, c'est quand on prononce une consonne finale normalement muette parce que le mot suivant commence par une voyelle. Il y a trois catégories :</p>
@@ -2729,6 +2822,9 @@
   </div>
 
   <h3>2. Le « e » muet</h3>
+  <div class="en-translation">
+    <strong>The "silent e".</strong> The unaccented "e" (called "e caduc" or "e muet") sometimes is pronounced, sometimes isn't. Main rules: it <em>drops</em> in the middle of words between two consonants (acheter → ach'ter, samedi → sam'di); it <em>stays</em> if dropping it would create three difficult consonants (vendredi stays "vendredi", not "vendrdi"); it <em>drops</em> at the end of words (la table → "la tabl"); and it often <em>drops</em> in "je" — speakers say "j'sais pas" or "ch'sais pas" instead of "je ne sais pas". Knowing when to drop the e makes you sound natural, not robotic.
+  </div>
 
   <div class="lesson-card">
     <p>Le <em>e</em> sans accent (« e caduc » ou « e muet ») se prononce parfois, et parfois pas. Règles principales :</p>
@@ -2746,6 +2842,9 @@
   </div>
 
   <h3>3. Sons piégés pour non-natifs</h3>
+  <div class="en-translation">
+    <strong>Tricky sounds for non-native speakers.</strong> The biggest pronunciation traps for English speakers learning French: (1) The <strong>French U sound</strong> [y] doesn't exist in English — to make it, say "ee" but round your lips like for "oo". Don't confuse with OU [u] which is just like English "oo". (2) The <strong>three nasal vowels</strong> (IN, AN, ON) are distinct: vin (wine) vs. vent (wind) vs. vont (they go) — practice in a mirror to feel the difference. (3) The <strong>French R</strong> is uvular (made at the back of the throat), like clearing your throat softly — never rolled like Spanish or Italian R.
+  </div>
 
   <div class="lesson-card">
     <table class="registre-table">
@@ -2886,6 +2985,9 @@
 <section id="discours" class="section">
   <h2>Discours indirect <span class="level-badge">B2-C1</span></h2>
   <p>Rapporter ce que quelqu'un a dit. Quelques règles à maîtriser : <strong>changement de pronoms</strong>, <strong>changement de temps</strong> (concordance), changement des marqueurs temporels.</p>
+  <div class="en-translation">
+    <strong>Reported speech.</strong> When you report what someone said (instead of quoting them directly), three things must change: <strong>(1) pronouns</strong> — "I come" reported by you becomes "he comes"; <strong>(2) verb tenses</strong> (concordance/sequence of tenses) — if the reporting verb is in the past, the reported verb shifts back one step (present → imperfect, future → conditional, passé composé → pluperfect); <strong>(3) time markers</strong> — "today" becomes "that day" (ce jour-là), "yesterday" becomes "the day before" (la veille), "tomorrow" becomes "the next day" (le lendemain). For yes/no questions, use "si" (if/whether). For "what" questions, use "ce que" or "ce qui".
+  </div>
 
   <div class="lesson-card">
     <h3>1. Discours direct → discours indirect</h3>
@@ -2958,6 +3060,9 @@
 <section id="hypothese" class="section">
   <h2>L'hypothèse avec « si » <span class="level-badge">B2-C2</span></h2>
   <p>Trois structures à maîtriser absolument. Une seule règle d'or : <strong>jamais de « si » + conditionnel</strong>. C'est la faute n°1.</p>
+  <div class="en-translation">
+    <strong>Hypothetical "si" (if-clauses).</strong> Three structures to master. <strong>Golden rule: NEVER use "si" + conditional.</strong> This is the #1 mistake — even native speakers make it. The three correct patterns are: <strong>Type 1 (real condition):</strong> <em>si</em> + present, then present/future/imperative — for likely actions ("If it rains, I take my umbrella"). <strong>Type 2 (unreal present):</strong> <em>si</em> + imperfect, then conditional — for current imaginary situations ("If I had money, I would travel" — but I don't). <strong>Type 3 (unreal past):</strong> <em>si</em> + pluperfect, then past conditional — for regrets about the past ("If I had known, I wouldn't have come"). You can also mix Type 3 + Type 2 for past condition with present consequence: <em>"Si j'avais étudié, je serais médecin aujourd'hui"</em> ("If I had studied, I would be a doctor today").
+  </div>
 
   <div class="lesson-card">
     <h3>Les trois constructions</h3>
@@ -2977,6 +3082,9 @@
 
     <div class="tip">
       <strong>Mélange possible (C1) :</strong> on peut combiner type 3 et type 2 pour parler d'une conséquence présente d'un passé non réalisé. <em>« Si j'avais étudié, je serais médecin aujourd'hui. »</em> (passé non réalisé → conséquence présente)
+    </div>
+    <div class="en-translation">
+      <strong>Mixed conditional (C1):</strong> you can combine Type 3 (unreal past) with Type 2 (present consequence) to express the current effect of a past hypothetical that didn't happen. <em>"Si j'avais étudié, je serais médecin aujourd'hui"</em> = "If I had studied, I would be a doctor today" (past condition that didn't occur → present hypothetical result). This pattern is common and elegant.
     </div>
   </div>
 
@@ -3863,6 +3971,9 @@
 <section id="fauxamis" class="section">
   <h2>Faux amis EN ↔ FR</h2>
   <p>Les <strong>faux amis</strong> sont les pièges classiques entre l'anglais et le français : des mots qui se ressemblent mais qui n'ont pas le même sens. Le top des erreurs !</p>
+  <div class="en-translation">
+    <strong>False friends.</strong> "Faux amis" (false friends) are words that look or sound similar in English and French but have different meanings. They cause the most embarrassing mistakes. Top traps: <em>actually</em> ≠ <em>actuellement</em> (which means "currently"); <em>eventually</em> ≠ <em>éventuellement</em> (which means "possibly"); <em>library</em> ≠ <em>librairie</em> (which means "bookstore"); <em>sensible</em> ≠ <em>sensible</em> (which in French means "sensitive"); <em>to attend</em> ≠ <em>attendre</em> (which means "to wait"). Memorize these — they will trip you up if you don't.
+  </div>
 
   <div class="lesson-card">
     <h3>Tableau des faux amis les plus courants</h3>
@@ -4239,6 +4350,156 @@
   </div>
 </section>
 
+<!-- ============== MEMO CARD (BILINGUAL) ============== -->
+<section id="memo" class="section">
+  <h2>📋 Quick Reference Card / Carte mémo bilingue</h2>
+  <p>Toutes les règles essentielles en une page, en français et en anglais. Imprime-la ou ajoute-la en favori. <em>All essential rules on one page, French and English. Print it or bookmark it.</em></p>
+
+  <div class="lesson-card">
+    <h3>🔑 Subjonctif — when to use it / quand l'utiliser</h3>
+    <table class="registre-table">
+      <tr><th>Trigger / Déclencheur</th><th>Example / Exemple</th></tr>
+      <tr><td>Necessity · <em>il faut que</em></td><td>Il faut que tu <strong>viennes</strong>. (You must come.)</td></tr>
+      <tr><td>Will / wish · <em>vouloir que, souhaiter que</em></td><td>Je veux qu'il <strong>parte</strong>. (I want him to leave.)</td></tr>
+      <tr><td>Emotion · <em>être content/triste/surpris que</em></td><td>Je suis content que tu <strong>sois</strong> là. (I'm glad you're here.)</td></tr>
+      <tr><td>Doubt · <em>douter que, ne pas penser que</em></td><td>Je doute qu'il <strong>réussisse</strong>. (I doubt he'll succeed.)</td></tr>
+      <tr><td>Conjunctions · <em>bien que, avant que, pour que, à condition que, sans que, jusqu'à ce que</em></td><td>Bien qu'il <strong>pleuve</strong>... (Although it's raining...)</td></tr>
+      <tr><td>Superlative + relative · <em>le meilleur / le pire que</em></td><td>C'est le meilleur film que je <strong>connaisse</strong>. (It's the best movie I know.)</td></tr>
+      <tr><td>⚠️ NOT after <em>après que</em>!</td><td>Après qu'il <strong>est</strong> parti (indicative). (After he left.)</td></tr>
+    </table>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 « Si » + tenses / « Si » + temps</h3>
+    <table class="registre-table">
+      <tr><th>Type / Type</th><th>« Si » + ...</th><th>Result / Résultat</th><th>Example</th></tr>
+      <tr><td>Real / Réel</td><td>présent</td><td>présent / futur / impératif</td><td>Si tu viens, on ira au ciné. (If you come, we'll go.)</td></tr>
+      <tr><td>Unreal present / Irréel présent</td><td>imparfait</td><td>conditionnel présent</td><td>Si j'avais le temps, je viendrais. (If I had time, I would come — but I don't.)</td></tr>
+      <tr><td>Unreal past / Irréel passé</td><td>plus-que-parfait</td><td>conditionnel passé</td><td>Si j'avais su, je ne serais pas venu. (If I had known, I wouldn't have come.)</td></tr>
+      <tr><td colspan="4" style="background:#fff3cd"><strong>⚠️ Golden rule / Règle d'or :</strong> NEVER use "si" + conditional. Jamais « si » + conditionnel.</td></tr>
+    </table>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Past participle agreement / Accord du participe passé</h3>
+    <ul>
+      <li><strong>With "être"</strong> — agrees with subject. <em>Elle est <strong>partie</strong>. Ils sont <strong>venus</strong>.</em><br><em>(With "to be" auxiliary, the participle agrees with the subject in gender and number.)</em></li>
+      <li><strong>With "avoir"</strong> — agrees with the direct object ONLY if it comes BEFORE the verb.<br>
+        ✅ <em>J'ai mangé une pomme.</em> — no agreement (object comes after)<br>
+        ✅ <em>La pomme que j'ai <strong>mangée</strong>.</em> — agreement (object "que" = pomme, comes before)<br>
+        <em>(With "to have" auxiliary, agree with the direct object ONLY if it precedes the verb.)</em>
+      </li>
+      <li><strong>Reflexive verbs</strong> — agree with the reflexive pronoun if it's the direct object.<br>
+        ✅ <em>Elle s'est <strong>lavée</strong>.</em> (She washed herself — "se" = direct object)<br>
+        ✅ <em>Elle s'est <strong>lavé</strong> les mains.</em> (She washed her hands — "se" is indirect, "mains" is direct)
+      </li>
+    </ul>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Top 10 false friends / Top 10 faux amis</h3>
+    <table class="registre-table">
+      <tr><th>English word</th><th>French equivalent (real meaning)</th><th>"Faux ami" trap</th></tr>
+      <tr><td>actually</td><td><strong>en fait</strong></td><td>actuellement = currently</td></tr>
+      <tr><td>eventually</td><td><strong>finalement</strong></td><td>éventuellement = possibly</td></tr>
+      <tr><td>library</td><td><strong>bibliothèque</strong></td><td>librairie = bookstore</td></tr>
+      <tr><td>to attend</td><td><strong>assister à</strong></td><td>attendre = to wait</td></tr>
+      <tr><td>to demand</td><td><strong>exiger</strong></td><td>demander = to ask</td></tr>
+      <tr><td>sensible</td><td><strong>raisonnable / sensé</strong></td><td>sensible = sensitive</td></tr>
+      <tr><td>large</td><td><strong>grand</strong></td><td>large = wide</td></tr>
+      <tr><td>to pretend</td><td><strong>faire semblant</strong></td><td>prétendre = to claim</td></tr>
+      <tr><td>to support</td><td><strong>soutenir</strong></td><td>supporter = to tolerate</td></tr>
+      <tr><td>journey</td><td><strong>voyage</strong></td><td>journée = day (whole day)</td></tr>
+    </table>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Top 15 must-know idioms / Top 15 expressions incontournables</h3>
+    <table class="registre-table">
+      <tr><th>French</th><th>Literal</th><th>Real meaning / English equivalent</th></tr>
+      <tr><td>Avoir le cafard</td><td>To have the cockroach</td><td>To be down / blue</td></tr>
+      <tr><td>Poser un lapin</td><td>To put down a rabbit</td><td>To stand someone up</td></tr>
+      <tr><td>Coûter les yeux de la tête</td><td>To cost the eyes of the head</td><td>To cost an arm and a leg</td></tr>
+      <tr><td>Tomber dans les pommes</td><td>To fall in the apples</td><td>To pass out / faint</td></tr>
+      <tr><td>Avoir la flemme</td><td>To have the flemme</td><td>To be too lazy to bother</td></tr>
+      <tr><td>En avoir ras-le-bol</td><td>To have it up to the brim</td><td>To be fed up</td></tr>
+      <tr><td>Faire la grasse matinée</td><td>To do the fat morning</td><td>To sleep in</td></tr>
+      <tr><td>Mettre les pieds dans le plat</td><td>To put feet in the dish</td><td>To put one's foot in one's mouth</td></tr>
+      <tr><td>Avoir d'autres chats à fouetter</td><td>To have other cats to whip</td><td>To have bigger fish to fry</td></tr>
+      <tr><td>Il pleut des cordes</td><td>It's raining ropes</td><td>It's raining cats and dogs</td></tr>
+      <tr><td>Quand les poules auront des dents</td><td>When chickens have teeth</td><td>When pigs fly</td></tr>
+      <tr><td>Couper la poire en deux</td><td>To cut the pear in two</td><td>To meet halfway / split the difference</td></tr>
+      <tr><td>Tirer son épingle du jeu</td><td>To pull one's pin from the game</td><td>To get out unscathed / come out on top</td></tr>
+      <tr><td>Mettre la charrue avant les bœufs</td><td>Plow before the oxen</td><td>To put the cart before the horse</td></tr>
+      <tr><td>C'est la goutte d'eau qui fait déborder le vase</td><td>The drop that makes the vase overflow</td><td>The straw that broke the camel's back</td></tr>
+    </table>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Top connectors / Top connecteurs</h3>
+    <table class="registre-table">
+      <tr><th>Function / Fonction</th><th>French (formal → casual)</th><th>English equivalent</th></tr>
+      <tr><td>Opposition (strong)</td><td>néanmoins · toutefois · cependant</td><td>nevertheless · however · yet</td></tr>
+      <tr><td>Concession</td><td>bien que (+subj.) · quoique (+subj.)</td><td>although · though</td></tr>
+      <tr><td>Consequence</td><td>par conséquent · de ce fait · dès lors</td><td>therefore · as a result · from then on</td></tr>
+      <tr><td>Cause</td><td>étant donné que · dans la mesure où · puisque</td><td>given that · insofar as · since</td></tr>
+      <tr><td>Addition (elegant)</td><td>en outre · par ailleurs · qui plus est</td><td>moreover · besides · what's more</td></tr>
+      <tr><td>Reformulation</td><td>autrement dit · à savoir · en d'autres termes</td><td>in other words · that is · to put it differently</td></tr>
+      <tr><td>Example</td><td>par exemple · ainsi · notamment</td><td>for example · thus · notably</td></tr>
+      <tr><td>Conclusion</td><td>en somme · en définitive · pour conclure</td><td>in short · ultimately · to conclude</td></tr>
+    </table>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Spoken French shortcuts / Raccourcis du français parlé</h3>
+    <table class="registre-table">
+      <tr><th>Written / Écrit</th><th>Spoken / Parlé</th><th>English literal</th></tr>
+      <tr><td>Je ne sais pas</td><td>J'sais pas / Chais pas</td><td>I dunno</td></tr>
+      <tr><td>Il y a</td><td>Y a</td><td>There's</td></tr>
+      <tr><td>Tu as / Tu es</td><td>T'as / T'es</td><td>You've got / you're</td></tr>
+      <tr><td>Qu'est-ce que tu fais ?</td><td>Tu fais quoi ?</td><td>What're you doing?</td></tr>
+      <tr><td>Je ne veux pas</td><td>J'veux pas (no "ne" in speech)</td><td>I don't wanna</td></tr>
+      <tr><td>Celui-là</td><td>Çui-là</td><td>That one</td></tr>
+      <tr><td>Peut-être</td><td>P't-être</td><td>Maybe</td></tr>
+    </table>
+    <p style="margin-top:0.8rem"><strong>Filler words / Mots-béquilles natifs :</strong> <em>du coup</em> (so), <em>genre</em> (like), <em>en mode</em> (kinda), <em>quoi</em> (you know — at end of sentence), <em>franchement</em> (honestly), <em>tu vois</em> (you see), <em>bah / ben</em> (well).</p>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Pronunciation cheatsheet / Aide-mémoire prononciation</h3>
+    <ul>
+      <li><strong>U [y]</strong> — say "ee" with rounded lips. Doesn't exist in English. Different from <strong>OU [u]</strong> = English "oo".</li>
+      <li><strong>R</strong> — uvular (back of throat), like clearing your throat. Never rolled.</li>
+      <li><strong>Nasal vowels</strong> — air goes through the nose. Three distinct sounds: <strong>IN</strong> (vin/wine), <strong>AN</strong> (vent/wind), <strong>ON</strong> (vont/they go).</li>
+      <li><strong>Liaison</strong> — link a normally silent consonant to the next vowel: <em>les_amis</em> = "lay-zah-mee". S/X → Z sound, D → T sound.</li>
+      <li><strong>Silent E</strong> — usually dropped between two consonants: ach(e)ter, sam(e)di, la tabl(e).</li>
+      <li><strong>Stress</strong> — French has flat intonation with slight stress on the LAST syllable of a phrase. Don't stress mid-words like in English.</li>
+    </ul>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Email closings / Formules de mail</h3>
+    <table class="registre-table">
+      <tr><th>Level / Niveau</th><th>French closing</th><th>English equivalent</th></tr>
+      <tr><td>Very formal (gov't / official)</td><td>Je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées.</td><td>Yours faithfully / Yours sincerely</td></tr>
+      <tr><td>Formal (client / superior)</td><td>Veuillez recevoir, Madame, mes salutations respectueuses.</td><td>Best regards</td></tr>
+      <tr><td>Standard professional</td><td>Bien cordialement / Cordialement</td><td>Best / Best regards</td></tr>
+      <tr><td>Friendly professional</td><td>Bien à vous / Belle journée</td><td>All the best / Have a great day</td></tr>
+      <tr><td>Casual (friends only)</td><td>Bises / À+ / À bientôt</td><td>Cheers / Talk soon</td></tr>
+    </table>
+  </div>
+
+  <div class="lesson-card">
+    <h3>🔑 Numbers — Belgium &amp; Switzerland / Nombres — Belgique &amp; Suisse</h3>
+    <table class="registre-table">
+      <tr><th>France</th><th>Belgium</th><th>Switzerland</th><th>Number</th></tr>
+      <tr><td>soixante-dix</td><td><strong>septante</strong></td><td><strong>septante</strong></td><td>70</td></tr>
+      <tr><td>quatre-vingts</td><td>quatre-vingts</td><td><strong>huitante</strong></td><td>80</td></tr>
+      <tr><td>quatre-vingt-dix</td><td><strong>nonante</strong></td><td><strong>nonante</strong></td><td>90</td></tr>
+    </table>
+  </div>
+</section>
+
 <!-- ============== BILAN ============== -->
 <section id="bilan" class="section">
   <h2>Bilan</h2>
@@ -4281,6 +4542,27 @@
 </footer>
 
 <script>
+// =================== LANGUAGE TOGGLE ===================
+const LANG_KEY = 'cours-fr-lang';
+function toggleLanguage() {
+  const isEn = document.body.classList.toggle('show-en');
+  localStorage.setItem(LANG_KEY, isEn ? 'en' : 'fr');
+  updateLangButton();
+}
+function updateLangButton() {
+  const btn = document.getElementById('lang-toggle');
+  if (!btn) return;
+  if (document.body.classList.contains('show-en')) {
+    btn.textContent = '🇫🇷 Masquer anglais';
+  } else {
+    btn.textContent = '🇬🇧 Show English';
+  }
+}
+// Restore language preference on load
+if (localStorage.getItem(LANG_KEY) === 'en') {
+  document.body.classList.add('show-en');
+}
+
 // =================== SECURITY: ESCAPE USER INPUT ===================
 function escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -5383,6 +5665,7 @@ function markFlash(known) {
 
 // =================== INIT ===================
 updateProgressBar();
+updateLangButton();
 </script>
 
 </body>
