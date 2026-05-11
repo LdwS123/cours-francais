@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>350 Verbes B1/B2 - Exercices</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #0f0f13; color: #e8e8f0; min-height: 100vh; padding: 20px 16px; max-width: 700px; margin: 0 auto; }
+h1 { font-size: 1.1rem; font-weight: 700; color: #a78bfa; margin-bottom: 4px; }
+.subtitle { font-size: 0.75rem; color: #6b7280; margin-bottom: 18px; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+select, .btn { padding: 7px 12px; border-radius: 8px; border: 1px solid #2d2d3a; background: #1a1a25; color: #e8e8f0; font-size: 0.82rem; outline: none; cursor: pointer; font-family: inherit; }
+.btn { background: #7c3aed; border-color: #7c3aed; font-weight: 600; }
+.btn:hover { background: #6d28d9; }
+.score-bar { background: #1a1a25; border: 1px solid #2d2d3a; border-radius: 10px; padding: 10px 16px; margin-bottom: 18px; display: flex; gap: 24px; font-size: 0.8rem; }
+.si { display: flex; flex-direction: column; gap: 2px; }
+.sl { color: #6b7280; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.sv { font-weight: 700; font-size: 1.05rem; color: #a78bfa; }
+.progress-bar { height: 4px; background: #2d2d3a; border-radius: 2px; margin-bottom: 18px; overflow: hidden; }
+.progress-fill { height: 100%; background: #7c3aed; border-radius: 2px; transition: width 0.3s; }
+.card { background: #1a1a25; border: 1px solid #2d2d3a; border-radius: 14px; padding: 20px; margin-bottom: 12px; }
+.qnum { font-size: 0.68rem; color: #6b7280; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.sent { font-size: 0.97rem; line-height: 1.75; margin-bottom: 16px; }
+.blank { display: inline-block; background: #2d2d3a; border-bottom: 2px solid #7c3aed; padding: 2px 14px; border-radius: 4px; color: #a78bfa; font-weight: 600; min-width: 90px; text-align: center; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.opt { padding: 9px 13px; border-radius: 9px; border: 1px solid #2d2d3a; background: #0f0f18; color: #e8e8f0; font-size: 0.84rem; cursor: pointer; text-align: left; font-family: inherit; transition: border-color 0.1s; }
+.opt:hover:not([disabled]) { border-color: #7c3aed; background: #1a1a25; }
+.opt.ok { border-color: #4ade80; background: #14290f; color: #4ade80; font-weight: 600; }
+.opt.ko { border-color: #f87171; background: #2a0f0f; color: #f87171; }
+.fb { margin-top: 10px; font-size: 0.79rem; padding: 8px 12px; border-radius: 8px; line-height: 1.55; }
+.fb.ok { background: #14290f; border: 1px solid #4ade80; color: #86efac; }
+.fb.ko { background: #2a0f0f; border: 1px solid #f87171; color: #fca5a5; }
+.fb strong { font-weight: 700; }
+.vtag { font-size: 0.64rem; color: #4b4b6a; margin-top: 6px; }
+.end { text-align: center; background: #1a1a25; border: 1px solid #3d2d7a; border-radius: 14px; padding: 32px 20px; }
+.es { font-size: 2.4rem; font-weight: 800; color: #a78bfa; }
+.em { font-size: 0.88rem; color: #9ca3af; margin: 8px 0 20px; }
+.home { display: flex; align-items: center; justify-content: center; min-height: 40vh; color: #4b4b6a; font-size: 0.9rem; }
+.back { display: inline-block; margin-bottom: 12px; color: #6b7280; text-decoration: none; font-size: 0.78rem; }
+.back:hover { color: #a78bfa; }
+</style>
+</head>
+<body>
+<a href="index.html" class="back">&larr; Retour au cours</a>
+<h1>350 Verbes B1/B2 — Exercices QCM</h1>
+<div class="subtitle">Choisissez le verbe correct pour compléter chaque phrase</div>
+<div class="controls">
+  <select id="catSel">
+    <option value="">Toutes catégories (350)</option>
+    <option value="0">Mouvement (50)</option>
+    <option value="1">Communication (50)</option>
+    <option value="2">Sentiment (50)</option>
+    <option value="3">Cognition (50)</option>
+    <option value="4">Action (50)</option>
+    <option value="5">Social (50)</option>
+    <option value="6">Existence (50)</option>
+  </select>
+  <select id="nbSel">
+    <option value="5">5 questions</option>
+    <option value="10" selected>10 questions</option>
+    <option value="20">20 questions</option>
+    <option value="50">50 questions</option>
+  </select>
+  <button class="btn" id="startBtn">Nouveau quiz</button>
+</div>
+<div id="app"><div class="home">Appuyez sur "Nouveau quiz" pour commencer.</div></div>
+<script>
+const ALL = [
+["s'élancer","Le coureur ___ dès le coup de pistolet.","s'est élancé","a reculé","s'est approché","a pivoté","S'élancer = partir rapidement vers l'avant."],
+["surgir","Une voiture ___ soudainement de la ruelle.","a surgi","a bondi","a glissé","a rôdé","Surgir = apparaître brusquement."],
+["s'éloigner","Elle ___ du groupe sans dire un mot.","s'est éloignée","s'est approchée","s'est installée","s'est réfugiée","S'éloigner = augmenter la distance avec quelque chose."],
+["s'approcher","Il ___ prudemment du bord de la falaise.","s'est approché","s'est éloigné","a reculé","a traversé","S'approcher = réduire la distance."],
+["se précipiter","Les pompiers ___ vers le bâtiment en flammes.","se sont précipités","ont déambulé","ont flâné","ont rôdé","Se précipiter = se déplacer très vite vers."],
+["déambuler","Les touristes ___ sans but dans les rues du vieux quartier.","déambulaient","se précipitaient","bondissaient","s'élançaient","Déambuler = marcher sans destination précise."],
+["se faufiler","Le pick-pocket ___ habilement dans la foule.","s'est faufilé","a traversé","a franchi","a pivoté","Se faufiler = passer discrètement dans un espace étroit."],
+["franchir","L'équipe ___ la frontière au petit matin.","a franchi","a longé","a contourné","a rôdé","Franchir = passer au-delà d'un obstacle ou d'une limite."],
+["arpenter","Le directeur ___ le couloir avant la réunion.","arpentait","traversait","longait","dévalait","Arpenter = marcher de long en large dans un lieu."],
+["errer","Après la rupture, il ___ des heures dans les rues.","a erré","a flâné","a rôdé","a déambulé","Errer = se déplacer sans but précis."],
+["s'envoler","La colombe ___ dès que j'ai ouvert la cage.","s'est envolée","s'est élancée","a plongé","a bondi","S'envoler = quitter le sol en volant."],
+["glisser","Le surfeur ___ avec grâce sur la vague.","glissait","bondissait","dévalait","pivoté","Glisser = se déplacer doucement sur une surface lisse."],
+["bondir","Le chat ___ sur le comptoir en un éclair.","a bondi","a glissé","a vacillé","s'est faufilé","Bondir = sauter brusquement."],
+["reculer","Face aux menaces, il ___ de quelques pas.","a reculé","a avancé","a traversé","a longé","Reculer = aller en arrière."],
+["avancer","La procession ___ lentement vers la cathédrale.","avançait","reculait","dévalait","rôdait","Avancer = aller vers l'avant."],
+["traverser","Nous ___ la ville entière à pied ce week-end.","avons traversé","avons longé","avons franchi","avons contourné","Traverser = passer d'un côté à l'autre."],
+["parcourir","Elle ___ des dizaines de kilomètres chaque semaine en vélo.","parcourt","traverse","arpente","longe","Parcourir = couvrir une distance dans un espace."],
+["circuler","Les informations ___ très vite sur les réseaux sociaux.","circulent","déambulent","errent","rôdent","Circuler = se propager, se déplacer librement."],
+["se diriger","Le groupe ___ vers la sortie sans attendre les instructions.","s'est dirigé","s'est approché","s'est éloigné","s'est réfugié","Se diriger = aller dans une direction précise."],
+["s'installer","La nouvelle famille ___ dans le quartier le mois dernier.","s'est installée","s'est éloignée","s'est réfugiée","s'est aventurée","S'installer = prendre place de façon durable."],
+["rejoindre","Elle ___ ses collègues au restaurant à midi.","a rejoint","a atteint","a dépassé","a longé","Rejoindre = aller retrouver quelqu'un."],
+["pénétrer","Les enquêteurs ___ dans le bâtiment sans effraction.","ont pénétré","ont traversé","ont franchi","ont longé","Pénétrer = entrer dans un espace."],
+["s'échapper","Deux détenus ___ de la prison pendant la nuit.","se sont échappés","ont fui","ont reculé","ont rôdé","S'échapper = s'enfuir d'un endroit où l'on est retenu."],
+["fuir","La population civile ___ devant l'avancée des troupes.","fuyait","s'éloignait","reculait","déambulait","Fuir = partir rapidement pour échapper à un danger."],
+["longer","Nous ___ la rivière pendant deux heures avant de trouver un pont.","avons longé","avons traversé","avons contourné","avons franchi","Longer = se déplacer parallèlement à quelque chose."],
+["contourner","Pour éviter les embouteillages, il ___ la ville par le périphérique.","a contourné","a traversé","a longé","a franchi","Contourner = faire le tour pour éviter."],
+["gravir","Les alpinistes ___ la paroi nord en moins de six heures.","ont gravi","ont dévalé","ont traversé","ont longé","Gravir = monter avec effort."],
+["dévaler","Les enfants ___ la pente enneigée en criant de joie.","ont dévalé","ont gravi","ont longé","ont traversé","Dévaler = descendre rapidement."],
+["se déplacer","De nombreux salariés ___ désormais en trottinette électrique.","se déplacent","se dirigent","s'installent","se retirent","Se déplacer = changer de lieu."],
+["emprunter","Les randonneurs ___ un chemin peu fréquenté pour éviter la foule.","ont emprunté","ont traversé","ont longé","ont franchi","Emprunter = prendre un itinéraire particulier."],
+["se rendre","Il ___ au bureau à pied chaque matin.","se rend","se déplace","s'approche","s'éloigne","Se rendre = aller quelque part."],
+["débarquer","Les touristes ___ du paquebot en milieu de matinée.","ont débarqué","ont embarqué","ont traversé","ont longé","Débarquer = descendre d'un véhicule, arriver."],
+["embarquer","Les passagers ___ à bord avec quarante minutes de retard.","ont embarqué","ont débarqué","ont traversé","ont circulé","Embarquer = monter à bord d'un véhicule."],
+["rôder","Un individu suspect ___ autour de l'école depuis plusieurs jours.","rôdait","déambulait","flânait","errait","Rôder = tourner autour d'un endroit de façon suspecte."],
+["flâner","Le dimanche, ils ___ dans les marchés aux puces.","flânent","rôdent","errent","déambulent","Flâner = se promener sans but, de manière agréable."],
+["trébucher","Elle ___ sur une pierre et s'est tordu la cheville.","a trébuché","a vacillé","a glissé","a bondi","Trébucher = perdre l'équilibre en heurtant un obstacle."],
+["vaciller","Le vieil homme ___ sous le poids de ses bagages.","vacillait","trébutait","glissait","pivoté","Vaciller = chanceler, être sur le point de tomber."],
+["se réfugier","Les habitants ___ dans les sous-sols pendant la tempête.","se sont réfugiés","se sont installés","se sont éloignés","se sont approchés","Se réfugier = chercher un abri contre un danger."],
+["s'aventurer","Peu de journalistes osent ___ dans cette région instable.","s'aventurer","s'éloigner","se réfugier","se diriger","S'aventurer = aller dans un endroit incertain ou risqué."],
+["se hâter","Elle ___ de terminer son rapport avant la réunion de 14h.","s'est hâtée","s'est précipitée","s'est élancée","s'est éloignée","Se hâter = se dépêcher."],
+["plonger","Le nageur ___ dans le bassin au signal du starter.","a plongé","a bondi","s'est élancé","a glissé","Plonger = se jeter dans l'eau tête la première."],
+["pivoter","Il ___ brusquement en entendant son prénom.","a pivoté","a viré","a reculé","a trébuché","Pivoter = tourner sur soi-même."],
+["virer","Le pilote ___ à gauche pour éviter la collision.","a viré","a pivoté","a reculé","a dépassé","Virer = changer brusquement de direction."],
+["dépasser","La voiture de sport nous ___ à une vitesse folle.","a dépassés","a rejoints","a atteints","a longés","Dépasser = passer devant quelqu'un."],
+["atteindre","Après dix ans de travail, il ___ enfin son objectif.","a atteint","a rejoint","a dépassé","a abouti","Atteindre = parvenir à, rejoindre."],
+["aboutir","Les négociations ___ à un accord surprise.","ont abouti","ont résulté","ont débouché","ont rejoint","Aboutir = mener à un résultat concret."],
+["déboucher","Ce couloir ___ sur une grande salle lumineuse.","débouche","aboutit","traverse","longe","Déboucher = s'ouvrir sur, donner accès à."],
+["se retirer","Le PDG ___ de la direction après le scandale.","s'est retiré","s'est éloigné","s'est réfugié","s'est installé","Se retirer = quitter une position ou un lieu."],
+["s'infiltrer","Des agents ___ dans l'organisation criminelle pendant six mois.","se sont infiltrés","se sont faufilés","se sont réfugiés","se sont aventurés","S'infiltrer = entrer discrètement dans un groupe ou un lieu."],
+["remonter","Les saumons ___ la rivière chaque année pour se reproduire.","remontent","traversent","longent","parcourent","Remonter = aller vers la source, vers le haut."],
+["affirmer","L'expert ___ que les données sont fiables.","affirme","nie","suggère","conteste","Affirmer = déclarer avec certitude."],
+["nier","Il ___ catégoriquement toute implication dans l'affaire.","nie","affirme","admet","reconnaît","Nier = refuser d'admettre, démentir."],
+["confesser","Elle ___ finalement avoir menti à ses supérieurs.","a confessé","a nié","a contredit","a rétorqué","Confesser = avouer quelque chose de difficile."],
+["chuchoter","Il ___ quelques mots à son voisin pendant la cérémonie.","a chuchoté","a murmuré","a crié","a rapporté","Chuchoter = parler très doucement, presque sans voix."],
+["crier","Elle ___ le nom de son fils dans toute la maison.","a crié","a chuchoté","a murmuré","a signalé","Crier = parler très fort."],
+["murmurer","Les enfants ___ entre eux pendant le cours.","murmuraient","criaient","chuchotaient","débattaient","Murmurer = parler à voix très basse."],
+["débattre","Les candidats ___ pendant plus de deux heures devant les caméras.","ont débattu","ont résumé","ont rapporté","ont décrit","Débattre = discuter de manière contradictoire."],
+["prétendre","Il ___ avoir été présent lors de la réunion.","prétend","affirme","admet","précise","Prétendre = affirmer quelque chose de discutable."],
+["admettre","Elle ___ finalement qu'elle avait tort.","a admis","a nié","a contesté","a rétorqué","Admettre = reconnaître la vérité de quelque chose."],
+["préciser","Le ministre ___ que cette mesure entrerait en vigueur en janvier.","a précisé","a suggéré","a résumé","a formulé","Préciser = donner des détails supplémentaires."],
+["mentionner","Il ___ brièvement ce problème lors de la conférence.","a mentionné","a développé","a exposé","a souligné","Mentionner = citer rapidement sans approfondir."],
+["interroger","La police ___ les témoins pendant plusieurs heures.","a interrogé","a persuadé","a contredit","a rapporté","Interroger = poser des questions pour obtenir des informations."],
+["répliquer","Il ___ sèchement que cela ne regardait personne.","a répliqué","a rétorqué","a murmuré","a chuchoté","Répliquer = répondre vivement à quelqu'un."],
+["rétorquer","Elle ___ qu'elle avait prévenu tout le monde à l'avance.","a rétorqué","a répliqué","a suggéré","a signalé","Rétorquer = répondre en s'opposant avec force."],
+["promettre","Le gouvernement ___ de réduire les impôts avant la fin du mandat.","a promis","a suggéré","a résumé","a signalé","Promettre = s'engager à faire quelque chose."],
+["suggérer","Elle ___ de reporter la réunion à la semaine prochaine.","a suggéré","a imposé","a ordonné","a promis","Suggérer = proposer une idée sans l'imposer."],
+["signaler","Plusieurs experts ___ des lacunes importantes dans le rapport.","ont signalé","ont résumé","ont nuancé","ont illustré","Signaler = attirer l'attention sur quelque chose."],
+["annoncer","La directrice ___ sa démission lors d'une réunion surprise.","a annoncé","a résumé","a transmis","a exposé","Annoncer = faire savoir officiellement."],
+["publier","Le journal ___ l'article sans vérifier les sources.","a publié","a diffusé","a transmis","a divulgué","Publier = rendre public."],
+["transmettre","L'enseignant ___ sa passion pour la littérature à ses élèves.","a transmis","a publié","a rapporté","a résumé","Transmettre = faire passer d'une personne à une autre."],
+["divulguer","La journaliste ___ des informations confidentielles.","a divulgué","a publié","a transmis","a rapporté","Divulguer = révéler ce qui était secret."],
+["recenser","Le rapport ___ plus de trois cents victimes.","recense","mentionne","signale","expose","Recenser = compter et lister de façon exhaustive."],
+["interpeller","Un passant ___ le ministre dans la rue.","a interpellé","a interrogé","a défié","a critiqué","Interpeller = apostropher quelqu'un directement."],
+["formuler","Elle ___ sa demande de manière claire et précise.","a formulé","a résumé","a transmis","a exposé","Formuler = exprimer de façon précise et structurée."],
+["argumenter","Il ___ pendant vingt minutes pour défendre son projet.","a argumenté","a débattu","a contredit","a suggéré","Argumenter = donner des arguments pour défendre une thèse."],
+["convaincre","Elle ___ le jury en moins d'une heure.","a convaincu","a persuadé","a suggéré","a exposé","Convaincre = amener quelqu'un à croire ou accepter."],
+["persuader","Il ___ son associé d'investir dans ce nouveau projet.","a persuadé","a convaincu","a forcé","a suggéré","Persuader = convaincre par des arguments ou l'émotion."],
+["contredire","Les faits ___ les déclarations officielles du gouvernement.","contredisent","nuancent","illustrent","soulignent","Contredire = dire le contraire de ce qui a été affirmé."],
+["approuver","Le conseil d'administration ___ le budget à l'unanimité.","a approuvé","a contesté","a nuancé","a suggéré","Approuver = donner son accord, valider."],
+["décrire","Elle ___ la scène avec une précision étonnante.","a décrit","a narré","a raconté","a résumé","Décrire = représenter par les mots."],
+["raconter","Il ___ son aventure à tous ses amis.","a raconté","a décrit","a résumé","a exposé","Raconter = narrer des événements."],
+["témoigner","Trois témoins ___ en faveur de l'accusé.","ont témoigné","ont rapporté","ont transmis","ont exposé","Témoigner = donner son témoignage."],
+["rapporter","Le journaliste ___ les faits sans prendre parti.","a rapporté","a décrit","a raconté","a résumé","Rapporter = rendre compte de faits observés."],
+["résumer","Elle ___ la situation en deux phrases.","a résumé","a décrit","a développé","a exposé","Résumer = présenter de façon condensée."],
+["développer","Le conférencier ___ son argument pendant une heure.","a développé","a résumé","a exposé","a formulé","Développer = approfondir, expliquer en détail."],
+["exposer","Elle ___ ses idées clairement devant le comité.","a exposé","a résumé","a développé","a formulé","Exposer = présenter à un public."],
+["insister","Il ___ pour que tous les membres soient présents.","a insisté","a suggéré","a proposé","a signalé","Insister = revenir plusieurs fois sur quelque chose."],
+["reconnaître","Le gouvernement ___ ses erreurs dans la gestion de la crise.","a reconnu","a admis","a nié","a contesté","Reconnaître = admettre publiquement quelque chose."],
+["contester","L'avocat ___ les preuves présentées par l'accusation.","a contesté","a approuvé","a admis","a résumé","Contester = s'opposer, mettre en doute."],
+["réclamer","Les syndicats ___ une augmentation des salaires.","réclament","suggèrent","proposent","demandent","Réclamer = exiger avec insistance."],
+["dénoncer","La presse ___ les pratiques douteuses de cette entreprise.","a dénoncé","a contesté","a signalé","a rapporté","Dénoncer = révéler publiquement quelque chose de négatif."],
+["souligner","L'auteur ___ l'importance de l'éducation dans son discours.","souligne","mentionne","signale","expose","Souligner = mettre en relief, insister sur."],
+["nuancer","Il faut ___ ces affirmations qui sont trop générales.","nuancer","contredire","développer","exposer","Nuancer = apporter des distinctions, éviter les généralités."],
+["illustrer","Elle ___ son propos avec des exemples concrets.","a illustré","a développé","a exposé","a décrit","Illustrer = appuyer avec des exemples."],
+["mentir","Il ___ depuis le début sur ses qualifications.","a menti","a prétendu","a nié","a contesté","Mentir = dire ce qui est faux."],
+["s'exprimer","Elle ___ avec beaucoup d'aisance en public.","s'exprime","parle","formule","articule","S'exprimer = communiquer sa pensée."],
+["négocier","Les deux parties ___ les conditions du contrat pendant une semaine.","ont négocié","ont débattu","ont argumenté","ont discuté","Négocier = chercher un accord par la discussion."],
+["dissimuler","Elle ___ sa déception derrière un sourire forcé.","a dissimulé","a caché","a nié","a formulé","Dissimuler = cacher intentionnellement."],
+["clarifier","Le porte-parole ___ la position officielle du gouvernement.","a clarifié","a précisé","a exposé","a formulé","Clarifier = rendre plus clair, lever les ambiguïtés."],
+["traduire","Elle ___ ce roman de l'espagnol au français.","a traduit","a résumé","a décrit","a transmis","Traduire = rendre dans une autre langue."],
+["redouter","Elle ___ les résultats de l'examen depuis des semaines.","redoute","craint","appréhende","évite","Redouter = craindre fortement quelque chose."],
+["se méfier","Il faut ___ des offres trop alléchantes sur internet.","se méfier","se douter","se plaindre","se lamenter","Se méfier = ne pas faire confiance, rester vigilant."],
+["s'enthousiasmer","Elle ___ rapidement pour ce nouveau projet.","s'est enthousiasmée","s'est passionnée","s'est réjouie","s'est motivée","S'enthousiasmer = se laisser gagner par l'enthousiasme."],
+["souffrir","Il ___ d'une blessure au genou depuis plusieurs mois.","souffre","se plaint","regrette","se morfond","Souffrir = ressentir de la douleur physique ou morale."],
+["se lamenter","Elle ___ sur son sort sans chercher de solution.","se lamente","se plaint","soupire","regrette","Se lamenter = se plaindre bruyamment de ses malheurs."],
+["s'indigner","Le public ___ face aux inégalités révélées dans le rapport.","s'est indigné","s'est énervé","s'est vexé","s'est agacé","S'indigner = ressentir une forte indignation morale."],
+["ressentir","Elle ___ une profonde tristesse en apprenant la nouvelle.","a ressenti","a éprouvé","a perçu","a senti","Ressentir = éprouver un sentiment de manière intense."],
+["se réjouir","Toute la famille ___ de l'annonce du mariage.","s'est réjouie","s'est enthousiasmée","s'est passionnée","s'est satisfaite","Se réjouir = éprouver de la joie."],
+["éprouver","Il ___ une grande fierté en voyant ses enfants réussir.","a éprouvé","a ressenti","a admis","a perçu","Éprouver = vivre intérieurement un sentiment."],
+["se morfondre","Il ___ chez lui depuis son licenciement.","se morfond","se lamente","déprime","s'ennuie","Se morfondre = s'ennuyer profondément, se consumer d'attente."],
+["angoisser","Cette perspective ___ beaucoup les étudiants en dernière année.","angoisse","irrite","déçoit","attriste","Angoisser = causer ou ressentir une forte anxiété."],
+["se passionner","Elle ___ pour l'archéologie depuis son voyage en Égypte.","s'est passionnée","s'est intéressée","s'est enthousiasmée","s'est motivée","Se passionner = développer une passion intense pour."],
+["envier","Il ___ le succès de son frère sans se l'avouer.","envie","admire","méprise","jalouse","Envier = désirer ce qu'un autre possède."],
+["admirer","Les visiteurs ___ le tableau pendant de longues minutes.","admiraient","enviaient","méprisaient","chérissaient","Admirer = regarder avec estime et plaisir."],
+["mépriser","Elle ___ les personnes qui ne respectent pas les autres.","méprise","déteste","haït","dédaigne","Mépriser = considérer avec un profond dédain."],
+["haïr","Il ___ la violence sous toutes ses formes.","hait","méprise","dédaigne","déteste","Haïr = éprouver une haine intense."],
+["chérir","Elle ___ les souvenirs de son enfance en Provence.","chérit","admire","aime","préserve","Chérir = aimer tendrement, garder précieusement."],
+["s'ennuyer","Les enfants ___ rapidement sans activités proposées.","s'ennuient","se morfondent","dépriment","se lassent","S'ennuyer = ne pas trouver de quoi s'occuper."],
+["s'émouvoir","Elle ___ facilement devant les injustices.","s'émeut","s'indigne","se vexe","s'agace","S'émouvoir = être touché émotionnellement."],
+["compatir","Ses amis ___ sincèrement à sa douleur.","ont compati","ont soutenu","ont ressenti","ont éprouvé","Compatir = partager la souffrance de quelqu'un."],
+["se vexer","Il ___ pour un rien et boudait des jours entiers.","se vexait","s'énervait","s'agaçait","s'indignait","Se vexer = se sentir blessé dans son amour-propre."],
+["regretter","Elle ___ de ne pas avoir accepté cette offre d'emploi.","regrette","déplore","redoute","craint","Regretter = éprouver du regret pour quelque chose de passé."],
+["soupirer","Il ___ profondément avant de répondre à la question.","a soupiré","a murmuré","a gémi","a chuchoté","Soupirer = expirer longuement pour exprimer un sentiment."],
+["se consoler","Elle ___ en se disant que d'autres ont vécu pire.","se console","se rassure","s'apaise","se calme","Se consoler = atténuer sa propre peine."],
+["se décourager","Face aux obstacles répétés, il ___ progressivement.","se décourage","abandonne","déprime","se lasse","Se décourager = perdre sa motivation face aux difficultés."],
+["se motiver","Elle ___ en visualisant ses objectifs chaque matin.","se motivait","s'encourageait","se stimulait","se concentrait","Se motiver = trouver en soi l'élan pour agir."],
+["craindre","Il ___ que les résultats ne soient pas au rendez-vous.","craint","redoute","appréhende","évite","Craindre = avoir peur de quelque chose."],
+["s'émerveiller","Les enfants ___ devant les lumières du spectacle.","s'émerveillent","s'enthousiasment","s'étonnent","admirent","S'émerveiller = être frappé d'un vif émerveillement."],
+["dédaigner","Elle ___ les mondanités et préférait rester chez elle.","dédaignait","méprisait","ignorait","évitait","Dédaigner = manifester du mépris ou de l'indifférence."],
+["jalouser","Il ___ ouvertement le talent de ses collègues.","jalousait","enviait","admirait","méprisait","Jalouser = éprouver de la jalousie envers quelqu'un."],
+["s'apaiser","Les tensions ___ progressivement après la réunion.","se sont apaisées","se sont calmées","ont diminué","ont cessé","S'apaiser = retrouver le calme après une agitation."],
+["s'agacer","Elle ___ facilement quand on interrompt ses explications.","s'agace","s'énerve","s'irrite","se vexe","S'agacer = être légèrement irrité."],
+["se réconcilier","Les deux frères ___ après des années de brouille.","se sont réconciliés","se sont pardonnés","se sont retrouvés","se sont parlé","Se réconcilier = mettre fin à une dispute, renouer."],
+["s'attacher","Elle ___ rapidement à ce pays qu'elle apprenait à connaître.","s'est attachée","s'est liée","s'est intéressée","s'est passionnée","S'attacher = développer un lien affectif."],
+["se lasser","Il ___ de répéter toujours les mêmes explications.","se lasse","se fatigue","s'ennuie","s'agace","Se lasser = perdre sa patience ou son intérêt progressivement."],
+["désirer","Elle ___ depuis longtemps changer de carrière.","désirait","voulait","souhaitait","espérait","Désirer = vouloir fortement quelque chose."],
+["se satisfaire","Il ne ___ pas de résultats médiocres.","se satisfaisait","se contentait","s'accommodait","se réjouissait","Se satisfaire = se contenter, trouver suffisant."],
+["s'effrayer","Elle ___ en entendant des bruits la nuit.","s'est effrayée","s'est apeurée","a craint","a redouté","S'effrayer = être saisi soudainement de peur."],
+["déprimer","Ce temps gris ___ beaucoup de gens en hiver.","déprime","attriste","décourage","abat","Déprimer = causer ou ressentir un état dépressif."],
+["se plaindre","Elle ___ constamment du manque de moyens dans son service.","se plaint","regrette","déplore","critique","Se plaindre = exprimer son mécontentement."],
+["fasciner","Ce mystère ___ les chercheurs depuis des décennies.","fascine","intrigue","captive","attire","Fasciner = exercer une attraction irrésistible."],
+["décevoir","Les résultats du dernier trimestre ___ les investisseurs.","ont déçu","ont surpris","ont inquiété","ont attristé","Décevoir = ne pas répondre aux attentes."],
+["rassurer","Le médecin ___ les parents en leur expliquant le diagnostic.","a rassuré","a calmé","a apaisé","a consolé","Rassurer = enlever les craintes de quelqu'un."],
+["irriter","Son comportement désinvolte ___ ses collègues.","irrite","agace","énerve","contrarie","Irriter = causer de l'irritation."],
+["dégoûter","Les images de ce documentaire ___ une partie du public.","ont dégoûté","ont choqué","ont attristé","ont apeuré","Dégoûter = provoquer de la répulsion."],
+["ravir","Le spectacle de cirque ___ les enfants.","a ravi","a enchanté","a charmé","a fasciné","Ravir = faire éprouver un plaisir intense."],
+["humilier","Il ___ ses subordonnés en public lors des réunions.","humilie","méprise","insulte","offense","Humilier = faire subir une humiliation."],
+["soulager","Cette nouvelle ___ toute la famille.","a soulagé","a rassuré","a réjoui","a apaisé","Soulager = enlever une souffrance ou une inquiétude."],
+["attrister","La mort de cet artiste ___ l'ensemble du monde culturel.","a attristé","a peiné","a touché","a affecté","Attrister = rendre triste."],
+["tourmenter","Cette question ___ depuis des années.","le tourmente","l'obsède","le tracasse","l'inquiète","Tourmenter = causer une vive inquiétude ou souffrance."],
+["analyser","Les scientifiques ___ les données recueillies pendant dix ans.","ont analysé","ont examiné","ont étudié","ont scruté","Analyser = décomposer pour comprendre en profondeur."],
+["déduire","À partir des indices, il ___ que le suspect était parti depuis des heures.","a déduit","a conclu","a estimé","a supposé","Déduire = tirer une conclusion logique."],
+["supposer","On peut ___ que ces changements auront des effets à long terme.","supposer","imaginer","estimer","prévoir","Supposer = admettre quelque chose comme probable."],
+["envisager","La direction ___ plusieurs scénarios avant de décider.","a envisagé","a prévu","a planifié","a imaginé","Envisager = considérer comme possible, examiner."],
+["concevoir","Elle ___ un modèle économique entièrement nouveau.","a conçu","a créé","a développé","a imaginé","Concevoir = former dans son esprit, inventer."],
+["mémoriser","Les étudiants ___ des centaines de termes médicaux.","mémorisent","retiennent","apprennent","assimilent","Mémoriser = fixer dans la mémoire volontairement."],
+["s'interroger","Les chercheurs ___ sur les causes réelles du phénomène.","s'interrogent","s'inquiètent","doutent","questionnent","S'interroger = se poser des questions, réfléchir."],
+["réfléchir","Elle ___ longuement avant de prendre sa décision.","a réfléchi","a délibéré","a médité","a pesé","Réfléchir = penser avec attention."],
+["méditer","Il ___ chaque matin pendant vingt minutes.","médite","réfléchit","pense","se concentre","Méditer = penser profondément ou pratiquer la méditation."],
+["anticiper","Les entreprises doivent ___ les changements du marché.","anticiper","prévoir","planifier","devancer","Anticiper = prévoir et agir avant que quelque chose arrive."],
+["planifier","L'équipe ___ le projet en détail avant de commencer.","a planifié","a organisé","a préparé","a structuré","Planifier = organiser à l'avance de façon méthodique."],
+["évaluer","Les experts ___ les dégâts causés par la tempête.","ont évalué","ont estimé","ont analysé","ont mesuré","Évaluer = déterminer la valeur ou l'importance de."],
+["comparer","Il est difficile de ___ ces deux approches sans données fiables.","comparer","distinguer","analyser","contraster","Comparer = mettre en parallèle pour trouver similitudes et différences."],
+["distinguer","Elle ___ clairement ce qui relève du privé et du professionnel.","distingue","sépare","différencie","identifie","Distinguer = percevoir la différence entre."],
+["interpréter","Les analystes ___ ces données de manière très différente.","interprètent","comprennent","lisent","traduisent","Interpréter = donner un sens à quelque chose d'ambigu."],
+["estimer","Les économistes ___ la croissance à 2,3% pour cette année.","estiment","prévoient","calculent","évaluent","Estimer = évaluer approximativement."],
+["prédire","Personne ne peut ___ avec certitude l'évolution des marchés.","prédire","prévoir","anticiper","deviner","Prédire = annoncer ce qui va arriver."],
+["imaginer","Il ___ un monde où la technologie résoudrait tous les problèmes.","imaginait","rêvait","envisageait","concevait","Imaginer = former des images mentales, inventer."],
+["rationaliser","Il ___ ses erreurs plutôt que de les admettre.","rationalisait","justifiait","expliquait","développait","Rationaliser = trouver des justifications logiques à ses comportements."],
+["reconsidérer","Face aux nouvelles preuves, il a dû ___ sa position.","reconsidérer","réviser","changer","revoir","Reconsidérer = examiner à nouveau en changeant peut-être d'avis."],
+["percevoir","Il ___ une certaine tension dans la salle dès son arrivée.","a perçu","a senti","a ressenti","a noté","Percevoir = devenir conscient de quelque chose."],
+["saisir","Elle ___ immédiatement le sens caché de la remarque.","a saisi","a compris","a perçu","a deviné","Saisir = comprendre rapidement."],
+["assimiler","Les enfants ___ plus facilement les langues que les adultes.","assimilent","apprennent","mémorisent","comprennent","Assimiler = intégrer et comprendre profondément."],
+["synthétiser","Elle ___ des années de recherche en un seul rapport.","a synthétisé","a résumé","a condensé","a rassemblé","Synthétiser = rassembler et unifier des éléments disparates."],
+["conceptualiser","Il ___ une nouvelle approche pédagogique.","a conceptualisé","a conçu","a développé","a formulé","Conceptualiser = former un concept abstrait à partir d'observations."],
+["raisonner","Elle ___ avec méthode pour trouver la solution.","raisonne","réfléchit","analyse","délibère","Raisonner = penser de façon logique et argumentée."],
+["délibérer","Le jury ___ pendant trois heures avant de rendre son verdict.","a délibéré","a réfléchi","a discuté","a débattu","Délibérer = réfléchir ensemble pour prendre une décision."],
+["peser","Il ___ soigneusement les avantages et les inconvénients.","a pesé","a évalué","a comparé","a analysé","Peser = considérer attentivement le pour et le contre."],
+["vérifier","Elle ___ ses sources avant de publier l'article.","a vérifié","a contrôlé","a examiné","a confirmé","Vérifier = s'assurer de l'exactitude de quelque chose."],
+["examiner","Les médecins ___ le patient avec soin.","ont examiné","ont analysé","ont scruté","ont étudié","Examiner = observer attentivement et de près."],
+["déterminer","Les enquêteurs ___ la cause de l'incendie.","ont déterminé","ont identifié","ont établi","ont confirmé","Déterminer = établir avec précision."],
+["identifier","Les témoins ___ le suspect grâce à des photos.","ont identifié","ont reconnu","ont détecté","ont repéré","Identifier = reconnaître avec certitude."],
+["apprendre","Elle ___ l'espagnol en regardant des séries télévisées.","apprend","étudie","assimile","mémorise","Apprendre = acquérir une connaissance ou compétence."],
+["retenir","Il peine à ___ les noms des nouvelles personnes qu'il rencontre.","retenir","mémoriser","apprendre","assimiler","Retenir = garder en mémoire."],
+["oublier","Elle ___ régulièrement où elle a posé ses clés.","oublie","perd","ignore","néglige","Oublier = ne plus se souvenir de quelque chose."],
+["se rappeler","Il ___ chaque détail de cette soirée importante.","se rappelle","se souvient","se remémore","retient","Se rappeler = avoir en mémoire, se souvenir de."],
+["se concentrer","Elle ne parvient pas à ___ avec autant de bruit.","se concentrer","se focaliser","s'appliquer","s'atteler","Se concentrer = focaliser toute son attention sur."],
+["scruter","Les astronomes ___ le ciel chaque nuit.","scrutent","observent","examinent","analysent","Scruter = observer avec une grande attention et minutie."],
+["observer","Les ethnologues ___ les comportements sociaux sans intervenir.","observent","scrutent","examinent","étudient","Observer = regarder attentivement sans intervenir."],
+["constater","Les experts ___ une hausse significative des températures.","ont constaté","ont observé","ont remarqué","ont noté","Constater = prendre acte d'un fait observable."],
+["remarquer","Il ___ immédiatement le changement dans l'attitude de son chef.","a remarqué","a noté","a constaté","a observé","Remarquer = percevoir quelque chose qui mérite attention."],
+["comprendre","Elle ___ enfin pourquoi ce projet avait échoué.","a compris","a réalisé","a saisi","a deviné","Comprendre = saisir le sens de quelque chose."],
+["réaliser","Il ___ trop tard qu'il avait fait une erreur.","a réalisé","a compris","a saisi","a constaté","Réaliser = prendre conscience de quelque chose."],
+["découvrir","Les archéologues ___ une cité engloutie au fond de la mer.","ont découvert","ont trouvé","ont déterré","ont identifié","Découvrir = trouver ce qui était inconnu ou caché."],
+["détecter","Le système ___ une anomalie dans le réseau.","a détecté","a identifié","a repéré","a trouvé","Détecter = déceler par des moyens techniques ou sensoriels."],
+["déceler","Les biologistes ___ des traces de pollution dans l'échantillon.","ont décelé","ont détecté","ont identifié","ont trouvé","Déceler = découvrir ce qui était caché ou difficile à voir."],
+["problématiser","Il faut ___ correctement le sujet avant de commencer à rédiger.","problématiser","développer","analyser","formuler","Problématiser = formuler un problème de façon rigoureuse."],
+["abstraire","Certains élèves ont du mal à ___ les concepts mathématiques.","abstraire","comprendre","assimiler","intégrer","Abstraire = dégager l'essentiel, raisonner sans le concret."],
+["généraliser","Il ne faut pas ___ à partir d'un seul cas.","généraliser","conclure","déduire","extrapoler","Généraliser = étendre une conclusion à un ensemble plus large."],
+["intégrer (savoir)","Il ___ rapidement de nouvelles compétences dans sa pratique.","intègre","assimile","mémorise","applique","Intégrer = incorporer des connaissances dans son fonctionnement."],
+["construire","L'entreprise ___ un nouveau siège social en plein centre-ville.","construit","fabrique","assemble","rénove","Construire = bâtir, édifier."],
+["démolir","Les ouvriers ___ l'ancien immeuble en trois jours.","ont démoli","ont détruit","ont rasé","ont abattu","Démolir = abattre une construction."],
+["réparer","Le technicien ___ l'ordinateur en moins d'une heure.","a réparé","a corrigé","a fixé","a résolu","Réparer = remettre en état de fonctionnement."],
+["fabriquer","Cette usine ___ des composants électroniques pour les smartphones.","fabrique","produit","construit","assemble","Fabriquer = produire industriellement."],
+["assembler","Les ouvriers ___ les pièces sur la chaîne de montage.","assemblent","connectent","fabriquent","construisent","Assembler = réunir des pièces pour former un tout."],
+["démonter","Il ___ le moteur entièrement pour diagnostiquer la panne.","a démonté","a désassemblé","a séparé","a divisé","Démonter = séparer les pièces d'un ensemble."],
+["transformer","La start-up ___ les déchets plastiques en matériaux de construction.","transforme","convertit","modifie","change","Transformer = changer la nature ou la forme de quelque chose."],
+["améliorer","Ces nouvelles mesures ___ significativement la qualité de l'air.","ont amélioré","ont optimisé","ont renforcé","ont rehaussé","Améliorer = rendre meilleur."],
+["optimiser","L'équipe ___ les processus internes pour gagner du temps.","optimise","améliore","perfectionne","affine","Optimiser = rendre le plus efficace possible."],
+["automatiser","L'entreprise ___ plusieurs tâches répétitives grâce à l'IA.","a automatisé","a mécanisé","a programmé","a robotisé","Automatiser = faire fonctionner sans intervention humaine."],
+["lancer","La startup ___ son application sur le marché en janvier.","a lancé","a déployé","a publié","a sorti","Lancer = mettre en route, introduire sur le marché."],
+["développer (créer)","L'équipe ___ un nouvel algorithme de recommandation.","développe","crée","conçoit","programme","Développer = créer, faire croître quelque chose."],
+["concevoir (créer)","Les ingénieurs ___ un prototype révolutionnaire.","ont conçu","ont créé","ont développé","ont fabriqué","Concevoir = imaginer et créer."],
+["tester","Elle ___ l'application sur différents appareils avant le lancement.","a testé","a essayé","a vérifié","a contrôlé","Tester = vérifier le fonctionnement de."],
+["implémenter","L'équipe ___ la nouvelle fonctionnalité en deux semaines.","a implémenté","a développé","a déployé","a installé","Implémenter = mettre en œuvre techniquement."],
+["déployer","L'entreprise ___ sa solution dans vingt pays simultanément.","a déployé","a lancé","a distribué","a installé","Déployer = mettre en place à grande échelle."],
+["configurer","L'administrateur ___ le serveur selon les nouvelles normes.","a configuré","a paramétré","a installé","a réglé","Configurer = paramétrer un système informatique."],
+["générer","Ce modèle ___ des revenus passifs importants.","génère","produit","crée","apporte","Générer = produire, créer comme résultat."],
+["exploiter","Cette technologie ___ les données pour personnaliser l'expérience.","exploite","utilise","traite","analyse","Exploiter = tirer parti de quelque chose."],
+["extraire","Les chercheurs ___ des informations pertinentes de milliers de documents.","ont extrait","ont tiré","ont sélectionné","ont isolé","Extraire = sortir d'un ensemble."],
+["modifier","Il ___ le code source pour corriger l'erreur.","a modifié","a changé","a corrigé","a mis à jour","Modifier = apporter des changements ciblés."],
+["adapter","L'entreprise ___ son modèle aux exigences locales.","a adapté","a ajusté","a modifié","a transformé","Adapter = modifier pour convenir à un contexte particulier."],
+["restructurer","La société ___ ses départements après la fusion.","a restructuré","a réorganisé","a réformé","a remanié","Restructurer = réorganiser en profondeur."],
+["consolider","Les bonnes performances du trimestre ___ la position de l'entreprise.","consolident","renforcent","stabilisent","affirment","Consolider = renforcer, rendre plus solide."],
+["renforcer","Ces mesures ___ la sécurité dans les transports.","renforcent","améliorent","augmentent","consolident","Renforcer = rendre plus fort, plus efficace."],
+["réduire","L'objectif est de ___ les émissions de CO2 de 40%.","réduire","diminuer","limiter","baisser","Réduire = diminuer, faire baisser."],
+["accélérer","L'investissement ___ le développement du produit.","a accéléré","a accentué","a intensifié","a stimulé","Accélérer = augmenter la vitesse ou le rythme de."],
+["déclencher","Un bug mineur ___ une panne générale du système.","a déclenché","a provoqué","a causé","a entraîné","Déclencher = mettre en marche, provoquer."],
+["bloquer","Un pare-feu ___ les tentatives d'intrusion.","bloque","arrête","empêche","stoppe","Bloquer = empêcher de passer ou de fonctionner."],
+["débloquer","L'intervention du support technique ___ la situation.","a débloqué","a résolu","a réparé","a libéré","Débloquer = supprimer ce qui bloquait."],
+["activer","Elle ___ son compte en cliquant sur le lien reçu par email.","a activé","a ouvert","a lancé","a démarré","Activer = mettre en marche, rendre actif."],
+["désactiver","L'administrateur ___ les comptes inactifs depuis plus d'un an.","a désactivé","a supprimé","a bloqué","a fermé","Désactiver = rendre inactif."],
+["connecter","Il ___ son ordinateur portable au réseau de l'entreprise.","a connecté","a relié","a branché","a lié","Connecter = établir une connexion entre."],
+["déconnecter","Il est conseillé de ___ ses appareils la nuit.","déconnecter","éteindre","débrancher","fermer","Déconnecter = couper la connexion."],
+["intégrer (ajouter)","L'entreprise ___ l'IA dans tous ses processus métiers.","intègre","incorpore","inclut","insère","Intégrer = incorporer dans un ensemble existant."],
+["fusionner","Les deux banques ___ pour créer le premier groupe européen.","ont fusionné","se sont unies","se sont associées","se sont regroupées","Fusionner = réunir en un seul ensemble."],
+["diviser","On ___ le projet en plusieurs phases pour le gérer efficacement.","divise","sépare","découpe","répartit","Diviser = séparer en parties distinctes."],
+["simplifier","La nouvelle interface ___ considérablement l'expérience utilisateur.","simplifie","améliore","optimise","facilite","Simplifier = rendre plus simple."],
+["résoudre","L'équipe ___ le problème en quelques heures.","a résolu","a réglé","a traité","a géré","Résoudre = trouver la solution à un problème."],
+["corriger","Elle ___ les erreurs dans le code avant la mise en production.","a corrigé","a réparé","a ajusté","a modifié","Corriger = éliminer les erreurs."],
+["actualiser","Il faut ___ la base de données chaque semaine.","actualiser","mettre à jour","rafraîchir","renouveler","Actualiser = mettre à jour, moderniser."],
+["supprimer","L'administrateur ___ les fichiers obsolètes.","a supprimé","a effacé","a éliminé","a retiré","Supprimer = faire disparaître définitivement."],
+["archiver","L'entreprise ___ tous les documents comptables pendant dix ans.","archive","conserve","stocke","sauvegarde","Archiver = mettre en archive pour conservation."],
+["stocker","Ces serveurs ___ des pétaoctets de données.","stockent","conservent","gardent","hébergent","Stocker = conserver dans un espace de stockage."],
+["partager","Elle ___ son écran pendant la visioconférence.","a partagé","a diffusé","a montré","a transmis","Partager = rendre accessible à d'autres."],
+["diffuser","La chaîne ___ ce documentaire en prime time.","diffuse","transmet","publie","passe","Diffuser = distribuer à un large public."],
+["synchroniser","L'application ___ automatiquement les données entre tous les appareils.","synchronise","harmonise","aligne","unifie","Synchroniser = mettre en accord, faire fonctionner ensemble."],
+["sauvegarder","Il faut ___ ses fichiers régulièrement pour éviter toute perte.","sauvegarder","stocker","archiver","conserver","Sauvegarder = faire une copie de sécurité."],
+["piloter","Elle ___ trois projets en parallèle avec efficacité.","pilote","gère","dirige","coordonne","Piloter = diriger, gérer un projet ou une équipe."],
+["orchestrer","Il ___ toute la campagne marketing depuis le début.","a orchestré","a coordonné","a géré","a dirigé","Orchestrer = organiser et coordonner de manière complexe."],
+["collaborer","Les deux équipes ___ sur ce projet depuis six mois.","collaborent","coopèrent","travaillent","s'associent","Collaborer = travailler ensemble vers un même objectif."],
+["coopérer","Les pays de la région ___ pour faire face à la crise alimentaire.","coopèrent","collaborent","s'associent","s'unissent","Coopérer = agir ensemble vers un but commun."],
+["négocier (social)","Les syndicats ___ une nouvelle convention collective.","négocient","discutent","débattent","traitent","Négocier = chercher un accord par la discussion."],
+["arbitrer","Un médiateur ___ le conflit entre les deux parties.","arbitre","juge","dirige","modère","Arbitrer = trancher un différend entre parties."],
+["s'associer","Les deux entrepreneurs ___ pour créer une nouvelle startup.","se sont associés","se sont alliés","ont collaboré","ont coopéré","S'associer = former une association ou un partenariat."],
+["rivaliser","Les deux marques ___ d'ingéniosité pour attirer les clients.","rivalisent","se concurrencent","s'affrontent","s'opposent","Rivaliser = être en compétition avec."],
+["s'opposer","Plusieurs élus ___ au projet de loi lors du vote.","se sont opposés","ont contesté","ont refusé","ont critiqué","S'opposer = prendre position contre quelque chose."],
+["soutenir","Ses parents ___ sa décision malgré leurs réserves.","ont soutenu","ont approuvé","ont encouragé","ont aidé","Soutenir = appuyer, être du côté de quelqu'un."],
+["trahir","Il ___ la confiance de son associé en divulguant des informations.","a trahi","a déçu","a abandonné","a manipulé","Trahir = rompre une confiance ou une loyauté."],
+["manipuler","Il ___ son entourage pour obtenir ce qu'il voulait.","manipulait","influençait","trompait","séduisait","Manipuler = influencer de manière malhonnête."],
+["séduire","Son charme naturel ___ rapidement les recruteurs.","a séduit","a charmé","a impressionné","a convaincu","Séduire = attirer par ses qualités."],
+["charmer","Elle ___ l'audience avec son discours passionné.","a charmé","a séduit","a convaincu","a captivé","Charmer = exercer un charme sur quelqu'un."],
+["influencer","Les réseaux sociaux ___ profondément les comportements d'achat.","influencent","modifient","changent","affectent","Influencer = avoir une influence sur."],
+["dominer","Cette entreprise ___ le marché européen depuis vingt ans.","domine","contrôle","dirige","gouverne","Dominer = exercer sa supériorité sur."],
+["se soumettre","Il a fini par ___ aux exigences de ses supérieurs.","se soumettre","céder","obéir","accepter","Se soumettre = accepter l'autorité de quelqu'un."],
+["s'imposer","Elle ___ comme la leader naturelle de l'équipe.","s'est imposée","s'est affirmée","s'est distinguée","s'est révélée","S'imposer = s'affirmer avec force dans un groupe."],
+["déléguer","Un bon manager sait ___ certaines tâches à son équipe.","déléguer","confier","transmettre","attribuer","Déléguer = confier une responsabilité à quelqu'un."],
+["responsabiliser","Ce programme ___ les jeunes en leur donnant des missions concrètes.","responsabilise","implique","motive","engage","Responsabiliser = donner à quelqu'un le sens des responsabilités."],
+["motiver","Le manager ___ son équipe avec des objectifs clairs.","motive","encourage","stimule","inspire","Motiver = donner envie d'agir à quelqu'un."],
+["décourager","Ces échecs répétés ___ les candidats les plus déterminés.","découragent","démoralisent","abattent","démotivent","Décourager = ôter le courage ou la motivation."],
+["critiquer","Les journalistes ___ sévèrement la décision du gouvernement.","ont critiqué","ont contesté","ont condamné","ont attaqué","Critiquer = émettre des jugements négatifs."],
+["féliciter","Le directeur ___ personnellement chaque membre de l'équipe.","a félicité","a remercié","a salué","a récompensé","Féliciter = exprimer des compliments à quelqu'un."],
+["remercier","Elle ___ chaleureusement tous ses collaborateurs en fin d'année.","a remercié","a félicité","a salué","a apprécié","Remercier = exprimer sa gratitude."],
+["saluer","Il ___ son adversaire avec respect après la compétition.","a salué","a félicité","a remercié","a reconnu","Saluer = adresser un salut à quelqu'un."],
+["se disputer","Les deux associés ___ souvent sur la stratégie à adopter.","se disputent","se contredisent","s'affrontent","s'opposent","Se disputer = avoir une querelle."],
+["se réconcilier (social)","Après des années de froid, les deux familles ___ lors d'un mariage.","se sont réconciliées","se sont retrouvées","se sont parlé","se sont pardonné","Se réconcilier = retrouver de bonnes relations."],
+["fréquenter","Il ___ les milieux artistiques depuis son adolescence.","fréquente","côtoie","connaît","rejoint","Fréquenter = avoir des contacts réguliers avec."],
+["éviter","Elle ___ soigneusement les sujets sensibles en réunion.","évite","contourne","esquive","ignore","Éviter = faire en sorte de ne pas rencontrer ou aborder."],
+["confronter","Le manager ___ l'employé sur ses retards répétés.","a confronté","a interpellé","a interrogé","a critiqué","Confronter = mettre face à une réalité ou une contradiction."],
+["protéger","La loi ___ les lanceurs d'alerte contre les représailles.","protège","défend","soutient","aide","Protéger = mettre à l'abri d'un danger."],
+["exclure","Le comité ___ deux candidats pour non-respect du règlement.","a exclu","a éliminé","a écarté","a renvoyé","Exclure = mettre hors d'un groupe."],
+["intégrer (inclure)","L'entreprise ___ des personnes en situation de handicap dans ses équipes.","intègre","recrute","inclut","accueille","Intégrer = inclure pleinement dans un groupe."],
+["solliciter","Elle ___ l'aide de ses collègues pour finaliser le projet.","a sollicité","a demandé","a réclamé","a requis","Solliciter = demander quelque chose avec insistance ou avec déférence."],
+["refuser","Il ___ catégoriquement de signer ce contrat.","a refusé","a rejeté","a décliné","a contesté","Refuser = ne pas accepter."],
+["accepter","Elle ___ finalement la proposition après de longues hésitations.","a accepté","a approuvé","a admis","a consenti","Accepter = dire oui, consentir."],
+["tolérer","Le directeur ___ les retards jusqu'à un certain point.","tolère","supporte","accepte","admet","Tolérer = supporter sans approuver."],
+["respecter","Il ___ toujours les opinions des autres même en désaccord.","respecte","tolère","accepte","considère","Respecter = avoir de la considération pour."],
+["mépriser (social)","Elle ___ ceux qui profitent des plus faibles.","méprise","déteste","juge","condamne","Mépriser = avoir du mépris pour quelqu'un."],
+["aider","Les voisins ___ la famille pendant la période difficile.","ont aidé","ont soutenu","ont assisté","ont protégé","Aider = apporter son aide à quelqu'un."],
+["abandonner","Il ___ son associé au moment le plus critique.","a abandonné","a quitté","a trahi","a laissé","Abandonner = laisser quelqu'un seul face à ses difficultés."],
+["accompagner","Elle ___ les patients pendant tout le processus de guérison.","accompagne","aide","guide","suit","Accompagner = être avec quelqu'un pour le soutenir."],
+["guider","Le mentor ___ le jeune entrepreneur dans ses choix.","guide","conseille","oriente","accompagne","Guider = montrer le chemin, conseiller quelqu'un."],
+["former","L'entreprise ___ ses employés aux nouveaux outils numériques.","forme","entraîne","prépare","instruit","Former = enseigner, transmettre des compétences."],
+["enseigner","Elle ___ la philosophie dans un lycée depuis dix ans.","enseigne","apprend","transmet","explique","Enseigner = transmettre des connaissances à des élèves."],
+["partager (transmettre)","Il ___ volontiers son expérience avec les nouveaux arrivants.","partage","transmet","communique","divulgue","Partager = faire profiter les autres de."],
+["imposer","La direction ___ de nouvelles contraintes à l'ensemble des équipes.","a imposé","a exigé","a ordonné","a établi","Imposer = faire accepter par la force ou l'autorité."],
+["contrer","L'équipe adverse ___ toutes nos tentatives d'attaque.","a contré","a bloqué","a neutralisé","a stoppé","Contrer = s'opposer efficacement à."],
+["allier","Cette stratégie ___ performance et durabilité de façon exemplaire.","allie","combine","associe","unit","Allier = unir des éléments différents."],
+["réunir","Le sommet ___ les dirigeants de quarante pays.","réunit","rassemble","regroupe","convoque","Réunir = rassembler en un même lieu ou projet."],
+["fédérer","Ce projet ambitieux ___ toutes les équipes autour d'un objectif commun.","fédère","rassemble","mobilise","unit","Fédérer = unir des personnes autour d'un projet."],
+["demeurer","Cette question ___ sans réponse depuis des années.","demeure","reste","subsiste","persiste","Demeurer = rester dans un état."],
+["subsister","Quelques traditions locales ___ malgré la modernisation.","subsistent","persistent","perdurent","demeurent","Subsister = continuer d'exister malgré les changements."],
+["perdurer","Ces inégalités ___ depuis des décennies sans être résolues.","perdurent","persistent","subsistent","demeurent","Perdurer = durer très longtemps."],
+["disparaître","De nombreuses espèces animales ___ chaque année à cause de l'homme.","disparaissent","s'éteignent","meurent","s'effacent","Disparaître = cesser d'exister ou d'être visible."],
+["réapparaître","Ce virus ___ chaque hiver sous une nouvelle forme.","réapparaît","revient","resurgit","ressurgit","Réapparaître = apparaître à nouveau après avoir disparu."],
+["s'éteindre","Cette langue régionale ___ progressivement faute de locuteurs.","s'éteint","disparaît","meurt","s'efface","S'éteindre = cesser progressivement d'exister."],
+["renaître","La ville ___ de ses cendres après le tremblement de terre.","renaît","se reconstruit","réapparaît","reprend vie","Renaître = retrouver vie ou vigueur après une période difficile."],
+["persister","La pollution ___ malgré les efforts des autorités.","persiste","continue","subsiste","perdure","Persister = continuer en dépit des obstacles."],
+["s'effacer","Les frontières culturelles ___ progressivement dans un monde globalisé.","s'effacent","disparaissent","s'atténuent","se fondent","S'effacer = disparaître peu à peu."],
+["se manifester","Les effets du changement climatique ___ de plus en plus clairement.","se manifestent","apparaissent","surgissent","émergent","Se manifester = apparaître, se montrer."],
+["émerger","Un nouveau paradigme économique ___ après la crise.","a émergé","est apparu","a surgi","s'est manifesté","Émerger = sortir, apparaître dans un contexte."],
+["se transformer","La ville ___ profondément en l'espace d'une décennie.","s'est transformée","a changé","a évolué","s'est métamorphosée","Se transformer = changer de forme ou de nature."],
+["évoluer","Les pratiques professionnelles ___ rapidement avec le numérique.","évoluent","changent","progressent","se transforment","Évoluer = changer progressivement."],
+["stagner","La croissance économique ___ depuis trois trimestres consécutifs.","stagne","plafonne","s'arrête","ralentit","Stagner = rester immobile, ne pas progresser."],
+["régresser","Le niveau de lecture des élèves ___ depuis plusieurs années.","régresse","diminue","baisse","recule","Régresser = revenir en arrière, se dégrader."],
+["progresser","Le projet ___ conformément au planning prévu.","progresse","avance","évolue","se développe","Progresser = avancer, s'améliorer."],
+["se stabiliser","Les prix du pétrole ___ après plusieurs semaines de fluctuations.","se sont stabilisés","ont baissé","se sont calmés","ont convergé","Se stabiliser = atteindre un état stable."],
+["fluctuer","Le cours des actions ___ fortement en période d'incertitude.","fluctue","varie","oscille","change","Fluctuer = varier de façon irrégulière."],
+["osciller","L'opinion publique ___ entre soutien et méfiance envers le gouvernement.","oscille","fluctue","varie","balance","Osciller = aller alternativement d'un côté à l'autre."],
+["se dégrader","La situation sanitaire ___ dans les régions les moins développées.","se dégrade","empire","s'aggrave","se détériore","Se dégrader = devenir plus mauvais progressivement."],
+["s'améliorer","Les conditions de travail ___ grâce aux nouvelles politiques sociales.","s'améliorent","progressent","évoluent","changent","S'améliorer = devenir meilleur."],
+["se maintenir","Le taux de chômage ___ autour de 7% malgré la conjoncture.","se maintient","reste","demeure","stagne","Se maintenir = rester à un niveau donné."],
+["changer","Ses habitudes alimentaires ___ radicalement après le diagnostic.","ont changé","ont évolué","se sont transformées","ont varié","Changer = devenir différent."],
+["se renouveler","Le genre romanesque ___ constamment pour rester pertinent.","se renouvelle","évolue","se transforme","change","Se renouveler = trouver de nouvelles formes."],
+["appartenir","Ce bâtiment ___ à l'État depuis la nationalisation.","appartient","revient","dépend","relève","Appartenir = être la propriété de, faire partie de."],
+["correspondre","Ce profil ___ exactement aux critères recherchés.","correspond","répond","convient","coïncide","Correspondre = être conforme à."],
+["résulter","Ces complications ___ d'un manque de communication entre les équipes.","résultent","découlent","proviennent","viennent","Résulter = être la conséquence de."],
+["dépendre","Le succès du projet ___ de la motivation des équipes.","dépend","repose","relève","tient","Dépendre = être conditionné par."],
+["découler","Ces problèmes ___ directement d'une mauvaise gestion des ressources.","découlent","résultent","proviennent","viennent","Découler = provenir logiquement de."],
+["s'avérer","La solution proposée ___ moins efficace que prévu.","s'est avérée","s'est révélée","s'est montrée","est apparue","S'avérer = se révéler être, après vérification."],
+["sembler","Cette approche ___ la plus adaptée à la situation actuelle.","semble","paraît","apparaît","ressemble","Sembler = donner l'impression d'être."],
+["paraître","Cette décision ___ injuste aux yeux de nombreux observateurs.","paraît","semble","apparaît","s'avère","Paraître = donner une certaine impression."],
+["représenter","Ce secteur ___ 30% du PIB national.","représente","constitue","forme","compte","Représenter = être l'équivalent de, symboliser."],
+["constituer","Cette découverte ___ une avancée majeure pour la médecine.","constitue","représente","forme","est","Constituer = former, être dans sa nature."],
+["comporter","Ce projet ___ plusieurs risques qu'il faut anticiper.","comporte","implique","inclut","contient","Comporter = inclure, impliquer dans sa structure."],
+["englober","Cette notion ___ des réalités très diverses.","englobe","inclut","couvre","comprend","Englober = inclure dans un ensemble plus large."],
+["inclure","Le forfait ___ l'hébergement et les repas.","inclut","comprend","contient","englobe","Inclure = faire partie de, contenir."],
+["exclure (existence)","Ce règlement ___ toute possibilité d'exception.","exclut","interdit","empêche","refuse","Exclure = ne pas inclure, rendre impossible."],
+["dominer (existence)","La technologie américaine ___ toujours ce secteur mondial.","domine","dirige","contrôle","gouverne","Dominer = exercer une prédominance sur."],
+["prédominer","Une logique commerciale ___ dans les décisions de la direction.","prédominait","dominait","guidait","dictait","Prédominer = être le plus important, l'emporter."],
+["primer","Dans ce domaine, la sécurité ___ sur la rapidité.","prime","domine","prévaut","l'emporte","Primer = passer avant tout, avoir la priorité."],
+["survenir","Un incident technique ___ en pleine démonstration.","est survenu","s'est produit","a eu lieu","est apparu","Survenir = se produire de manière inattendue."],
+["se produire","Ces phénomènes ___ plus fréquemment ces dernières années.","se produisent","arrivent","surviennent","ont lieu","Se produire = arriver, avoir lieu."],
+["se dérouler","La cérémonie ___ dans le calme et la bonne humeur.","s'est déroulée","s'est passée","a eu lieu","s'est tenue","Se dérouler = se passer, se développer."],
+["s'opérer","Un changement profond ___ dans les mentalités au cours des années.","s'est opéré","s'est produit","a eu lieu","s'est effectué","S'opérer = se réaliser, avoir lieu progressivement."],
+["cesser","Les hostilités ___ à minuit le 11 novembre.","ont cessé","se sont arrêtées","ont pris fin","ont terminé","Cesser = s'arrêter définitivement."],
+["s'interrompre","La réunion ___ brusquement à cause d'une alerte incendie.","s'est interrompue","s'est arrêtée","a cessé","s'est terminée","S'interrompre = s'arrêter en cours de déroulement."],
+["reprendre","Les travaux ___ après une pause de six mois.","ont repris","ont recommencé","ont continué","ont redémarré","Reprendre = recommencer après une interruption."],
+["recommencer","Il faut tout ___ depuis le début après cet échec cuisant.","recommencer","reprendre","refaire","relancer","Recommencer = faire à nouveau."],
+["continuer","Malgré les obstacles, le projet ___ à avancer normalement.","continue","reprend","persiste","progresse","Continuer = ne pas s'arrêter, poursuivre."]
+];
+const CATS = [
+  {name:"Mouvement", start:0},
+  {name:"Communication", start:50},
+  {name:"Sentiment", start:100},
+  {name:"Cognition", start:150},
+  {name:"Action", start:200},
+  {name:"Social", start:250},
+  {name:"Existence", start:300}
+];
+
+let qs=[], score=0, answered=0;
+
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+function el(tag, props, ...children){
+  const e = document.createElement(tag);
+  if(props){
+    for(const k in props){
+      if(k === 'class') e.className = props[k];
+      else if(k === 'text') e.textContent = props[k];
+      else if(k.startsWith('on')) e.addEventListener(k.slice(2), props[k]);
+      else e.setAttribute(k, props[k]);
+    }
+  }
+  children.flat().forEach(c => {
+    if(c == null) return;
+    e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return e;
+}
+
+function start(){
+  const catVal = document.getElementById('catSel').value;
+  const nb = parseInt(document.getElementById('nbSel').value);
+  let pool;
+  if(catVal===''){
+    pool = ALL;
+  } else {
+    const c = CATS[parseInt(catVal)];
+    pool = ALL.slice(c.start, c.start+50);
+  }
+  const picked = shuffle([...pool]).slice(0, Math.min(nb, pool.length));
+  qs = picked.map(q => ({
+    v:q[0], s:q[1], a:q[2], e:q[6],
+    opts: shuffle([q[2],q[3],q[4],q[5]]),
+    state: null
+  }));
+  score=0; answered=0;
+  render();
+}
+
+function buildSentence(q){
+  const wrap = el('div', {class:'sent'});
+  const parts = q.s.split('___');
+  wrap.appendChild(document.createTextNode(parts[0]));
+  const blank = el('span', {class:'blank', text: q.state ? q.a : '        '});
+  wrap.appendChild(blank);
+  wrap.appendChild(document.createTextNode(parts[1] || ''));
+  return wrap;
+}
+
+function buildFeedback(q){
+  const ok = q.state === q.a;
+  const fb = el('div', {class:'fb ' + (ok?'ok':'ko')});
+  if(ok){
+    fb.appendChild(document.createTextNode('✓ Correct. ' + q.e));
+  } else {
+    fb.appendChild(document.createTextNode('✗ Incorrect. Réponse : '));
+    fb.appendChild(el('strong', {text: q.a}));
+    fb.appendChild(document.createTextNode('. ' + q.e));
+  }
+  return fb;
+}
+
+function render(){
+  const app = document.getElementById('app');
+  while(app.firstChild) app.removeChild(app.firstChild);
+  const total = qs.length;
+  const pct = total ? (answered/total*100).toFixed(0) : 0;
+
+  const bar = el('div', {class:'progress-bar'},
+    el('div', {class:'progress-fill', style:'width:'+pct+'%'}));
+  app.appendChild(bar);
+
+  const sb = el('div', {class:'score-bar'},
+    el('div', {class:'si'},
+      el('span', {class:'sl', text:'Score'}),
+      el('span', {class:'sv', text: score+'/'+total})),
+    el('div', {class:'si'},
+      el('span', {class:'sl', text:'Répondu'}),
+      el('span', {class:'sv', text: answered+'/'+total})));
+  app.appendChild(sb);
+
+  if(answered===total && total>0){
+    const p = Math.round(score/total*100);
+    const msg = p>=80 ? 'Excellent, niveau B2 confirmé.'
+              : p>=60 ? 'Bon niveau B1/B2. Continuez.'
+                      : 'À retravailler. Relancez un quiz.';
+    const replay = el('button', {class:'btn', onclick: start, text:'Rejouer'});
+    app.appendChild(el('div', {class:'end'},
+      el('div', {class:'es', text: score+'/'+total}),
+      el('div', {class:'em', text: p+'% — '+msg}),
+      replay));
+    return;
+  }
+
+  qs.forEach((q, i) => {
+    const card = el('div', {class:'card'});
+    card.appendChild(el('div', {class:'qnum', text:'Question ' + (i+1) + ' / ' + total}));
+    card.appendChild(buildSentence(q));
+    const opts = el('div', {class:'opts'});
+    q.opts.forEach(optTxt => {
+      let cls = 'opt';
+      if(q.state){
+        if(optTxt === q.a) cls = 'opt ok';
+        else if(optTxt === q.state && q.state !== q.a) cls = 'opt ko';
+      }
+      const btn = el('button', {class:cls, text: optTxt, onclick: () => ans(i, optTxt)});
+      if(q.state) btn.disabled = true;
+      opts.appendChild(btn);
+    });
+    card.appendChild(opts);
+    if(q.state){
+      card.appendChild(buildFeedback(q));
+      card.appendChild(el('div', {class:'vtag', text:'Verbe : ' + q.v}));
+    }
+    app.appendChild(card);
+  });
+}
+
+function ans(i, opt){
+  const q = qs[i];
+  if(q.state) return;
+  q.state = opt;
+  if(opt === q.a) score++;
+  answered++;
+  render();
+  const cards = document.querySelectorAll('.card');
+  if(i+1 < cards.length) cards[i+1].scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function home(){
+  const app = document.getElementById('app');
+  while(app.firstChild) app.removeChild(app.firstChild);
+  app.appendChild(el('div', {class:'home', text:'Appuyez sur "Nouveau quiz" pour commencer.'}));
+}
+
+document.getElementById('startBtn').addEventListener('click', start);
+home();
+</script>
+</body>
+</html>
