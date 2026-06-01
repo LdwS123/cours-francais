@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Parcoursup - Aleksandre Gugunava</title>
+<style>
+  :root{--card:#1a2348;--card2:#212c5a;--line:#2e3a6b;--txt:#eef1fb;--muted:#9aa6d4;--accent:#5b8cff;
+    --green:#22c55e;--greenbg:#0e3a25;--amber:#f59e0b;--amberbg:#3a2c0a;--orange:#fb923c;--orangebg:#3a2410;--red:#ef4444;--redbg:#3a1414;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(160deg,#0c1126,#10193a);color:var(--txt);padding:24px 16px 70px}
+  .wrap{max-width:1200px;margin:0 auto}
+  h1{font-size:23px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:16px;line-height:1.5}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .tab{background:var(--card);border:1px solid var(--line);color:var(--muted);padding:9px 15px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600}
+  .tab.on{background:var(--accent);color:#04122a;border-color:var(--accent)}
+  .view{display:none}.view.on{display:block}
+  .disc{background:var(--amberbg);border:1px solid #7a5a12;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12.5px;line-height:1.55;color:#fde7b0}
+  .scroll{overflow-x:auto;border-radius:12px;border:1px solid var(--line);margin-bottom:8px}
+  table{width:100%;border-collapse:collapse;background:var(--card);font-size:13px;min-width:880px}
+  th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{background:var(--card2);color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase}
+  tr.row{cursor:pointer}tr.row:hover td{background:#222d5e}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .estab{font-weight:600;white-space:normal}.intit{color:var(--muted);font-size:12px;white-space:normal}
+  h2{font-size:17px;margin:22px 0 6px}
+  .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700}
+  .p-hi{background:var(--greenbg);color:#5ee79b;border:1px solid #1c7a4d}.p-mid{background:var(--amberbg);color:#fbbf24;border:1px solid #7a5a12}
+  .p-low{background:var(--orangebg);color:#fdba74;border:1px solid #7a4412}.p-vlow{background:var(--redbg);color:#fca5a5;border:1px solid #7a2020}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600}
+  .b-oui{background:var(--greenbg);color:#5ee79b;border:1px solid #1c7a4d}.b-non{background:#2a2f4d;color:#9aa6d4;border:1px solid #3a4570}
+  .ev-up{color:#fca5a5;font-weight:700}.ev-dn{color:#5ee79b;font-weight:700}.ev-eq{color:var(--muted)}
+  #stats table{min-width:980px}
+  #stats td,#stats th{padding:11px 12px}
+  #stats tbody tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+  .tbar{position:relative;height:17px;background:#2a2f4d;border-radius:5px;min-width:96px}
+  .tbar>span{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+  .tbar em{position:absolute;right:6px;top:0;line-height:17px;font-size:10.5px;font-weight:700;color:#fff;font-style:normal}
+  .pcell{font-weight:700;font-variant-numeric:tabular-nums}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:2px 0 14px}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .hint{color:var(--muted);font-size:12px;margin:4px 0 12px}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+  .dcard h3{margin:0 0 10px;font-size:15px;color:var(--accent)}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .stat{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .stat .v{font-size:18px;font-weight:700}.stat .k{color:var(--muted);font-size:11.5px}
+  .funnel{display:flex;align-items:stretch;flex-wrap:wrap}
+  .fstep{flex:1;min-width:120px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+  .fstep .v{font-size:21px;font-weight:800}.fstep .k{color:var(--muted);font-size:11.5px;margin-top:3px}
+  .farrow{display:flex;align-items:center;color:var(--muted);font-size:20px;padding:0 6px}
+  .fnote{color:var(--muted);font-size:12px;margin-top:8px;font-style:italic}
+  .wbar{display:flex;height:24px;border-radius:6px;overflow:hidden;margin:6px 0;border:1px solid var(--line)}
+  .wbar div{display:flex;align-items:center;justify-content:center;font-size:10.5px;color:#04122a;font-weight:700}
+  .gtab{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}.gtab td{padding:6px 8px;border-bottom:1px solid var(--line)}
+  .gtab td:last-child{text-align:right;font-weight:700}
+  .subtab{width:100%;border-collapse:collapse;font-size:13px}.subtab td{padding:6px 8px;border-bottom:1px solid var(--line)}
+  .note-g{color:#5ee79b;font-weight:700}.note-r{color:#fca5a5;font-weight:700}.note-n{color:#cdd5f5;font-weight:700}
+  .verdict{font-size:14px;line-height:1.6;padding:12px 14px;border-radius:10px}
+  .calc{font-size:13px;color:#cdd5f5;line-height:1.7}
+  .back{display:inline-block;margin-bottom:12px;color:var(--accent);cursor:pointer;font-weight:600}
+  .prose{font-size:14px;line-height:1.7}.prose h3{color:var(--accent);margin:18px 0 6px;font-size:15px}.prose b{color:#fff}
+  .foot{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Parcoursup 2026 - Aleksandre Gugunava</h1>
+  <div class="sub">Terminale G, Lyc&eacute;e Jacques Decour (Paris 9e) &middot; sp&eacute;s Maths + SES &middot; LVA Anglais, LVB Russe &middot; <b>bac g&eacute;n&eacute;ral, acad&eacute;mie de Paris, non boursier</b>. Clique n'importe quelle formation pour sa fiche d&eacute;taill&eacute;e.</div>
+
+  <div class="tabs">
+    <div class="tab on" data-v="chances" onclick="tab('chances')">Chances d'Aleksandre</div>
+    <div class="tab" data-v="stats" onclick="tab('stats')">Statistiques des formations</div>
+    <div class="tab" data-v="methode" onclick="tab('methode')">M&eacute;thode &amp; profil</div>
+  </div>
+
+  <div id="chances" class="view on">
+    <div class="disc"><b>Estimations</b>, pas des garanties. Chaque % croise ses notes pond&eacute;r&eacute;es par la grille officielle, la s&eacute;lectivit&eacute; bac g&eacute;n&eacute;ral 2025, la priorit&eacute; de secteur (Paris) et l'&eacute;volution de la demande 2026.</div>
+    <h2>Licences (8)</h2><div class="scroll" id="cl"></div>
+    <h2>Pr&eacute;pas ECG (10)</h2><div class="scroll" id="ce"></div>
+    <h2>Pr&eacute;pas D2 (10)</h2><div class="scroll" id="cd"></div>
+  </div>
+
+  <div id="stats" class="view">
+    <div class="disc">Chiffres session 2025 (fin de phase principale). <b>Clique une ligne</b> pour l'entonnoir officiel et le d&eacute;tail. Tri du plus accessible au plus s&eacute;lectif.</div>
+    <div class="legend">
+      <span><span class="dot" style="background:#22c55e"></span>Taux d'acc&egrave;s &eacute;lev&eacute; = accessible</span>
+      <span><span class="dot" style="background:#f59e0b"></span>moyen</span>
+      <span><span class="dot" style="background:#ef4444"></span>faible = s&eacute;lectif</span>
+      <span><span class="dot" style="background:#fca5a5"></span>Pression forte (candidats/place)</span>
+      <span><span class="ev-up">&#9650;</span> demande 2026 en hausse &middot; <span class="ev-dn">&#9660;</span> en baisse</span>
+    </div>
+    <h2>Licences (8)</h2><div class="scroll" id="sl"></div>
+    <h2>Pr&eacute;pas ECG (10)</h2><div class="scroll" id="se"></div>
+    <h2>Pr&eacute;pas D2 (10)</h2><div class="scroll" id="sd"></div>
+  </div>
+
+  <div id="methode" class="view">
+    <div class="dcard prose">
+      <h3>1. Profil pris en compte</h3>
+      Maths <b>9,0</b> (en baisse, 8,6 en terminale) &middot; SES <b>14,4</b> (top 7%) &middot; Anglais <b>15,0</b> &middot; Histoire-G&eacute;o <b>14,0</b> &middot; Philo <b>13,5</b> &middot; Fran&ccedil;ais bac <b>14,5</b> (oral 16) &middot; Ens. scientifique <b>14,0</b>. Moyenne g&eacute;n&eacute;rale terminale ~<b>13,6</b>. P&eacute;nalit&eacute;s honn&ecirc;tes : appr&eacute;ciations (dispersion, bavardages) et incident de triche en HGGSP (savoir-&ecirc;tre pris &agrave; 9/20).
+      <h3>2. La grille d'analyse = le moteur du calcul</h3>
+      Chaque formation publie une grille (Résultats scolaires X%, Méthodes X%, Savoir-&ecirc;tre X%, Motivation X%, Engagement X%) et classe chaque mati&egrave;re Essentiel / Tr&egrave;s important / Important. Je calcule un <b>score acad&eacute;mique A</b> = moyenne de ses notes pond&eacute;r&eacute;e (essentiel x3, tr&egrave;s important x2, important x1), puis un <b>score dossier S</b> = (Résultats&times;A + Méthodes&times;10,5 + Savoir-&ecirc;tre&times;9 + Motivation&times;12 + Engagement&times;11)/100. La grille exacte est visible dans chaque fiche.
+      <h3>3. Le seuil d'admission, ajust&eacute; finement</h3>
+      Seuil de d&eacute;part d&eacute;duit du <b>taux d'acc&egrave;s bac g&eacute;n&eacute;ral</b> (plus &eacute;lev&eacute; que le taux global : ex. Éco Paris 1 36% vs 28%). Puis trois ajustements : <b>secteur</b> (les licences non s&eacute;lectives de Paris r&eacute;servent 97% des places au secteur, gros avantage pour un Parisien ; Saclay est en Versailles donc malus) ; <b>&eacute;volution de la demande 2026</b> (si les v&oelig;ux 2026 montent vs 2025, le seuil monte, plafonn&eacute; et att&eacute;nu&eacute; sur petites bases) ; <b>fili&egrave;re maths approfondies</b> (malus, exigence maths sup&eacute;rieure). Probabilit&eacute; = fonction logistique de (S &minus; seuil).
+      <h3>4. Fourchette probable</h3>
+      4 v&oelig;ux &agrave; 50%+ (Gestion Paris 1 60%, Histoire/Gestion 56%, Économie Paris 1 55%, ECG Decour 52%) et plusieurs autour de 42-44% (Paris Cit&eacute;, Carnot). Probabilit&eacute; d'<b>au moins une admission satisfaisante : tr&egrave;s &eacute;lev&eacute;e (~95%+)</b>. Atterrissage le plus probable : <b>licence éco-gestion &agrave; Paris 1 (ou Paris Cit&eacute;)</b>, ou <b>pr&eacute;pa ECG Decour/Carnot</b>. Peu probables : Assas (28%), Gestion International Track (4%), Saclay (6%, hors secteur), D2 cot&eacute;es Turgot (5%) et Basch (1%). Levier n&deg;1 : la <b>note de maths</b> du 3e trimestre.
+    </div>
+  </div>
+
+  <div id="detail" class="view"></div>
+  <div class="foot">Sources : fiches formation officielles Parcoursup + open data Cartographie des formations Parcoursup (MESR), session 2025. Taux bac g&eacute;n&eacute;ral exact pour Éco Paris 1 (36%), estim&eacute; ailleurs (taux global &times; 1,27 pour les licences). Mod&egrave;le indicatif.</div>
+</div>
+
+<script>
+const N={Maths:9.0,SES:14.4,Anglais:15.0,HistoireGeo:14.0,HGGSP:10.0,Philo:13.5,Francais:14.5,EnsSci:14.0,Langues:13.5,General:13.6};
+const LBL={Maths:"Math&eacute;matiques",SES:"SES",Anglais:"Anglais",HistoireGeo:"Histoire-G&eacute;o",HGGSP:"HGGSP (abandonn&eacute;e)",Philo:"Philosophie",Francais:"Fran&ccedil;ais (bac)",EnsSci:"Ens. scientifique",Langues:"Langues",General:"Niveau g&eacute;n&eacute;ral"};
+const IMP={3:"Essentiel",2:"Tr&egrave;s important",1:"Important"};
+const F=[
+ {c:'48192',n:'Paris 1 - Double licence Histoire / Gestion',cat:'lic',typ:'SEL',arr:'Paris 5e',pl:30,po:102,classe:72,pr:71,intg:22,taux:69.6,bg:null,vx:504,pc:1,quota:null,gw:{rs:70,me:10,se:5,mo:10,en:5},ks:{Maths:3,HistoireGeo:3,HGGSP:1,SES:1,General:1},acad:11.9,S:11.6,seuil:11.3,evo:0.30,prob:56},
+ {c:'9214',n:'Paris 1 - Licence Gestion',cat:'lic',typ:'NSsect',arr:'Paris 5e',pl:585,po:7614,classe:null,pr:2256,intg:630,taux:29.6,bg:null,vx:10303,pc:0,quota:{b:12,nr:3},gw:{rs:80,me:3,se:3,mo:12,en:2},ks:{Maths:3,Francais:3,SES:2,General:1},acad:12.5,S:12.3,seuil:11.8,evo:0.28,prob:60},
+ {c:'9216',n:'Paris 1 - Licence Economie',cat:'lic',typ:'NSsect',arr:'Paris 5e',pl:500,po:10453,classe:null,pr:2972,intg:494,taux:28.4,bg:36,vx:11347,pc:0,quota:{b:11,nr:3},gw:{rs:65,me:30,se:1,mo:4,en:0},ks:{Maths:3,SES:3,HGGSP:3,Francais:3,General:3,Philo:1,HistoireGeo:1},acad:12.5,S:11.8,seuil:11.6,evo:0.07,prob:55},
+ {c:'9323',n:'Paris Cite - Licence Economie et gestion',cat:'lic',typ:'NSsect',arr:'Paris 6e',pl:223,po:11806,classe:null,pr:2699,intg:228,taux:22.9,bg:null,vx:12560,pc:0,quota:{b:13,nr:3},gw:{rs:65,me:15,se:5,mo:10,en:5},ks:{Maths:3,SES:3,HistoireGeo:3,Philo:3,Francais:3,Anglais:1},acad:13.2,S:12.4,seuil:12.7,evo:0.05,prob:44},
+ {c:'19667',n:'Paris 1 - Double licence Philosophie / Economie',cat:'lic',typ:'SEL',arr:'Paris 5e',pl:25,po:327,classe:230,pr:137,intg:23,taux:41.9,bg:null,vx:441,pc:0,quota:null,gw:{rs:55,me:30,se:0,mo:10,en:5},ks:{Maths:3,Philo:3,SES:3,HistoireGeo:3,Francais:3,Anglais:1},acad:13.2,S:12.2,seuil:13.6,evo:0.14,prob:22},
+ {c:'9219',n:'Assas - Licence Economie et gestion',cat:'lic',typ:'NSsect',arr:'Paris 5e',pl:410,po:16868,classe:null,pr:1935,intg:401,taux:11.5,bg:null,vx:11875,pc:0,quota:{b:12,nr:3},gw:{rs:93,me:1,se:1,mo:4,en:1},ks:{Maths:3,Anglais:3,Francais:3,HistoireGeo:3,Philo:3,SES:3,General:3},acad:13.4,S:13.3,seuil:14.4,evo:-0.24,prob:28},
+ {c:'12934',n:'Paris-Saclay Orsay - Licence Economie et gestion',cat:'lic',typ:'NShors',arr:'Orsay 91',pl:170,po:5493,classe:null,pr:1480,intg:168,taux:26.9,bg:null,vx:5939,pc:0,quota:{b:12,nr:3},gw:{rs:75,me:5,se:15,mo:3,en:2},ks:{HistoireGeo:3,Maths:2,SES:2,HGGSP:2,Francais:1,Philo:1},acad:12.4,S:11.8,seuil:15.0,evo:0.06,prob:6},
+ {c:'48000',n:'Paris 1 - Licence Gestion International Track',cat:'lic',typ:'SEL',arr:'Paris 5e',pl:90,po:2766,classe:null,pr:418,intg:96,taux:15.1,bg:null,vx:3285,pc:0,quota:null,gw:{rs:70,me:10,se:5,mo:10,en:5},ks:{Maths:3,Francais:3,Anglais:3,SES:2},acad:13.1,S:12.4,seuil:16.1,evo:0.15,prob:4},
+ {c:'46349',n:'Jacques Decour - ECG Maths appliq.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 9e',pl:48,po:1475,classe:1299,pr:838,intg:49,taux:56.8,bg:null,vx:1340,pc:0,quota:null,gw:{rs:70,me:15,se:10,mo:5,en:0},ks:{General:3,Maths:2,Anglais:2,Langues:1},acad:12.8,S:12.0,seuil:11.9,evo:-0.07,prob:52},
+ {c:'31370',n:'Carnot - ECG Maths approf.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 17e',pl:48,po:2651,classe:1954,pr:1485,intg:53,taux:56.0,bg:null,vx:2659,pc:0,quota:null,gw:{rs:75,me:0,se:20,mo:5,en:0},ks:{Maths:3,Francais:3,Anglais:3,Langues:3,HistoireGeo:1,Philo:1},acad:13.1,S:11.6,seuil:12.0,evo:0.00,prob:42},
+ {c:'31361',n:'Lavoisier - ECG Maths approf.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 5e',pl:48,po:1464,classe:907,pr:792,intg:48,taux:54.1,bg:null,vx:1488,pc:0,quota:null,gw:{rs:60,me:15,se:15,mo:5,en:5},ks:{Maths:3,HistoireGeo:3,Langues:3,Philo:3,Francais:3},acad:12.9,S:11.2,seuil:12.0,evo:0.01,prob:34},
+ {c:'31368',n:'Claude Bernard - ECG Maths appliq.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 16e',pl:48,po:1604,classe:743,pr:742,intg:35,taux:46.3,bg:null,vx:1407,pc:1,quota:null,gw:{rs:80,me:0,se:10,mo:5,en:5},ks:{General:3,Maths:2,HistoireGeo:2},acad:12.4,S:12.0,seuil:12.7,evo:-0.10,prob:35},
+ {c:'52111',n:'Michelet (Vanves) - ECG Maths appliq.+HGG',cat:'ecg',typ:'PREPA',arr:'Vanves 92',pl:null,po:null,classe:null,pr:null,intg:null,taux:null,bg:null,vx:1188,pc:0,quota:null,gw:{rs:50,me:35,se:5,mo:5,en:5},ks:{General:3,Maths:2},acad:11.8,S:11.2,seuil:12.6,evo:0.00,prob:23},
+ {c:'31364',n:'ENC - ECG Maths appliq.+ESH',cat:'ecg',typ:'PREPA',arr:'Paris 17e',pl:48,po:2065,classe:1622,pr:931,intg:46,taux:45.1,bg:null,vx:2091,pc:0,quota:null,gw:{rs:35,me:25,se:25,mo:10,en:5},ks:{Maths:3,SES:3,HistoireGeo:3,Philo:3,Francais:3,Langues:3},acad:13.1,S:11.2,seuil:12.8,evo:0.01,prob:21},
+ {c:'31371',n:'Helene Boucher - ECG Maths approf.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 20e',pl:48,po:989,classe:513,pr:512,intg:39,taux:51.8,bg:null,vx:649,pc:1,quota:null,gw:{rs:50,me:25,se:10,mo:10,en:5},ks:{Maths:2,General:1,HistoireGeo:1},acad:11.4,S:10.4,seuil:11.7,evo:-0.28,prob:24},
+ {c:'31363',n:'Chaptal - ECG Maths approf.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 8e',pl:48,po:1925,classe:1554,pr:842,intg:52,taux:43.7,bg:null,vx:1510,pc:0,quota:null,gw:{rs:65,me:20,se:0,mo:10,en:5},ks:{General:3,Maths:2,Francais:2},acad:12.5,S:11.4,seuil:13.3,evo:-0.17,prob:16},
+ {c:'31362',n:'Montaigne - ECG Maths approf.+HGG',cat:'ecg',typ:'PREPA',arr:'Paris 6e',pl:24,po:2103,classe:1671,pr:845,intg:26,taux:40.2,bg:null,vx:2417,pc:0,quota:null,gw:{rs:40,me:31,se:12,mo:12,en:5},ks:{General:3,Maths:2},acad:11.8,S:10.4,seuil:13.6,evo:0.12,prob:6},
+ {c:'31360',n:'Claude Monet - ECG Maths appliq.+ESH',cat:'ecg',typ:'PREPA',arr:'Paris 13e',pl:48,po:3247,classe:1628,pr:1066,intg:55,taux:32.8,bg:null,vx:2756,pc:0,quota:null,gw:{rs:40,me:35,se:20,mo:5,en:0},ks:{General:3,Maths:2,SES:2,Langues:1},acad:12.6,S:11.1,seuil:14.0,evo:-0.12,prob:8},
+ {c:'11279',n:'Louise Michel (Bobigny) - D2',cat:'d2',typ:'PREPA',arr:'Bobigny 93',pl:27,po:561,classe:314,pr:300,intg:29,taux:53.5,bg:null,vx:774,pc:0,quota:null,gw:{rs:30,me:30,se:20,mo:20,en:0},ks:{SES:2,HistoireGeo:2,Maths:1,Francais:1,Philo:1,Anglais:1},acad:13.6,S:11.4,seuil:12.3,evo:0.30,prob:32},
+ {c:'11277',n:'Andre Boulloche (Livry-Gargan) - D2',cat:'d2',typ:'PREPA',arr:'Livry-Gargan 93',pl:35,po:579,classe:286,pr:286,intg:27,taux:49.4,bg:null,vx:947,pc:1,quota:null,gw:{rs:50,me:15,se:15,mo:20,en:0},ks:{Maths:2,Langues:2,HistoireGeo:2,Philo:2,SES:2,Francais:2},acad:13.2,S:11.9,seuil:13.3,evo:0.51,prob:23},
+ {c:'10059',n:'Marie Curie (Versailles) - D2',cat:'d2',typ:'PREPA',arr:'Versailles 78',pl:48,po:1390,classe:694,pr:678,intg:43,taux:48.8,bg:null,vx:1521,pc:1,quota:null,gw:{rs:50,me:40,se:0,mo:10,en:0},ks:{General:3,Maths:2},acad:11.8,S:11.3,seuil:12.9,evo:0.08,prob:20},
+ {c:'8194',n:'Juliette Recamier (Lyon) - D2',cat:'d2',typ:'PREPA',arr:'Lyon 69',pl:41,po:1187,classe:545,pr:532,intg:43,taux:44.8,bg:null,vx:1259,pc:0,quota:null,gw:{rs:50,me:25,se:10,mo:10,en:5},ks:{Maths:3,Francais:2,HistoireGeo:2,Langues:2,SES:2,Philo:1},acad:12.8,S:11.7,seuil:13.5,evo:0.05,prob:17},
+ {c:'4071',n:'Ozenne (Toulouse) - D2',cat:'d2',typ:'PREPA',arr:'Toulouse 31',pl:40,po:1177,classe:647,pr:521,intg:42,taux:44.3,bg:null,vx:1404,pc:0,quota:null,gw:{rs:40,me:40,se:10,mo:10,en:0},ks:{Maths:3,Francais:3,Philo:3,HistoireGeo:3,Langues:3,SES:3},acad:13.1,S:11.6,seuil:13.7,evo:0.15,prob:14},
+ {c:'9151',n:'ENC (Paris 17e) - D2',cat:'d2',typ:'PREPA',arr:'Paris 17e',pl:48,po:2117,classe:1102,pr:818,intg:63,taux:38.6,bg:null,vx:2114,pc:0,quota:null,gw:{rs:40,me:40,se:10,mo:10,en:0},ks:{Francais:3,Philo:3,HistoireGeo:3,Langues:3,SES:3,Maths:3},acad:13.1,S:11.6,seuil:13.5,evo:-0.00,prob:16},
+ {c:'11019',n:'Marie Curie (Sceaux) - D2',cat:'d2',typ:'PREPA',arr:'Sceaux 92',pl:48,po:1435,classe:700,pr:504,intg:54,taux:35.1,bg:null,vx:1548,pc:0,quota:null,gw:{rs:45,me:30,se:15,mo:10,en:0},ks:{Maths:2,Francais:2,Langues:2},acad:12.3,S:11.2,seuil:13.6,evo:0.06,prob:12},
+ {c:'7944',n:'Rene Cassin (Strasbourg) - D2',cat:'d2',typ:'PREPA',arr:'Strasbourg 67',pl:40,po:747,classe:439,pr:250,intg:42,taux:33.5,bg:null,vx:920,pc:0,quota:null,gw:{rs:35,me:15,se:20,mo:25,en:5},ks:{Maths:3,Langues:2,Francais:2,SES:2,General:2},acad:12.6,S:11.3,seuil:14.3,evo:0.19,prob:8},
+ {c:'8949',n:'Turgot (Paris 3e) - D2',cat:'d2',typ:'PREPA',arr:'Paris 3e',pl:48,po:2154,classe:1784,pr:481,intg:53,taux:22.3,bg:null,vx:null,pc:0,quota:null,gw:{rs:40,me:20,se:15,mo:20,en:5},ks:{Maths:3,Anglais:3,SES:3,Francais:3,Langues:3},acad:13.3,S:11.7,seuil:15.1,evo:0.00,prob:5},
+ {c:'4772',n:'V. et H. Basch (Rennes) - D2',cat:'d2',typ:'PREPA',arr:'Rennes 35',pl:45,po:1510,classe:533,pr:264,intg:45,taux:17.5,bg:null,vx:1263,pc:0,quota:null,gw:{rs:45,me:30,se:20,mo:5,en:0},ks:{Maths:3,SES:1,Langues:1,Francais:1},acad:11.6,S:10.8,seuil:15.8,evo:-0.13,prob:1}
+];
+const f=n=>n==null?'n/d':n.toLocaleString('fr-FR');
+const pcls=p=>p>=50?'p-hi':p>=30?'p-mid':p>=20?'p-low':'p-vlow';
+const pword=p=>p>=50?'Probable':p>=30?'Possible':p>=20?'Difficile':'Tr&egrave;s difficile';
+const noteCls=v=>v>=13.5?'note-g':v<=10.5?'note-r':'note-n';
+const evoP=x=>(!x.po||!x.vx)?null:Math.round((x.vx-x.po)/x.po*1000)/10;
+function evoCell(x){let e=evoP(x);if(e===null)return '<span class="ev-eq">n/d</span>';if(e>5)return '<span class="ev-up">&#9650; +'+e+'%</span>';if(e<-5)return '<span class="ev-dn">&#9660; '+e+'%</span>';return '<span class="ev-eq">&#8776; '+(e>0?'+':'')+e+'%</span>';}
+let lastView='chances';
+function chTable(cat){let h='<table><thead><tr><th>&Eacute;tablissement</th><th>Formation</th><th class="num">Places</th><th class="num">Rang dern. appel&eacute;</th><th>Taux</th><th>Ph.c.</th><th class="num">Chance</th></tr></thead><tbody>';
+  F.filter(x=>x.cat==cat).forEach(x=>{h+='<tr class="row" onclick="show(\''+x.c+'\')"><td class="estab">'+x.n.split(' - ')[0]+'</td><td class="intit">'+x.n.split(' - ').slice(1).join(' - ')+'</td><td class="num">'+f(x.pl)+'</td><td class="num">'+f(x.pr)+'</td><td class="num">'+(x.taux==null?'n/d':x.taux+'%')+'</td><td>'+(x.pc?'<span class="badge b-oui">Oui</span>':'<span class="badge b-non">Non</span>')+'</td><td class="num"><span class="pill '+pcls(x.prob)+'">'+x.prob+'%</span></td></tr>';});return h+'</tbody></table>';}
+function taxBar(t){if(t==null)return '<span class="ev-eq">n/d</span>';let col=t>=50?'linear-gradient(90deg,#16a34a,#22c55e)':t>=30?'linear-gradient(90deg,#d97706,#f59e0b)':'linear-gradient(90deg,#dc2626,#f87171)';return '<div class="tbar"><span style="width:'+Math.min(100,t)+'%;background:'+col+'"></span><em>'+t+'%</em></div>';}
+function presCell(p){if(p==null)return '<span class="ev-eq">n/d</span>';let c=p>=40?'#fca5a5':p>=20?'#fbbf24':'#5ee79b';return '<span class="pcell" style="color:'+c+'">'+p+'</span>';}
+function stTable(cat){let h='<table><thead><tr><th>&Eacute;tablissement</th><th>Formation</th><th class="num">Places</th><th class="num">Candidats /place</th><th class="num">Rang dern. appel&eacute;</th><th class="num">Int&eacute;gr&eacute;s</th><th>Taux d\'acc&egrave;s</th><th class="num">Dem. 2025</th><th class="num">Dem. 2026</th><th>&Eacute;vol.</th><th>Ph.c.</th></tr></thead><tbody>';
+  F.filter(x=>x.cat==cat).slice().sort((a,b)=>(b.taux??-1)-(a.taux??-1)).forEach(x=>{let pr=(x.po&&x.pl)?Math.round(x.po/x.pl*10)/10:null;h+='<tr class="row" onclick="show(\''+x.c+'\')"><td class="estab">'+x.n.split(' - ')[0]+'</td><td class="intit">'+x.n.split(' - ').slice(1).join(' - ')+'</td><td class="num">'+f(x.pl)+'</td><td class="num">'+presCell(pr)+'</td><td class="num">'+f(x.pr)+'</td><td class="num">'+f(x.intg)+'</td><td>'+taxBar(x.taux)+'</td><td class="num">'+f(x.po)+'</td><td class="num">'+f(x.vx)+'</td><td>'+evoCell(x)+'</td><td>'+(x.pc?'<span class="badge b-oui">O</span>':'<span class="badge b-non">N</span>')+'</td></tr>';});return h+'</tbody></table>';}
+document.getElementById('cl').innerHTML=chTable('lic');document.getElementById('ce').innerHTML=chTable('ecg');document.getElementById('cd').innerHTML=chTable('d2');
+document.getElementById('sl').innerHTML=stTable('lic');document.getElementById('se').innerHTML=stTable('ecg');document.getElementById('sd').innerHTML=stTable('d2');
+function facteurs(x){
+  if(x.typ=='NSsect')return "Licence non s&eacute;lective de l'acad&eacute;mie de Paris. La fiche r&eacute;serve <b>"+(100-(x.quota?x.quota.nr:3))+"% des places au secteur</b> ("+(x.quota?x.quota.nr:3)+"% de non-r&eacute;sidents max). Aleksandre est <b>parisien, dans le secteur</b> : sa vraie concurrence n'est pas les "+f(x.po)+" postulants mais les Parisiens. Bac g&eacute;n&eacute;ral avantag&eacute; (les bacs techno sont class&eacute;s plus bas).";
+  if(x.typ=='NShors')return "Licence non s&eacute;lective &agrave; Orsay (<b>acad&eacute;mie de Versailles</b>) : le quota de "+(x.quota?x.quota.nr:3)+"% de non-r&eacute;sidents joue <b>contre lui</b> (parisien, hors secteur ici). C'est ce qui plombe ce v&oelig;u.";
+  if(x.typ=='SEL')return "Licence <b>s&eacute;lective</b> : recrutement sur dossier, le secteur ne joue quasiment pas. Bac g&eacute;n&eacute;ral requis (il l'a).";
+  return "Pr&eacute;pa : recrutement <b>national sur dossier</b>, pas de priorit&eacute; de secteur. Le rang du dernier appel&eacute; ("+(x.pr?f(x.pr):'n/d')+" l'an dernier) montre jusqu'o&ugrave; la liste descend. Savoir-&ecirc;tre regard&eacute; de pr&egrave;s (p&eacute;nalis&eacute; par les appr&eacute;ciations et la triche).";
+}
+function show(code){
+  const x=F.find(z=>z.c==code),g=x.gw;
+  let funnel='<div class="funnel">'+
+    '<div class="fstep"><div class="v">'+f(x.po)+'</div><div class="k">ont postul&eacute; (2025)</div></div><div class="farrow">&#8594;</div>'+
+    '<div class="fstep"><div class="v">'+(x.classe?f(x.classe):(x.typ.startsWith('NS')?'tous':'n/d'))+'</div><div class="k">class&eacute;s</div></div><div class="farrow">&#8594;</div>'+
+    '<div class="fstep"><div class="v">'+f(x.pr)+'</div><div class="k">ont re&ccedil;u une proposition</div></div><div class="farrow">&#8594;</div>'+
+    '<div class="fstep"><div class="v">'+f(x.intg)+'</div><div class="k">ont int&eacute;gr&eacute;</div></div></div>'+
+    '<div class="fnote">'+f(x.pl)+' places en 2025 &middot; taux d\'acc&egrave;s '+(x.taux==null?'n/d':x.taux+'%')+(x.bg?' (bac g&eacute;n&eacute;ral : <b>'+x.bg+'%</b>)':'')+' &middot; rang du dernier appel&eacute; : '+f(x.pr)+'.</div>';
+  const segs=[['Notes',g.rs,'#60a5fa'],['M&eacute;thodes',g.me,'#34d399'],['Savoir-&ecirc;tre',g.se,'#fbbf24'],['Motivation',g.mo,'#f472b6'],['Engagement',g.en,'#a78bfa']];
+  let wbar='<div class="wbar">'+segs.filter(s=>s[1]>0).map(s=>'<div style="width:'+s[1]+'%;background:'+s[2]+'">'+(s[1]>=8?s[1]+'%':'')+'</div>').join('')+'</div>';
+  let gtab='<table class="gtab"><tbody>'+segs.filter(s=>s[1]>0).map(s=>'<tr><td>'+s[0]+'</td><td>'+s[1]+' %</td></tr>').join('')+'</tbody></table>';
+  let ks=Object.entries(x.ks).sort((a,b)=>b[1]-a[1]);
+  let subrows=ks.map(([s,imp])=>'<tr><td>'+LBL[s]+'</td><td>'+IMP[imp]+'</td><td class="'+noteCls(N[s])+'">'+N[s].toFixed(1).replace('.',',')+'/20</td></tr>').join('');
+  let forts=ks.filter(([s])=>N[s]>=13.5).map(([s])=>LBL[s]),faibles=ks.filter(([s])=>N[s]<=10.5).map(([s])=>LBL[s]);
+  let quotaCard=x.quota?'<div class="dcard"><h3>Priorit&eacute; de secteur (algorithme Parcoursup)</h3><div class="grid2"><div class="stat"><div class="v">'+(100-x.quota.nr)+'%</div><div class="k">des places au secteur (max '+x.quota.nr+'% non-r&eacute;sidents)</div></div><div class="stat"><div class="v">'+x.quota.b+'%</div><div class="k">boursiers minimum</div></div></div><div class="hint">'+(x.typ=='NShors'?'Acad&eacute;mie de Versailles : il est hors secteur, ce quota le p&eacute;nalise.':'Parisien dans le secteur : il fait partie des '+(100-x.quota.nr)+'% prioritaires.')+'</div></div>':'';
+  let evoTxt = x.evo>0.02?'+'+x.evo.toFixed(2)+' pt (demande 2026 en hausse, plus dur)':(x.evo<-0.02?x.evo.toFixed(2)+' pt (demande 2026 en baisse, plus facile)':'neutre');
+  let v;
+  if(x.prob>=50)v="Un de ses meilleurs paris. &Agrave; placer haut dans ses pr&eacute;f&eacute;rences.";
+  else if(x.prob>=30)v="Jouable mais incertain. Dossier en zone limite ; d&eacute;pendra des d&eacute;sistements.";
+  else if(x.prob>=20)v="Difficile. Profil sous le niveau habituellement appel&eacute;, surtout &agrave; cause des maths.";
+  else v="Tr&egrave;s difficile vu la s&eacute;lectivit&eacute; et le niveau de maths attendu. V&oelig;u ambitieux.";
+  let h='<span class="back" onclick="backTo()">&larr; Retour</span><h1>'+x.n+'</h1><div class="sub">'+x.arr+(x.pc?' &middot; <span class="badge b-oui">Phase compl&eacute;mentaire 2025</span>':'')+'</div>'+
+   '<div class="dcard"><h3>Chance estim&eacute;e pour Aleksandre</h3><div style="font-size:32px;font-weight:800" class="'+(x.prob>=50?'note-g':x.prob<20?'note-r':'note-n')+'">'+x.prob+'% <span style="font-size:15px;font-weight:600">('+pword(x.prob)+')</span></div></div>'+
+   '<div class="dcard"><h3>Entonnoir d\'admission 2025 (chiffres officiels)</h3>'+funnel+'</div>'+
+   '<div class="dcard"><h3>Grille d\'analyse officielle (le moteur du calcul)</h3>'+wbar+gtab+'<div class="hint">Mati&egrave;res regard&eacute;es, avec ses notes (vert &ge;13,5 = atout, rouge &le;10,5 = handicap) :</div><table class="subtab"><tbody>'+subrows+'</tbody></table></div>'+
+   quotaCard+
+   '<div class="dcard"><h3>Pourquoi ce pourcentage</h3><div class="calc">'+facteurs(x)+'<br><br><b>Atouts ici :</b> '+(forts.length?forts.join(', '):'aucun fortement pond&eacute;r&eacute;')+'<br><b>Handicaps :</b> '+(faibles.length?faibles.join(', '):'aucun majeur')+(x.ks.Maths?'<br>Les maths comptent et c\'est sa faiblesse (9/20).':'')+'</div></div>'+
+   '<div class="dcard"><h3>Le calcul d&eacute;taill&eacute;</h3><div class="calc">Score acad&eacute;mique A (notes pond&eacute;r&eacute;es par la grille) : <b>'+x.acad.toFixed(1).replace('.',',')+'/20</b><br>Score dossier S (avec m&eacute;thodes/savoir-&ecirc;tre/motivation) : <b>'+x.S.toFixed(1).replace('.',',')+'/20</b><br>Seuil d\'admission estim&eacute; (taux bac g&eacute;n&eacute;ral '+(x.bg?x.bg+'%':(x.taux==null?'n/d':'~'+Math.round(x.taux*1.27)+'%'))+', secteur, demande) : <b>'+x.seuil.toFixed(1).replace('.',',')+'/20</b><br>&nbsp;&nbsp;dont ajustement demande 2026 : '+evoTxt+'<br>&rarr; Probabilit&eacute; = logistique(S &minus; seuil) = <b>'+x.prob+'%</b></div></div>'+
+   '<div class="dcard"><h3>Verdict</h3><div class="verdict '+pcls(x.prob)+'">'+v+'</div></div><span class="back" onclick="backTo()">&larr; Retour</span>';
+  document.getElementById('detail').innerHTML=h;
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('detail').classList.add('on');window.scrollTo(0,0);
+}
+function backTo(){tab(lastView);}
+function tab(v){lastView=(v=='detail')?lastView:v;document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));document.getElementById(v).classList.add('on');let t=document.querySelector('.tab[data-v="'+v+'"]');if(t)t.classList.add('on');window.scrollTo(0,0);}
+</script>
+</body>
+</html>
