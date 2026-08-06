@@ -1,0 +1,458 @@
+<title>Défi éclair — Vocabulaire en 20 minutes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#0f1220; --surface:#191d30; --surface-2:#212642;
+    --ink:#f0f2fb; --ink-soft:#b3b9d8; --ink-faint:#7c84ad;
+    --line:#2b3153; --line-strong:#3b426b;
+    --accent:#5b7cfa; --accent-soft:#232a52; --accent-ink:#9db0ff;
+    --hot:#ff8a3d; --hot-soft:#33210f;
+    --good:#2ee08a; --good-soft:#123526; --bad:#ff5d5d; --bad-soft:#3a1414;
+    --serif:Georgia,"Iowan Old Style",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme:light){:root{
+    --paper:#f1f2f7; --surface:#ffffff; --surface-2:#f5f6fb;
+    --ink:#151827; --ink-soft:#4b5169; --ink-faint:#828aa6;
+    --line:#e3e5ef; --line-strong:#ccd0e0;
+    --accent:#3a54d6; --accent-soft:#e7ebfd; --accent-ink:#2537a0;
+    --hot:#e0640f; --hot-soft:#fbebdc;
+    --good:#12925c; --good-soft:#e0f4ea; --bad:#cc3b3b; --bad-soft:#f9e6e6;
+  }}
+  :root[data-theme="light"]{
+    --paper:#f1f2f7; --surface:#ffffff; --surface-2:#f5f6fb;
+    --ink:#151827; --ink-soft:#4b5169; --ink-faint:#828aa6;
+    --line:#e3e5ef; --line-strong:#ccd0e0;
+    --accent:#3a54d6; --accent-soft:#e7ebfd; --accent-ink:#2537a0;
+    --hot:#e0640f; --hot-soft:#fbebdc; --good:#12925c; --good-soft:#e0f4ea; --bad:#cc3b3b; --bad-soft:#f9e6e6;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1220; --surface:#191d30; --surface-2:#212642;
+    --ink:#f0f2fb; --ink-soft:#b3b9d8; --ink-faint:#7c84ad;
+    --line:#2b3153; --line-strong:#3b426b;
+    --accent:#5b7cfa; --accent-soft:#232a52; --accent-ink:#9db0ff;
+    --hot:#ff8a3d; --hot-soft:#33210f; --good:#2ee08a; --good-soft:#123526; --bad:#ff5d5d; --bad-soft:#3a1414;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,color-mix(in srgb,var(--accent) 16%,var(--paper)),var(--paper));color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+  .app{max-width:640px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding:0 18px}
+
+  .hud{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;padding:12px 0;background:linear-gradient(var(--paper),color-mix(in srgb,var(--paper) 70%,transparent));backdrop-filter:blur(6px)}
+  .chip{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:7px 12px;font-variant-numeric:tabular-nums}
+  .chip .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);font-weight:700}
+  .chip .v{font-size:17px;font-weight:800;line-height:1}
+  .chip.timer{margin-right:auto}
+  .chip.timer.warn{border-color:var(--hot);color:var(--hot);background:var(--hot-soft)}
+  .chip.timer.danger{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+  .streak .v{color:var(--hot)}
+  .flame{filter:grayscale(1);opacity:.4;transition:.2s}
+  .streak.on .flame{filter:none;opacity:1}
+
+  .center{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px 0 60px}
+  .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:700}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,8vw,52px);line-height:1.04;margin:12px 0 10px;letter-spacing:-.02em;text-wrap:balance}
+  .lead{color:var(--ink-soft);font-size:16px;max-width:44ch;margin:0 auto 8px}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 26px}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;color:var(--ink-soft)}
+  .fact b{color:var(--ink)}
+  .big-btn{font-family:inherit;font-size:19px;font-weight:800;letter-spacing:.01em;color:#fff;background:linear-gradient(135deg,var(--accent),#7d5bfa);border:none;border-radius:16px;padding:17px 44px;cursor:pointer;box-shadow:0 10px 30px color-mix(in srgb,var(--accent) 45%,transparent);transition:transform .1s,filter .15s}
+  .big-btn:hover{filter:brightness(1.08)} .big-btn:active{transform:scale(.97)}
+  .tiny{font-size:12.5px;color:var(--ink-faint);margin-top:16px}
+
+  #play{display:none;flex:1;flex-direction:column;padding-bottom:30px}
+  .qprog{height:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:2px 0 6px}
+  #qfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--hot));border-radius:999px;transition:width .3s ease}
+  .dir{display:flex;justify-content:center;margin:8px 0 4px}
+  .dir span{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 13px;border-radius:999px;border:1px solid var(--line)}
+  .dir .fr2en{color:var(--accent-ink);background:var(--accent-soft)}
+  .dir .en2fr{color:var(--hot);background:var(--hot-soft)}
+  .prompt{flex:none;text-align:center;padding:26px 12px 22px}
+  .prompt .word{font-family:var(--serif);font-weight:600;font-size:clamp(30px,7.5vw,46px);line-height:1.12;letter-spacing:-.01em;text-wrap:balance}
+  .prompt .qn{font-size:12.5px;color:var(--ink-faint);margin-top:10px;font-variant-numeric:tabular-nums}
+  .choices{display:grid;gap:11px}
+  .choice{position:relative;display:flex;align-items:center;gap:13px;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:15px 16px;font-family:inherit;font-size:16.5px;color:var(--ink);cursor:pointer;transition:transform .06s,border-color .12s,background .12s}
+  .choice:hover{border-color:var(--line-strong)} .choice:active{transform:scale(.99)}
+  .choice .num{flex:none;width:26px;height:26px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-faint);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .choice.correct{border-color:var(--good);background:var(--good-soft)}
+  .choice.correct .num{background:var(--good);border-color:var(--good);color:#04170e}
+  .choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+  .choice.wrong .num{background:var(--bad);border-color:var(--bad);color:#2a0808}
+  .locked .choice{pointer-events:none}
+  .floater{position:fixed;left:50%;transform:translateX(-50%);top:44%;font-family:var(--serif);font-size:40px;font-weight:800;pointer-events:none;opacity:0}
+  .floater.go{animation:pop .55s ease-out}
+  @keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-34px) scale(1.1)}}
+  @media (prefers-reduced-motion:reduce){.floater.go{animation:none}}
+
+  #end{display:none;flex:1;flex-direction:column;padding:24px 0 50px}
+  .result-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 22px;text-align:center;position:relative;overflow:hidden}
+  .result-card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--accent),var(--hot))}
+  .result-band{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+  .result-big{font-family:var(--serif);font-size:clamp(52px,15vw,86px);font-weight:600;line-height:1;margin:8px 0 0;font-variant-numeric:tabular-nums}
+  .result-big small{font-size:.32em;color:var(--ink-faint)}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:20px}
+  .stat{background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:12px}
+  .stat .n{font-family:var(--serif);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+  .stat .k{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px}
+  .missed{margin-top:24px}
+  .missed h3{font-family:var(--serif);font-size:19px;margin:0 0 4px}
+  .missed p{color:var(--ink-soft);font-size:13.5px;margin:0 0 12px}
+  .miss-grid{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .miss-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:9px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+  .miss-row:last-child{border-bottom:none}
+  .miss-row:nth-child(even){background:var(--surface-2)}
+  .miss-row .mf{font-family:var(--serif);font-weight:600}
+  .miss-row .me{color:var(--ink-soft)}
+  .again{display:flex;justify-content:center;margin-top:24px}
+  .perfect{color:var(--good);font-weight:700;margin-top:18px}
+</style>
+
+<div class="app">
+  <div class="hud" id="hud" style="display:none">
+    <div class="chip timer" id="timer"><span class="k">Temps</span><span class="v" id="timerV">20:00</span></div>
+    <div class="chip"><span class="k">Score</span><span class="v" id="scoreV">0</span></div>
+    <div class="chip streak" id="streakChip"><span class="flame">🔥</span><span class="v" id="streakV">0</span></div>
+  </div>
+
+  <section class="center" id="start">
+    <div class="kicker">Défi éclair · Vocabulaire</div>
+    <h1>Rapidité<br>en 20 minutes</h1>
+    <p class="lead">Passe en revue <b>toute la liste</b> une seule fois, le plus vite possible. On te montre un mot, tu cliques la bonne traduction. Ça alterne <b>français → anglais</b> et <b>anglais → français</b>. Le défi se termine quand tu as fait tous les mots — ou quand les 20 minutes sont écoulées.</p>
+    <div class="facts" id="facts">
+      <div class="fact">⚡ Réponse <b>instantanée</b></div>
+      <div class="fact">🔄 Les deux sens</div>
+      <div class="fact">⏱️ <b>20 min</b> pour tout finir</div>
+      <div class="fact">🔥 Série de bonnes réponses</div>
+    </div>
+    <button class="big-btn" id="startBtn">Commencer le défi</button>
+    <p class="tiny">Astuce : tu peux aussi taper les touches <b>1 · 2 · 3 · 4</b> pour aller plus vite.</p>
+  </section>
+
+  <section id="play">
+    <div class="qprog"><div id="qfill"></div></div>
+    <div class="dir" id="dir"></div>
+    <div class="prompt">
+      <div class="word" id="word">—</div>
+      <div class="qn" id="qn"></div>
+    </div>
+    <div class="choices" id="choices"></div>
+  </section>
+
+  <section id="end">
+    <div class="result-card">
+      <div class="result-band" id="band">Terminé</div>
+      <div class="result-big" id="bigScore">0<small>pts</small></div>
+      <div class="stats">
+        <div class="stat"><div class="n" id="sAcc">0%</div><div class="k">Précision</div></div>
+        <div class="stat"><div class="n" id="sAns">0</div><div class="k">Répondues</div></div>
+        <div class="stat"><div class="n" id="sStreak">0</div><div class="k">Meilleure série</div></div>
+        <div class="stat"><div class="n" id="sRate">0</div><div class="k">Mots / minute</div></div>
+      </div>
+      <div class="perfect" id="perfect" style="display:none">🏆 Sans faute ! Impressionnant.</div>
+    </div>
+    <div class="missed" id="missedWrap">
+      <h3>À revoir</h3>
+      <p id="missedDesc"></p>
+      <div class="miss-grid" id="missGrid"></div>
+    </div>
+    <div class="again"><button class="big-btn" id="againBtn">Rejouer</button></div>
+  </section>
+
+  <div class="floater" id="floater"></div>
+</div>
+
+<script>
+const VOCAB = [
+["faible","weak"],["cadre de vie","living environment"],["cadrer","to frame"],["bénéficier","to benefit"],["levier","lever / leverage"],["stupéfiants","narcotics / drugs"],
+["rechercher","to search / to research"],["chercher","to look for"],["plein","full"],["vide","empty"],["remplir","to fill"],["jaune","yellow"],
+["jeune","young"],["dépaysant","disorienting / like another world"],["se balader","to stroll / to wander"],["à travers","through / across"],["prétendre","to claim / to assert"],["le manque","the lack"],
+["manquer","to miss"],["la douleur","pain"],["se battre","to fight"],["détruire","to destroy"],["louer","to rent"],["un pont","a bridge"],
+["sous-estimer","to underestimate"],["surestimer","to overestimate"],["un nœud papillon","a bow tie"],["un clochard","a homeless person"],["se perdre","to get lost"],["enceinte","pregnant"],
+["frapper","to hit / to strike"],["crier","to shout / to scream"],["une chaussette","a sock"],["les horaires","schedule / timetable"],["la grasse matinée","a lie-in / sleeping in"],["une nuit blanche","a sleepless night"],
+["l'actualité","news / current events"],["les actualités","the news"],["une tentative d'assassinat","an assassination attempt"],["une fusillade","a shooting"],["un ours","a bear"],["couper","to cut"],
+["découper","to cut out"],["le toit","the roof"],["corrompu","corrupt"],["vague","vague / unclear"],["les vagues","the waves"],["les moyens","the means / resources"],
+["douloureux","painful"],["un infirmier","a male nurse"],["une infirmière","a female nurse"],["une épicerie","a grocery store"],["mignon","cute"],["la loi","the law"],
+["hors-service","out of order"],["gonfler","to inflate / to swell"],["saouler","to annoy / to get drunk"],["souligner","to underline / to emphasize"],["la foudre","lightning"],["prévenir","to warn / to notify"],
+["un lapin","a rabbit"],["durer","to last"],["la poche","the pocket"],["chatter","to chat"],["une coque","a shell / a case"],["retirer","to withdraw / to remove"],
+["le trajet","the journey / the route"],["l'endroit","the place / the spot"],["la panique","panic"],["une façon de voir le monde","a worldview"],["un plat","a dish"],["plat","flat"],
+["l'enfance","childhood"],["un gamin","a kid"],["pointilleux","picky / meticulous"],["rester ensemble","to stay together"],["choqué","shocked"],["nier","to deny"],
+["virer","to fire / to kick out"],["cautionner","to condone"],["éviter","to avoid"],["un outil","a tool"],["procurer","to get / to obtain"],["une file","a line / a queue"],
+["la couverture","cover / blanket / coverage"],["un costume","a suit"],["les attentes","expectations"],["les manières","manners / ways"],["le pain de mie","sliced bread"],["l'estomac","the stomach"],
+["les élections","the elections"],["les pancartes","the signs / placards"],["la jeunesse","youth"],["se passer","to happen / to take place"],["devenir","to become"],["tricher","to cheat"],
+["la poussière","dust"],["la circulation","traffic"],["éternuer","to sneeze"],["croître","to grow"],["la croissance","growth"],["prévoir","to plan / to foresee"],
+["nuancer","to qualify / to nuance"],["une équipe","a team"],["une espèce","a species"],["s'éteindre","to go extinct / to turn off"],["s'effacer","to fade away / to step back"],["effacer","to erase / to delete"],
+["un forfait","a package / flat-rate plan"],["héberger","to host / to accommodate"],["englober","to encompass"],["inclure","to include"],["contenir","to contain"],["un aliment","a food item"],
+["élémentaire","elementary / basic"],["varier","to vary"],["un virus","a virus"],["un autobus","a bus"],["un terminus","a terminal / last stop"],["les exigences","the requirements"],
+["céder","to give in / to yield"],["s'est fait abuser","was taken advantage of"],["un trouble d'attention","an attention disorder"],["documenté","documented"],["le héros principal","the main character"],["la propagande","propaganda"],
+["sentir","to smell / to feel"],["ressentir","to feel (an emotion)"],["enseigner","to teach"],["un personnage","a character"],["rendre","to make / to give back"],["faire attention","to be careful"],
+["fragile","fragile / sensitive"],["admettre","to admit"],["côtoyer","to be around / to spend time with"],["esquiver","to dodge"],["contourner","to go around / to bypass"],["une méprise","a misunderstanding"],
+["haïr","to hate"],["le sommet","the summit / the top"],["une aire d'autoroute","a highway rest area"],["une célébrité","a celebrity"],["les gens fortunés","wealthy people"],["une blague","a joke"],
+["une randonnée","a hike"],["curieux","curious"],["observer","to observe"],["sembler","to seem"],["ressembler","to resemble / to look like"],["une toile","a canvas / a web"],
+["lâcher","to let go / to release"],["déclencher","to trigger"],["un ancêtre","an ancestor"],["déchirer","to tear / to rip"],["s'affranchir","to free oneself"],["méprisant","contemptuous / disdainful"],
+["bouleversé","shaken / deeply moved"],["une colline","a hill"],["le thon","tuna"],["un anchois","an anchovy"],["imiter","to imitate"],["se sentir mieux","to feel better"],
+["une licence","a bachelor's degree"],["obsédé","obsessed"],["neutralisé","neutralized"],["une chapelle","a chapel"],["désigner","to designate"],["le treizième siècle","the thirteenth century"],
+["une peinture","a painting"],["peindre","to paint"],["une caissière","a cashier"],["marrant","funny"],["un métier","a trade / a profession"],["rendre visite","to visit (someone)"],
+["le jour d'après","the day after"],["énormément","enormously"],["ce n'est pas juste","that's not fair"],["un chauffeur de taxi","a taxi driver"],["les ruines","the ruins"],["un amphithéâtre","an amphitheater"],
+["une terrasse","a terrace"],["une devanture","a storefront"],["contemporain","contemporary"],["scandaleux","scandalous"],["lourd","heavy"],["un ascenseur","an elevator"],
+["la vue sur la mer","the sea view"],["réussi","successful"],["une montre","a watch"],["cueillir","to pick / to harvest"],["tromper","to deceive"],["infuser","to infuse / to brew"],
+["marqué","marked"],["un critique gastronomique","a food critic"],["une pièce de théâtre","a play"],["surpris","surprised"],["une surprise","a surprise"],["fier","proud"],
+["envier","to envy"],["pâle","pale"],["sombre","dark"],["un échec","a failure"],["annoncer","to announce"],["refuser","to refuse"],
+["un avocat","a lawyer"],["faire de la publicité","to advertise"],["rentrer","to come back / to go home"],["le personnel de cabine","the cabin crew"],["une hôtesse de l'air","a flight attendant"],["grimper","to climb"],
+["tomber","to fall"],["l'aube","dawn"],["demeurer","to remain / to dwell"],["dehors","outside"],["le bruit","noise"],["courbé","bent / curved"],
+["le rythme","rhythm"],["plaire","to please"],["agité","restless / agitated"],["la rébellion","rebellion"],["un rebelle","a rebel"],["révoltant","revolting / disgusting"],
+["se révolter","to rebel"],["se faire tirer dessus","to get shot at"],["majeur","of legal age"],["un adulte","an adult"],["une voyelle","a vowel"],["puer","to stink"],
+["la puanteur","the stench"],["gothique","gothic"],["le devoir","duty"],["les devoirs","homework"],["l'autre côté","the other side"],["déçu","disappointed"],
+["réviser","to review / to revise"],["un juge suprême","a supreme judge"],["anticonstitutionnel","unconstitutional"],["des milliards","billions"],["les raisins secs","raisins"],["le goût","taste"],
+["la texture","texture"],["doux","soft / sweet / gentle"],["un ananas","a pineapple"],["les ongles","nails"],["pointu","sharp / pointy"],["griffer","to scratch / to claw"],
+["les griffes","claws"],["les vêtements","clothes"],["s'asseoir","to sit down"],["les genoux","knees"],["capricieux","moody / capricious"],["déconnecté","disconnected"],
+["rejeter","to reject"],["la peau","skin"],["fou","crazy"],["se suicider","to commit suicide"],["méchant","mean / nasty"],["en froid","on bad terms"],
+["faire une thérapie","to go to therapy"],["résoudre","to resolve"],["les jambes","the legs"],["l'inflammation","inflammation"],["une sensation","a sensation"],["se concentrer","to focus"],
+["la fibre","fiber"],["fluctuer","to fluctuate"],["mensuel","monthly"],["l'apprentissage","learning"],["un processus","a process"],["rater","to fail / to miss"],
+["les fonds","the funds"],["appartenir","to belong"],["les blessures","the wounds / injuries"],["amer","bitter"],["appeler","to call"],["désespéré","desperate"],
+["relire","to reread"],["la fréquentation","dating / seeing someone"],["emménager","to move in"],["vivre ensemble","to live together"],["le fait","the fact"],["aigri","embittered"],
+["les épreuves","the trials / hardships"],["des hauts et des bas","ups and downs"],["écroulé","collapsed / worn out"],["revoir","to see again"],["le lendemain","the next day"],["bouger","to move"],
+["assez beau","quite handsome"],["aborder","to approach / to broach (a topic)"],["aboutir","to lead to / to succeed"],["s'abstenir","to abstain / to refrain"],["accabler","to overwhelm / to condemn"],["accaparer","to monopolize / to take up"],
+["accéder","to reach / to gain access"],["accentuer","to emphasize / to heighten"],["accorder","to grant"],["accroître","to increase"],["s'acharner","to persist relentlessly"],["acquérir","to acquire"],
+["adhérer","to join / to subscribe to"],["affaiblir","to weaken"],["affirmer","to assert"],["affronter","to face / to confront"],["aggraver","to worsen"],["agir","to act"],
+["s'agir de","to be about / to be a matter of"],["allouer","to allocate"],["alourdir","to weigh down"],["amoindrir","to lessen / to diminish"],["s'apercevoir","to notice / to realize"],["appréhender","to apprehend / to dread"],
+["s'appuyer","to rely / to lean on"],["assouplir","to loosen / to relax (rules)"],["s'assurer","to make sure / to ensure"],["atténuer","to ease / to soften"],["s'attarder","to linger / to dwell on"],["augmenter","to increase"],
+["avérer (s')","to turn out / to prove"],["avertir","to warn"],["avouer","to confess"],["bafouer","to flout / to scorn"],["bannir","to banish"],["bouleverser","to turn upside down / to move deeply"],
+["se borner","to limit oneself"],["brusquer","to rush / to be abrupt with"],["cerner","to pin down / to grasp"],["combler","to fill / to fulfil"],["se comporter","to behave"],["concéder","to concede"],
+["concerner","to concern"],["concevoir","to conceive / to design"],["condamner","to condemn / to sentence"],["conférer","to grant / to confer"],["confier","to entrust / to confide"],["confronter","to confront"],
+["consacrer","to devote"],["consentir","to consent"],["considérer","to consider"],["constater","to note / to observe (a fact)"],["contraindre","to force / to compel"],["contribuer","to contribute"],
+["convaincre","to convince"],["convoiter","to covet"],["se débrouiller","to manage / to cope"],["décerner","to award"],["décevoir","to disappoint"],["déceler","to detect"],
+["décliner","to decline / to list out"],["se défaire","to get rid of / to come undone"],["dégager","to release / to give off"],["démentir","to deny / to refute"],["démunir","to deprive"],["dénoncer","to denounce / to expose"],
+["déployer","to deploy / to unfold"],["se dérober","to shy away / to evade"],["désamorcer","to defuse"],["se dérouler","to take place / to unfold"],["détenir","to hold / to possess"],["devancer","to get ahead of / to anticipate"],
+["dévier","to deviate / to divert"],["discerner","to discern"],["dissimuler","to conceal"],["dissiper","to dispel / to squander"],["se douter","to suspect"],["ébranler","to shake / to undermine"],
+["écarter","to set aside / to rule out"],["échouer","to fail"],["éclaircir","to clarify / to lighten"],["effleurer","to graze / to touch on"],["s'efforcer","to strive"],["s'égarer","to get lost / to stray"],
+["élaborer","to develop / to draw up"],["élucider","to elucidate / to solve"],["émaner","to emanate"],["empêcher","to prevent"],["s'emparer","to seize / to grab"],["s'emporter","to lose one's temper"],
+["encadrer","to supervise / to frame"],["enfreindre","to break (a rule)"],["engendrer","to generate / to cause"],["s'engager","to commit"],["enrichir","to enrich"],["entamer","to begin / to eat into"],
+["entériner","to ratify / to confirm"],["entourer","to surround"],["entraver","to hinder"],["entretenir","to maintain / to keep up"],["envahir","to invade"],["envisager","to consider / to envisage"],
+["épargner","to spare / to save"],["éprouver","to feel / to experience"],["s'épanouir","to blossom / to thrive"],["s'ériger","to set oneself up as"],["escompter","to expect / to bank on"],["estomper","to blur / to fade"],
+["établir","to establish"],["s'étonner","to be surprised"],["s'évertuer","to strive in vain"],["évoquer","to evoke / to bring up"],["exacerber","to exacerbate"],["exercer","to exercise / to practise"],
+["exiger","to demand / to require"],["s'exprimer","to express oneself"],["faillir","to almost (do) / to fail"],["fausser","to distort / to falsify"],["favoriser","to favor / to promote"],["figurer","to appear / to feature"],
+["forger","to forge / to shape"],["franchir","to cross / to get past"],["gâcher","to spoil / to waste"],["se garder de","to be careful not to"],["gérer","to manage"],["guérir","to heal / to cure"],
+["guetter","to watch out for / to lie in wait"],["s'habituer","to get used to"],["hésiter","to hesitate"],["ignorer","to be unaware / to ignore"],["s'immiscer","to interfere / to meddle"],["impliquer","to involve / to imply"],
+["imposer","to impose"],["imputer","to attribute / to blame"],["incomber","to be incumbent on"],["s'indigner","to be outraged"],["induire","to lead / to induce"],["infliger","to inflict"],
+["inonder","to flood"],["s'inquiéter","to worry"],["s'inscrire","to register / to sign up"],["instaurer","to establish / to introduce"],["interdire","to forbid"],["s'interposer","to intervene / to step between"],
+["interroger","to question"],["intervenir","to intervene"],["justifier","to justify"],["se lasser","to grow tired of"],["léser","to wrong / to harm"],["se leurrer","to delude oneself"],
+["manier","to handle / to wield"],["méconnaître","to be unaware of / to underrate"],["se méfier","to be wary"],["mener","to lead"],["mentionner","to mention"],["mépriser","to despise"],
+["mériter","to deserve"],["se morfondre","to mope"],["négliger","to neglect"],["nourrir","to feed / to nurture"],["obtempérer","to comply"],["s'obstiner","to persist stubbornly"],
+["octroyer","to grant"],["s'opposer","to oppose"],["ôter","to remove"],["parcourir","to travel through / to skim"],["parer","to ward off / to adorn"],["parvenir","to manage / to reach"],
+["se passer de","to do without"],["pâtir","to suffer (from)"],["se pencher","to lean / to look into"],["percevoir","to perceive / to collect"],["persuader","to persuade"],["se plaindre","to complain"],
+["préconiser","to recommend / to advocate"],["prôner","to advocate"],["se prévaloir","to take advantage / to boast"],["privilégier","to favor / to prioritize"],["procéder","to proceed"],["proférer","to utter"],
+["se produire","to occur"],["promouvoir","to promote"],["provoquer","to cause / to provoke"],["raviver","to revive / to rekindle"],["rebuter","to put off / to repel"],["reconnaître","to recognize / to admit"],
+["récuser","to challenge / to reject"],["redouter","to dread"],["se référer","to refer to"],["refléter","to reflect"],["réfréner","to curb / to restrain"],["régir","to govern"],
+["réitérer","to reiterate"],["se réjouir","to rejoice"],["relater","to recount"],["relever","to raise / to take up (a challenge)"],["se remémorer","to recall"],["renchérir","to add / to go further"],
+["renforcer","to strengthen"],["renoncer","to give up"],["renverser","to knock over / to overturn"],["se répandre","to spread"],["reprocher","to reproach"],["répugner","to be reluctant / to disgust"],
+["restreindre","to restrict"],["se rétracter","to retract / to back down"],["se ruer","to rush / to charge"],["saccager","to ransack / to wreck"],["saisir","to grasp / to seize"],["scruter","to scrutinize"],
+["séduire","to seduce / to win over"],["soulager","to relieve"],["soulever","to lift / to raise (an issue)"],["soumettre","to submit / to subject"],["soupçonner","to suspect"],["se soucier","to care / to worry about"],
+["souscrire","to subscribe / to endorse"],["subir","to undergo / to suffer"],["subvenir","to provide for"],["succéder","to succeed / to follow"],["suffire","to be enough"],["supplanter","to supplant"],
+["supporter","to bear / to put up with"],["surmonter","to overcome"],["surveiller","to watch / to monitor"],["survivre","to survive"],["susciter","to arouse / to spark"],["se targuer","to boast"],
+["tarder","to be late / to delay"],["témoigner","to testify / to show"],["tergiverser","to prevaricate / to stall"],["ternir","to tarnish"],["terrasser","to strike down / to overwhelm"],["tolérer","to tolerate"],
+["trahir","to betray"],["trancher","to slice / to settle / to stand out"],["transmettre","to pass on"],["se vanter","to boast"],["veiller","to watch over / to see to it"],["viser","to aim / to target"],
+["vociférer","to shout / to rant"],["abordable","affordable / approachable"],["acharné","relentless"],["affligeant","pitiful / distressing"],["ambigu","ambiguous"],["angoissant","distressing / harrowing"],
+["apte","fit / capable"],["ardu","arduous / hard"],["astucieux","clever / cunning"],["atroce","atrocious / horrible"],["audacieux","bold / daring"],["austère","austere"],
+["avantageux","advantageous"],["avéré","proven / confirmed"],["banal","banal / ordinary"],["bénéfique","beneficial"],["bienveillant","kind / caring"],["borné","narrow-minded"],
+["bouleversant","deeply moving"],["brut","raw / gross"],["chaleureux","warm (person)"],["complexe","complex"],["conforme","in line / compliant"],["conscient","aware / conscious"],
+["considérable","considerable"],["contraignant","restrictive / binding"],["convaincant","convincing"],["courant","common / current"],["coûteux","costly"],["crédible","credible"],
+["crucial","crucial"],["décevant","disappointing"],["décisif","decisive"],["déconcertant","disconcerting"],["dédaigneux","disdainful"],["défavorable","unfavorable"],
+["délibéré","deliberate"],["déloyal","disloyal / unfair"],["démuni","destitute / helpless"],["dérisoire","laughable / paltry"],["désinvolte","casual / offhand"],["désolant","distressing / dismal"],
+["détaché","detached"],["déterminé","determined"],["digne","worthy / dignified"],["discutable","questionable"],["disponible","available"],["douteux","dubious"],
+["durable","lasting / sustainable"],["écœurant","sickening"],["efficace","effective / efficient"],["effréné","unbridled / frantic"],["égoïste","selfish"],["éloquent","eloquent"],
+["embarrassant","embarrassing / awkward"],["éminent","eminent"],["enrichissant","enriching / rewarding"],["entêté","stubborn"],["envahissant","intrusive / invasive"],["épanoui","fulfilled / blooming"],
+["éphémère","short-lived"],["épineux","thorny / tricky"],["éprouvant","grueling / trying"],["équilibré","balanced"],["équitable","fair"],["essentiel","essential"],
+["étonnant","surprising"],["exigeant","demanding"],["exorbitant","exorbitant"],["farouche","fierce / shy"],["flagrant","blatant / glaring"],["flou","blurry / vague"],
+["fougueux","fiery / spirited"],["franc","frank / honest"],["frappant","striking"],["funeste","disastrous / fatal"],["gênant","awkward / embarrassing"],["glacial","icy / frosty"],
+["grossier","rude / crude"],["hautain","haughty"],["honteux","shameful"],["hostile","hostile"],["imminent","imminent"],["impitoyable","merciless"],
+["imprévisible","unpredictable"],["inattendu","unexpected"],["incontournable","essential / unavoidable"],["indéniable","undeniable"],["indispensable","indispensable"],["inébranlable","unshakeable"],
+["inépuisable","inexhaustible"],["inévitable","inevitable"],["infime","tiny / minute"],["ingrat","ungrateful / thankless"],["inouï","unheard-of / incredible"],["inquiétant","worrying"],
+["insensé","senseless / insane"],["insolent","insolent / cheeky"],["insoutenable","unbearable / untenable"],["intègre","honest / upright"],["intransigeant","uncompromising"],["invraisemblable","implausible"],
+["judicieux","sensible / wise"],["laborieux","laborious"],["lâche","cowardly / loose"],["las","weary"],["lucide","lucid / clear-headed"],["maladroit","clumsy / tactless"],
+["malin","clever / cunning"],["méfiant","suspicious / wary"],["mesquin","petty / mean"],["méticuleux","meticulous"],["morose","gloomy"],["nuisible","harmful"],
+["obstiné","stubborn"],["oppressant","oppressive"],["paisible","peaceful"],["palpable","palpable"],["passager","passing / temporary"],["percutant","hard-hitting"],
+["perplexe","puzzled"],["pertinent","relevant / apt"],["pesant","heavy / burdensome"],["poignant","poignant"],["précaire","precarious"],["précieux","precious / valuable"],
+["préoccupant","worrying"],["prépondérant","predominant"],["propice","favorable / conducive"],["provisoire","temporary"],["puissant","powerful"],["rassurant","reassuring"],
+["rébarbatif","off-putting / dreary"],["redoutable","formidable"],["remarquable","remarkable"],["réticent","reluctant"],["révélateur","revealing / telling"],["rigoureux","rigorous / harsh"],
+["rusé","cunning / sly"],["saisissant","striking / gripping"],["sanglant","bloody"],["sceptique","skeptical"],["sensé","sensible"],["sévère","strict / harsh"],
+["singulier","peculiar / singular"],["sobre","sober / understated"],["soigné","neat / careful"],["sournois","sneaky / underhand"],["soutenu","sustained / formal"],["spontané","spontaneous"],
+["subtil","subtle"],["superflu","superfluous"],["susceptible","touchy / liable to"],["tenace","tenacious / stubborn"],["terne","dull / drab"],["touchant","touching"],
+["troublant","disturbing / unsettling"],["vaniteux","vain / conceited"],["vif","lively / sharp"],["virulent","virulent / scathing"],["voyant","flashy / gaudy"],["l'aboutissement","outcome / culmination"],
+["l'accroissement","increase / growth"],["l'ambiance","atmosphere / mood"],["l'ampleur","scale / extent"],["l'appui","support / backing"],["l'atout","asset / trump card"],["l'aveu","confession"],
+["le bilan","assessment / outcome"],["le bouleversement","upheaval"],["la carence","deficiency / shortfall"],["le comportement","behavior"],["le constat","observation / finding"],["la contrainte","constraint"],
+["la controverse","controversy"],["le déclin","decline"],["la défaillance","failure / breakdown"],["la démarche","approach / step / process"],["le dénouement","outcome / ending"],["le dépit","spite / resentment"],
+["le désarroi","distress / confusion"],["le dispositif","device / system / measures"],["l'écart","gap / discrepancy"],["l'échéance","deadline / due date"],["l'élan","momentum / surge"],["l'emprise","hold / grip"],
+["l'enjeu","stake / what's at stake"],["l'entourage","those around one / circle"],["l'entrave","hindrance"],["l'entretien","interview / maintenance"],["l'envergure","scope / stature"],["l'épanouissement","fulfilment / flourishing"],
+["l'essor","rise / boom"],["l'état d'esprit","mindset / state of mind"],["la faille","flaw / fault"],["le fléau","scourge / plague"],["le fondement","foundation / basis"],["la hantise","obsessive fear / dread"],
+["la hausse","rise / increase"],["l'inconvénient","drawback"],["la lacune","gap / shortcoming"],["le leurre","decoy / illusion"],["la lueur","glimmer / gleam"],["la maîtrise","mastery / control"],
+["le malaise","unease / discomfort"],["la mainmise","stranglehold / grip"],["le milieu","environment / circle"],["l'obstacle","obstacle"],["le pari","bet / gamble"],["la percée","breakthrough"],
+["le penchant","inclination / tendency"],["la portée","scope / significance / range"],["la prouesse","feat / achievement"],["le quotidien","everyday life"],["le recours","recourse / appeal"],["le regain","renewal / resurgence"],
+["le remous","stir / turmoil"],["le repli","withdrawal / fallback"],["le ressort","spring / driving force"],["le revers","setback / reverse"],["le seuil","threshold"],["le sursaut","sudden surge / start"],
+["la tournure","turn (of events) / phrasing"],["l'aisance","ease / fluency"],["la mouvance","sphere / movement"],["l'échantillon","sample"],["l'enquête","investigation / survey"],["le cadre","framework / setting / executive"],
+["le tissu","fabric"],["le tremplin","springboard"],["le fardeau","burden"],["l'écueil","pitfall / stumbling block"],["la nuance","subtlety / shade"],["le socle","base / foundation"],
+["la lueur d'espoir","glimmer of hope"],["le point de vue","point of view"],["l'ossature","framework / backbone"],["la mise en garde","warning"],["le regard","gaze / look / view"],["l'aperçu","overview / glimpse"],
+["néanmoins","nevertheless"],["toutefois","however"],["en dépit de","in spite of"],["dans la mesure où","insofar as"],["faute de","for lack of"],["à défaut de","failing / in the absence of"],
+["au demeurant","moreover / for that matter"],["par ailleurs","moreover / besides"],["en l'occurrence","in this case / as it happens"],["dès lors","from then on / therefore"],["d'autant plus que","all the more so since"],["quitte à","even if it means"],
+["sous prétexte que","on the pretext that"],["de sorte que","so that"],["à mesure que","as / gradually as"],["tant bien que mal","somehow / after a fashion"],["coûte que coûte","at all costs"],["sur-le-champ","on the spot / at once"],
+["à contrecœur","reluctantly"],["à la dérobée","furtively / on the sly"],["de prime abord","at first sight"],["en un clin d'œil","in the blink of an eye"],["à la longue","in the long run"],["au fil du temps","over time"],
+["de fond en comble","from top to bottom"],["à tort","wrongly"],["à juste titre","rightly / justifiably"],["vaille que vaille","come what may"],["bon gré mal gré","willingly or not"],["à outrance","excessively / to excess"],
+["de bon gré","willingly"],["à l'improviste","unexpectedly"],["au fur et à mesure","gradually / as one goes"],["en filigrane","in the background / implicitly"],["à bout de souffle","out of breath / running out of steam"],["sans relâche","relentlessly"],
+["à la va-vite","hastily / sloppily"],["de plein fouet","head-on / full force"],["à tâtons","gropingly / feeling one's way"],["en catimini","on the sly"],["à l'insu de","without the knowledge of"],["coup sur coup","one after another"],
+["tôt ou tard","sooner or later"],["peu à peu","little by little"],["à la rigueur","if need be / at a pinch"],["en vain","in vain"],["au grand jour","out in the open"],["envers et contre tout","against all odds"],
+["de bout en bout","from start to finish"],["à première vue","at first glance"]
+];
+
+const STOP=new Set("a an the to of and or is it be as at in on for your you his her him its i me my we they them someone something oneself each out off into from with that this these those are was not does do have has who she he but by up down over upon only very more most one".split(" "));
+function toks(s){return new Set(s.toLowerCase().split(/[^a-zàâçéèêëîïôûùüÿœæ]+/).filter(w=>w.length>2&&!STOP.has(w)));}
+function overlap(a,b){for(const t of a)if(b.has(t))return true;return false;}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const enToks=VOCAB.map(v=>toks(v[1]));
+const frToks=VOCAB.map(v=>toks(v[0]));
+
+function distract(idx,n,fr2en){
+  const base=fr2en?enToks[idx]:frToks[idx];
+  const order=shuffle(VOCAB.map((_,i)=>i));
+  const out=[],used=new Set();
+  for(const i of order){
+    if(i===idx)continue;
+    const ct=fr2en?enToks[i]:frToks[i];
+    if(overlap(ct,base))continue;
+    const val=fr2en?VOCAB[i][1]:VOCAB[i][0];
+    if(used.has(val))continue;
+    used.add(val);out.push(val);
+    if(out.length===n)break;
+  }
+  while(out.length<n){
+    const i=Math.floor(Math.random()*VOCAB.length);
+    const val=fr2en?VOCAB[i][1]:VOCAB[i][0];
+    if(i!==idx&&!used.has(val)){used.add(val);out.push(val);}
+  }
+  return out;
+}
+
+const $=id=>document.getElementById(id);
+const TOTAL=VOCAB.length;
+let queue=[], qptr=0, score=0, answered=0, streak=0, best=0, locked=false, running=false;
+const missed=[];
+let remaining=20*60, tick=null;
+
+function buildQueue(){
+  queue=shuffle(VOCAB.map((_,i)=>i));
+  qptr=0;
+}
+function nextQ(){
+  if(!running)return;
+  if(qptr>=queue.length){ finish(true); return; }
+  const idx=queue[qptr++];
+  const fr2en=Math.random()<0.5;
+  const [fr,en]=VOCAB[idx];
+  const prompt=fr2en?fr:en;
+  const answer=fr2en?en:fr;
+  const opts=shuffle([answer,...distract(idx,3,fr2en)]);
+  render(prompt,answer,opts,fr2en,idx);
+}
+function render(prompt,answer,opts,fr2en,idx){
+  locked=false;
+  $('dir').innerHTML = fr2en
+    ? '<span class="fr2en">🇫🇷 Français → Anglais 🇬🇧</span>'
+    : '<span class="en2fr">🇬🇧 Anglais → Français 🇫🇷</span>';
+  $('word').textContent=prompt;
+  $('qn').textContent='Mot '+(answered+1)+' / '+TOTAL;
+  $('qfill').style.width=(answered/TOTAL*100)+'%';
+  const box=$('choices'); box.className='choices'; box.innerHTML='';
+  opts.forEach((val,k)=>{
+    const b=document.createElement('button');
+    b.className='choice'; b.type='button';
+    b.innerHTML=`<span class="num">${k+1}</span><span class="lbl">${val}</span>`;
+    b.addEventListener('click',()=>pick(b,val,answer,idx,fr2en));
+    box.appendChild(b);
+  });
+}
+function pick(btn,val,answer,idx,fr2en){
+  if(locked)return; locked=true;
+  answered++;
+  const box=$('choices'); box.classList.add('locked');
+  const correct=val===answer;
+  box.querySelectorAll('.choice').forEach(c=>{
+    const t=c.querySelector('.lbl').textContent;
+    if(t===answer)c.classList.add('correct');
+    else if(c===btn)c.classList.add('wrong');
+  });
+  if(correct){
+    score++; streak++; best=Math.max(best,streak);
+    floater('+1','var(--good)');
+  }else{
+    streak=0;
+    missed.push(VOCAB[idx]);
+    floater('✗','var(--bad)');
+  }
+  updateHUD();
+  setTimeout(()=>{ if(running) nextQ(); }, correct?360:820);
+}
+function floater(txt,col){
+  const f=$('floater'); f.textContent=txt; f.style.color=col;
+  f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+}
+function updateHUD(){
+  $('scoreV').textContent=score;
+  $('streakV').textContent=streak;
+  $('streakChip').classList.toggle('on',streak>=3);
+}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss;}
+
+function start(){
+  running=true; score=0; answered=0; streak=0; best=0; missed.length=0; remaining=20*60;
+  buildQueue();
+  $('start').style.display='none'; $('end').style.display='none';
+  $('play').style.display='flex'; $('hud').style.display='flex';
+  updateHUD(); $('timerV').textContent=fmt(remaining);
+  tick=setInterval(()=>{
+    remaining--; $('timerV').textContent=fmt(Math.max(0,remaining));
+    const t=$('timer'); t.classList.toggle('warn',remaining<=120&&remaining>30); t.classList.toggle('danger',remaining<=30);
+    if(remaining<=0) finish(false);
+  },1000);
+  nextQ();
+}
+function finish(done){
+  if(!running)return;
+  running=false; clearInterval(tick);
+  $('play').style.display='none'; $('hud').style.display='none'; $('end').style.display='flex';
+  const acc=answered?Math.round(score/answered*100):0;
+  const elapsedMin=Math.max(0.1,(20*60-remaining)/60);
+  const rate=(answered/elapsedMin).toFixed(1);
+  $('bigScore').innerHTML=score+'<small>/'+answered+'</small>';
+  $('sAcc').textContent=acc+'%';
+  $('sAns').textContent=answered+' / '+TOTAL;
+  $('sStreak').textContent=best;
+  $('sRate').textContent=rate;
+  let band;
+  if(done&&acc>=95)band="Toute la liste, sans faute 🏆";
+  else if(done)band="Liste terminée ! 🎉";
+  else if(acc>=90)band="Excellent";
+  else if(acc>=75)band="Très bien";
+  else if(acc>=60)band="Bien";
+  else band="À entraîner";
+  $('band').textContent=band;
+  const seen=new Set(), uniq=[];
+  missed.forEach(m=>{const k=m[0];if(!seen.has(k)){seen.add(k);uniq.push(m);}});
+  if(uniq.length===0){
+    $('missedWrap').style.display='none';
+    $('perfect').style.display='block';
+  }else{
+    $('missedWrap').style.display='block';
+    $('perfect').style.display='none';
+    $('missedDesc').textContent=`${uniq.length} mot(s) manqué(s) — révise-les puis rejoue.`;
+    $('missGrid').innerHTML=uniq.map(m=>`<div class="miss-row"><span class="mf">${m[0]}</span><span class="me">${m[1]}</span></div>`).join('');
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(!running||locked)return;
+  const k=parseInt(e.key,10);
+  if(k>=1&&k<=4){const c=$('choices').children[k-1]; if(c)c.click();}
+});
+
+$('startBtn').addEventListener('click',start);
+$('againBtn').addEventListener('click',start);
+$('facts').insertAdjacentHTML('afterbegin',`<div class="fact">📚 <b>${VOCAB.length}</b> mots</div>`);
+</script>
