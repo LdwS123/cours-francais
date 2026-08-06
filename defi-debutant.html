@@ -1,0 +1,406 @@
+<meta charset="utf-8">
+<title>Défi débutant — Vocabulaire A1 · A2 · B1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#0f1220; --surface:#191d30; --surface-2:#212642;
+    --ink:#f0f2fb; --ink-soft:#b3b9d8; --ink-faint:#7c84ad;
+    --line:#2b3153; --line-strong:#3b426b;
+    --accent:#5b7cfa; --accent-soft:#232a52; --accent-ink:#9db0ff;
+    --hot:#ff8a3d; --hot-soft:#33210f;
+    --good:#2ee08a; --good-soft:#123526; --bad:#ff5d5d; --bad-soft:#3a1414;
+    --serif:Georgia,"Iowan Old Style",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme:light){:root{
+    --paper:#f1f2f7; --surface:#ffffff; --surface-2:#f5f6fb;
+    --ink:#151827; --ink-soft:#4b5169; --ink-faint:#828aa6;
+    --line:#e3e5ef; --line-strong:#ccd0e0;
+    --accent:#3a54d6; --accent-soft:#e7ebfd; --accent-ink:#2537a0;
+    --hot:#e0640f; --hot-soft:#fbebdc;
+    --good:#12925c; --good-soft:#e0f4ea; --bad:#cc3b3b; --bad-soft:#f9e6e6;
+  }}
+  :root[data-theme="light"]{
+    --paper:#f1f2f7; --surface:#ffffff; --surface-2:#f5f6fb;
+    --ink:#151827; --ink-soft:#4b5169; --ink-faint:#828aa6;
+    --line:#e3e5ef; --line-strong:#ccd0e0;
+    --accent:#3a54d6; --accent-soft:#e7ebfd; --accent-ink:#2537a0;
+    --hot:#e0640f; --hot-soft:#fbebdc; --good:#12925c; --good-soft:#e0f4ea; --bad:#cc3b3b; --bad-soft:#f9e6e6;
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1220; --surface:#191d30; --surface-2:#212642;
+    --ink:#f0f2fb; --ink-soft:#b3b9d8; --ink-faint:#7c84ad;
+    --line:#2b3153; --line-strong:#3b426b;
+    --accent:#5b7cfa; --accent-soft:#232a52; --accent-ink:#9db0ff;
+    --hot:#ff8a3d; --hot-soft:#33210f; --good:#2ee08a; --good-soft:#123526; --bad:#ff5d5d; --bad-soft:#3a1414;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,color-mix(in srgb,var(--accent) 16%,var(--paper)),var(--paper));color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+  .app{max-width:640px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding:0 18px}
+
+  .hud{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;padding:12px 0;background:linear-gradient(var(--paper),color-mix(in srgb,var(--paper) 70%,transparent));backdrop-filter:blur(6px)}
+  .chip{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:7px 12px;font-variant-numeric:tabular-nums}
+  .chip .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);font-weight:700}
+  .chip .v{font-size:17px;font-weight:800;line-height:1}
+  .chip.timer{margin-right:auto}
+  .chip.timer.warn{border-color:var(--hot);color:var(--hot);background:var(--hot-soft)}
+  .chip.timer.danger{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+  .streak .v{color:var(--hot)}
+  .flame{filter:grayscale(1);opacity:.4;transition:.2s}
+  .streak.on .flame{filter:none;opacity:1}
+
+  .center{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px 0 60px}
+  .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-ink);font-weight:700}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,8vw,52px);line-height:1.04;margin:12px 0 10px;letter-spacing:-.02em;text-wrap:balance}
+  .lead{color:var(--ink-soft);font-size:16px;max-width:44ch;margin:0 auto 8px}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 26px}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;color:var(--ink-soft)}
+  .fact b{color:var(--ink)}
+  .big-btn{font-family:inherit;font-size:19px;font-weight:800;letter-spacing:.01em;color:#fff;background:linear-gradient(135deg,var(--accent),#7d5bfa);border:none;border-radius:16px;padding:17px 44px;cursor:pointer;box-shadow:0 10px 30px color-mix(in srgb,var(--accent) 45%,transparent);transition:transform .1s,filter .15s}
+  .big-btn:hover{filter:brightness(1.08)} .big-btn:active{transform:scale(.97)}
+  .tiny{font-size:12.5px;color:var(--ink-faint);margin-top:16px}
+
+  #play{display:none;flex:1;flex-direction:column;padding-bottom:30px}
+  .qprog{height:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:2px 0 6px}
+  #qfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--hot));border-radius:999px;transition:width .3s ease}
+  .dir{display:flex;justify-content:center;margin:8px 0 4px}
+  .dir span{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 13px;border-radius:999px;border:1px solid var(--line)}
+  .dir .fr2en{color:var(--accent-ink);background:var(--accent-soft)}
+  .dir .en2fr{color:var(--hot);background:var(--hot-soft)}
+  .prompt{flex:none;text-align:center;padding:26px 12px 22px}
+  .prompt .word{font-family:var(--serif);font-weight:600;font-size:clamp(30px,7.5vw,46px);line-height:1.12;letter-spacing:-.01em;text-wrap:balance}
+  .prompt .qn{font-size:12.5px;color:var(--ink-faint);margin-top:10px;font-variant-numeric:tabular-nums}
+  .choices{display:grid;gap:11px}
+  .choice{position:relative;display:flex;align-items:center;gap:13px;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:15px 16px;font-family:inherit;font-size:16.5px;color:var(--ink);cursor:pointer;transition:transform .06s,border-color .12s,background .12s}
+  .choice:hover{border-color:var(--line-strong)} .choice:active{transform:scale(.99)}
+  .choice .num{flex:none;width:26px;height:26px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-faint);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .choice.correct{border-color:var(--good);background:var(--good-soft)}
+  .choice.correct .num{background:var(--good);border-color:var(--good);color:#04170e}
+  .choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+  .choice.wrong .num{background:var(--bad);border-color:var(--bad);color:#2a0808}
+  .locked .choice{pointer-events:none}
+  .floater{position:fixed;left:50%;transform:translateX(-50%);top:44%;font-family:var(--serif);font-size:40px;font-weight:800;pointer-events:none;opacity:0}
+  .floater.go{animation:pop .55s ease-out}
+  @keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-34px) scale(1.1)}}
+  @media (prefers-reduced-motion:reduce){.floater.go{animation:none}}
+
+  #end{display:none;flex:1;flex-direction:column;padding:24px 0 50px}
+  .result-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 22px;text-align:center;position:relative;overflow:hidden}
+  .result-card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--accent),var(--hot))}
+  .result-band{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+  .result-big{font-family:var(--serif);font-size:clamp(52px,15vw,86px);font-weight:600;line-height:1;margin:8px 0 0;font-variant-numeric:tabular-nums}
+  .result-big small{font-size:.32em;color:var(--ink-faint)}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:20px}
+  .stat{background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:12px}
+  .stat .n{font-family:var(--serif);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+  .stat .k{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px}
+  .missed{margin-top:24px}
+  .missed h3{font-family:var(--serif);font-size:19px;margin:0 0 4px}
+  .missed p{color:var(--ink-soft);font-size:13.5px;margin:0 0 12px}
+  .miss-grid{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .miss-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:9px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+  .miss-row:last-child{border-bottom:none}
+  .miss-row:nth-child(even){background:var(--surface-2)}
+  .miss-row .mf{font-family:var(--serif);font-weight:600}
+  .miss-row .me{color:var(--ink-soft)}
+  .again{display:flex;justify-content:center;margin-top:24px}
+  .perfect{color:var(--good);font-weight:700;margin-top:18px}
+</style>
+
+<div class="app">
+  <div class="hud" id="hud" style="display:none">
+    <div class="chip timer" id="timer"><span class="k">Temps</span><span class="v" id="timerV">20:00</span></div>
+    <div class="chip"><span class="k">Score</span><span class="v" id="scoreV">0</span></div>
+    <div class="chip streak" id="streakChip"><span class="flame">🔥</span><span class="v" id="streakV">0</span></div>
+  </div>
+
+  <section class="center" id="start">
+    <div class="kicker">Défi débutant · A1 · A2 · B1</div>
+    <h1>Les essentiels<br>en 20 minutes</h1>
+    <p class="lead">Le vocabulaire <b>essentiel du quotidien</b> (niveaux A1, A2, B1). Passe en revue toute la liste une seule fois, le plus vite possible. On te montre un mot, tu cliques la bonne traduction. Ça alterne <b>français → anglais</b> et <b>anglais → français</b>. Le défi se termine quand tu as fait tous les mots — ou quand les 20 minutes sont écoulées.</p>
+    <div class="facts" id="facts">
+      <div class="fact">⚡ Réponse <b>instantanée</b></div>
+      <div class="fact">🔄 Les deux sens</div>
+      <div class="fact">⏱️ <b>20 min</b> pour tout finir</div>
+      <div class="fact">🔥 Série de bonnes réponses</div>
+    </div>
+    <button class="big-btn" id="startBtn">Commencer le défi</button>
+    <p class="tiny">Astuce : tu peux aussi taper les touches <b>1 · 2 · 3 · 4</b> pour aller plus vite.</p>
+  </section>
+
+  <section id="play">
+    <div class="qprog"><div id="qfill"></div></div>
+    <div class="dir" id="dir"></div>
+    <div class="prompt">
+      <div class="word" id="word">—</div>
+      <div class="qn" id="qn"></div>
+    </div>
+    <div class="choices" id="choices"></div>
+  </section>
+
+  <section id="end">
+    <div class="result-card">
+      <div class="result-band" id="band">Terminé</div>
+      <div class="result-big" id="bigScore">0<small>pts</small></div>
+      <div class="stats">
+        <div class="stat"><div class="n" id="sAcc">0%</div><div class="k">Précision</div></div>
+        <div class="stat"><div class="n" id="sAns">0</div><div class="k">Répondues</div></div>
+        <div class="stat"><div class="n" id="sStreak">0</div><div class="k">Meilleure série</div></div>
+        <div class="stat"><div class="n" id="sRate">0</div><div class="k">Mots / minute</div></div>
+      </div>
+      <div class="perfect" id="perfect" style="display:none">🏆 Sans faute ! Impressionnant.</div>
+    </div>
+    <div class="missed" id="missedWrap">
+      <h3>À revoir</h3>
+      <p id="missedDesc"></p>
+      <div class="miss-grid" id="missGrid"></div>
+    </div>
+    <div class="again"><button class="big-btn" id="againBtn">Rejouer</button></div>
+  </section>
+
+  <div class="floater" id="floater"></div>
+</div>
+
+<script>
+const VOCAB = [
+["la famille","family"],["la mère","mother"],["le père","father"],["la maman","mom"],["le papa","dad"],["le frère","brother"],
+["la sœur","sister"],["les parents","parents"],["un enfant","a child"],["le fils","son"],["la fille","daughter / girl"],["le bébé","baby"],
+["la grand-mère","grandmother"],["le grand-père","grandfather"],["le mari","husband"],["la femme","wife / woman"],["l'oncle","uncle"],["la tante","aunt"],
+["le cousin","cousin (m)"],["un ami","a friend (m)"],["une amie","a friend (f)"],["le voisin","neighbor"],["la couleur","color"],["rouge","red"],
+["bleu","blue"],["vert","green"],["jaune","yellow"],["noir","black"],["blanc","white"],["gris","grey"],
+["rose","pink"],["orange","orange"],["violet","purple"],["marron","brown"],["lundi","Monday"],["mardi","Tuesday"],
+["mercredi","Wednesday"],["jeudi","Thursday"],["vendredi","Friday"],["samedi","Saturday"],["dimanche","Sunday"],["le week-end","the weekend"],
+["janvier","January"],["février","February"],["mars","March"],["avril","April"],["mai","May"],["juin","June"],
+["juillet","July"],["août","August"],["septembre","September"],["octobre","October"],["novembre","November"],["décembre","December"],
+["qui","who"],["quoi","what"],["où","where"],["quand","when"],["comment","how"],["pourquoi","why"],
+["combien","how much / how many"],["quel","which"],["bonjour","hello"],["bonsoir","good evening"],["salut","hi / bye"],["au revoir","goodbye"],
+["merci","thank you"],["s'il vous plaît","please"],["pardon","sorry / excuse me"],["oui","yes"],["non","no"],["d'accord","okay"],
+["de rien","you're welcome"],["bienvenue","welcome"],["désolé","sorry"],["beaucoup","a lot / much"],["un peu","a little"],["l'école","school"],
+["le professeur","teacher"],["le prof","teacher (informal)"],["un élève","a pupil"],["un étudiant","a student"],["le livre","book"],["le cahier","notebook"],
+["la classe","class / classroom"],["le cours","class / course"],["la leçon","lesson"],["le mot","word"],["la phrase","sentence"],["la question","question"],
+["la réponse","answer"],["un exercice","an exercise"],["la note","grade / mark"],["les vêtements","clothes"],["le pantalon","trousers / pants"],["la chemise","shirt"],
+["la robe","dress"],["la jupe","skirt"],["les chaussures","shoes"],["le manteau","coat"],["la veste","jacket"],["le chapeau","hat"],
+["le pull","sweater"],["le tee-shirt","t-shirt"],["zéro","zero"],["cent","a hundred"],["mille","a thousand"],["un million","a million"],
+["la moitié","half"],["le quart","quarter"],["l'heure","hour / time"],["la minute","minute"],["la journée","the day"],["la soirée","the evening"],
+["ce matin","this morning"],["amoureux","in love"],["en colère","angry"],["pressé","in a hurry"],["ravi","delighted"],["gentil","kind / nice"],
+["sûr","sure"],["être","to be"],["avoir","to have"],["faire","to do / to make"],["aller","to go"],["venir","to come"],
+["dire","to say / to tell"],["voir","to see"],["connaître","to know (a person / place)"],["pouvoir","to be able to / can"],["vouloir","to want"],["devoir","to have to / must"],
+["prendre","to take"],["mettre","to put"],["donner","to give"],["parler","to speak / to talk"],["penser","to think"],["croire","to believe"],
+["trouver","to find"],["passer","to pass / to spend (time)"],["comprendre","to understand"],["tenir","to hold"],["porter","to carry / to wear"],["montrer","to show"],
+["continuer","to continue"],["attendre","to wait"],["rester","to stay"],["suivre","to follow"],["entendre","to hear"],["commencer","to begin / to start"],
+["finir","to finish"],["terminer","to finish / to end"],["arrêter","to stop"],["oublier","to forget"],["se souvenir","to remember"],["se rappeler","to recall"],
+["apprendre","to learn"],["écrire","to write"],["lire","to read"],["courir","to run"],["marcher","to walk / to work (function)"],["manger","to eat"],
+["boire","to drink"],["dormir","to sleep"],["se réveiller","to wake up"],["se lever","to get up"],["se coucher","to go to bed"],["ouvrir","to open"],
+["fermer","to close"],["entrer","to enter / to go in"],["sortir","to go out / to take out"],["monter","to go up / to climb"],["descendre","to go down"],["partir","to leave"],
+["arriver","to arrive / to happen"],["revenir","to come back"],["retourner","to return / to go back"],["rentrer","to go home"],["tenter","to attempt / to tempt"],["essayer","to try"],
+["choisir","to choose"],["changer","to change"],["gagner","to win / to earn"],["perdre","to lose"],["jouer","to play"],["travailler","to work"],
+["étudier","to study"],["acheter","to buy"],["vendre","to sell"],["payer","to pay"],["coûter","to cost"],["dépenser","to spend (money)"],
+["économiser","to save (money)"],["compter","to count / to matter"],["utiliser","to use"],["se servir de","to use / to make use of"],["aider","to help"],["remercier","to thank"],
+["demander","to ask"],["répondre","to answer / to reply"],["expliquer","to explain"],["raconter","to tell (a story)"],["appeler","to call (name)"],["téléphoner","to phone"],
+["envoyer","to send"],["recevoir","to receive"],["apporter","to bring"],["emporter","to take away"],["amener","to bring (a person)"],["emmener","to take (a person)"],
+["laisser","to leave / to let"],["garder","to keep / to look after"],["ranger","to tidy up / to put away"],["nettoyer","to clean"],["laver","to wash"],["cuisiner","to cook"],
+["préparer","to prepare"],["servir","to serve"],["goûter","to taste"],["sentir","to smell / to feel"],["toucher","to touch"],["pousser","to push"],
+["tirer","to pull / to shoot"],["baisser","to lower"],["jeter","to throw / to throw away"],["attraper","to catch"],["casser","to break"],["réparer","to repair / to fix"],
+["construire","to build"],["fabriquer","to manufacture / to make"],["créer","to create"],["dessiner","to draw"],["couvrir","to cover"],["remplacer","to replace"],
+["ajouter","to add"],["enlever","to remove / to take off"],["prévenir","to warn"],["décider","to decide"],["accepter","to accept"],["proposer","to suggest / to offer"],
+["offrir","to offer / to give (a gift)"],["promettre","to promise"],["espérer","to hope"],["souhaiter","to wish"],["rêver","to dream"],["se sentir","to feel (a state)"],
+["pleurer","to cry"],["rire","to laugh"],["sourire","to smile"],["crier","to shout"],["chanter","to sing"],["danser","to dance"],
+["s'amuser","to have fun"],["s'ennuyer","to be bored"],["s'inquiéter","to worry"],["se fâcher","to get angry"],["se disputer","to argue"],["se réconcilier","to make up"],
+["embrasser","to kiss"],["serrer","to squeeze / to hold tight"],["rencontrer","to meet"],["se retrouver","to meet up"],["inviter","to invite"],["présenter","to introduce / to present"],
+["discuter","to discuss / to chat"],["décrire","to describe"],["répéter","to repeat"],["traduire","to translate"],["corriger","to correct"],["vérifier","to check"],
+["noter","to note / to grade"],["grand","big / tall"],["petit","small"],["gros","fat / big"],["long","long"],["court","short"],
+["large","wide"],["étroit","narrow"],["haut","high / tall"],["bas","low"],["épais","thick"],["mince","thin / slim"],
+["lourd","heavy"],["léger","light"],["vieux","old"],["nouveau","new"],["neuf","brand new"],["ancien","old / former"],
+["récent","recent"],["rapide","fast"],["lent","slow"],["fort","strong / loud"],["chaud","hot / warm"],["froid","cold"],
+["tiède","lukewarm"],["sec","dry"],["mouillé","wet"],["humide","damp / humid"],["propre","clean / own"],["sale","dirty"],
+["beau","beautiful / handsome"],["joli","pretty"],["laid","ugly"],["moche","ugly (informal)"],["bon","good"],["mauvais","bad"],
+["meilleur","better / best"],["pire","worse / worst"],["facile","easy"],["difficile","difficult"],["simple","simple"],["compliqué","complicated"],
+["important","important"],["utile","useful"],["inutile","useless"],["nécessaire","necessary"],["possible","possible"],["impossible","impossible"],
+["vrai","true / real"],["faux","false / wrong"],["juste","right / fair"],["exact","exact / correct"],["plein","full"],["vide","empty"],
+["ouvert","open"],["fermé","closed"],["libre","free / available"],["occupé","busy / occupied"],["cher","expensive / dear"],["gratuit","free (no cost)"],
+["riche","rich"],["pauvre","poor"],["heureux","happy"],["triste","sad"],["content","glad / pleased"],["fâché","angry"],
+["inquiet","worried"],["calme","calm"],["fatigué","tired"],["malade","sick"],["prêt","ready"],["seul","alone / only"],
+["ensemble","together"],["premier","first"],["dernier","last"],["prochain","next"],["passé","past"],["présent","present"],
+["clair","clear / light"],["foncé","dark (color)"],["brillant","shiny / brilliant"],["coloré","colorful"],["doux","soft / gentle / sweet"],["dur","hard / tough"],
+["solide","solid / sturdy"],["fragile","fragile"],["souple","flexible / supple"],["rigide","rigid / stiff"],["pointu","sharp / pointy"],["rond","round"],
+["carré","square"],["plat","flat"],["profond","deep"],["méchant","mean / nasty"],["sympa","nice / friendly"],["poli","polite"],
+["grossier","rude / coarse"],["honnête","honest"],["sincère","sincere"],["fier","proud"],["timide","shy"],["courageux","brave"],
+["prudent","careful / cautious"],["sage","wise / well-behaved"],["fou","crazy"],["bête","silly / stupid"],["intelligent","intelligent / smart"],["drôle","funny"],
+["ennuyeux","boring"],["intéressant","interesting"],["étrange","strange"],["bizarre","weird"],["normal","normal"],["habituel","usual"],
+["la nourriture","food"],["le repas","meal"],["le petit-déjeuner","breakfast"],["le déjeuner","lunch"],["le dîner","dinner"],["le pain","bread"],
+["le beurre","butter"],["le fromage","cheese"],["l'œuf","egg"],["la viande","meat"],["le poulet","chicken"],["le bœuf","beef"],
+["le porc","pork"],["le poisson","fish"],["les légumes","vegetables"],["les fruits","fruit"],["la pomme","apple"],["la poire","pear"],
+["la banane","banana"],["la fraise","strawberry"],["le raisin","grape"],["la tomate","tomato"],["la pomme de terre","potato"],["la carotte","carrot"],
+["l'oignon","onion"],["l'ail","garlic"],["la salade","salad / lettuce"],["le riz","rice"],["les pâtes","pasta"],["le sucre","sugar"],
+["le sel","salt"],["le poivre","pepper"],["l'huile","oil"],["le vinaigre","vinegar"],["la farine","flour"],["le lait","milk"],
+["la crème","cream"],["le yaourt","yogurt"],["le gâteau","cake"],["le biscuit","cookie / biscuit"],["la glace","ice cream / ice"],["le chocolat","chocolate"],
+["le miel","honey"],["la confiture","jam"],["le café","coffee"],["le thé","tea"],["le jus","juice"],["l'eau","water"],
+["le vin","wine"],["la bière","beer"],["la recette","recipe"],["l'entrée","starter"],["le dessert","dessert"],["la boisson","drink"],
+["le corps","body"],["la tête","head"],["le visage","face"],["les cheveux","hair"],["l'œil / les yeux","eye / eyes"],["le nez","nose"],
+["la bouche","mouth"],["la dent","tooth"],["la langue","tongue / language"],["l'oreille","ear"],["le cou","neck"],["l'épaule","shoulder"],
+["le bras","arm"],["le coude","elbow"],["la main","hand"],["le doigt","finger"],["le dos","back"],["le ventre","belly / stomach"],
+["la jambe","leg"],["le genou","knee"],["le pied","foot"],["le cœur","heart"],["le cerveau","brain"],["le sang","blood"],
+["l'os","bone"],["le muscle","muscle"],["la santé","health"],["la maladie","illness / disease"],["la fièvre","fever"],["le rhume","cold (illness)"],
+["la toux","cough"],["la blessure","wound / injury"],["le médicament","medicine"],["le remède","remedy / cure"],["l'ordonnance","prescription"],["le médecin","doctor"],
+["l'hôpital","hospital"],["la pharmacie","pharmacy"],["le régime","diet"],["le sommeil","sleep"],["la maison","house"],["l'appartement","apartment"],
+["la porte","door"],["la fenêtre","window"],["le mur","wall"],["le sol","floor / ground"],["le plafond","ceiling"],["l'escalier","staircase"],
+["la pièce","room"],["la chambre","bedroom"],["la cuisine","kitchen"],["la salle de bain","bathroom"],["le salon","living room"],["le lit","bed"],
+["la table","table"],["la chaise","chair"],["le fauteuil","armchair"],["le canapé","sofa"],["l'armoire","wardrobe"],["le placard","cupboard"],
+["le tiroir","drawer"],["l'étagère","shelf"]
+];
+
+const STOP=new Set("a an the to of and or is it be as at in on for your you his her him its i me my we they them someone something oneself each out off into from with that this these those are was not does do have has who she he but by up down over upon only very more most one".split(" "));
+function toks(s){return new Set(s.toLowerCase().split(/[^a-zàâçéèêëîïôûùüÿœæ]+/).filter(w=>w.length>2&&!STOP.has(w)));}
+function overlap(a,b){for(const t of a)if(b.has(t))return true;return false;}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const enToks=VOCAB.map(v=>toks(v[1]));
+const frToks=VOCAB.map(v=>toks(v[0]));
+
+function distract(idx,n,fr2en){
+  const base=fr2en?enToks[idx]:frToks[idx];
+  const order=shuffle(VOCAB.map((_,i)=>i));
+  const out=[],used=new Set();
+  for(const i of order){
+    if(i===idx)continue;
+    const ct=fr2en?enToks[i]:frToks[i];
+    if(overlap(ct,base))continue;
+    const val=fr2en?VOCAB[i][1]:VOCAB[i][0];
+    if(used.has(val))continue;
+    used.add(val);out.push(val);
+    if(out.length===n)break;
+  }
+  while(out.length<n){
+    const i=Math.floor(Math.random()*VOCAB.length);
+    const val=fr2en?VOCAB[i][1]:VOCAB[i][0];
+    if(i!==idx&&!used.has(val)){used.add(val);out.push(val);}
+  }
+  return out;
+}
+
+const $=id=>document.getElementById(id);
+const TOTAL=VOCAB.length;
+let queue=[], qptr=0, score=0, answered=0, streak=0, best=0, locked=false, running=false;
+const missed=[];
+let remaining=20*60, tick=null;
+
+function buildQueue(){
+  queue=shuffle(VOCAB.map((_,i)=>i));
+  qptr=0;
+}
+function nextQ(){
+  if(!running)return;
+  if(qptr>=queue.length){ finish(true); return; }
+  const idx=queue[qptr++];
+  const fr2en=Math.random()<0.5;
+  const [fr,en]=VOCAB[idx];
+  const prompt=fr2en?fr:en;
+  const answer=fr2en?en:fr;
+  const opts=shuffle([answer,...distract(idx,3,fr2en)]);
+  render(prompt,answer,opts,fr2en,idx);
+}
+function render(prompt,answer,opts,fr2en,idx){
+  locked=false;
+  $('dir').innerHTML = fr2en
+    ? '<span class="fr2en">🇫🇷 Français → Anglais 🇬🇧</span>'
+    : '<span class="en2fr">🇬🇧 Anglais → Français 🇫🇷</span>';
+  $('word').textContent=prompt;
+  $('qn').textContent='Mot '+(answered+1)+' / '+TOTAL;
+  $('qfill').style.width=(answered/TOTAL*100)+'%';
+  const box=$('choices'); box.className='choices'; box.innerHTML='';
+  opts.forEach((val,k)=>{
+    const b=document.createElement('button');
+    b.className='choice'; b.type='button';
+    b.innerHTML=`<span class="num">${k+1}</span><span class="lbl">${val}</span>`;
+    b.addEventListener('click',()=>pick(b,val,answer,idx,fr2en));
+    box.appendChild(b);
+  });
+}
+function pick(btn,val,answer,idx,fr2en){
+  if(locked)return; locked=true;
+  answered++;
+  const box=$('choices'); box.classList.add('locked');
+  const correct=val===answer;
+  box.querySelectorAll('.choice').forEach(c=>{
+    const t=c.querySelector('.lbl').textContent;
+    if(t===answer)c.classList.add('correct');
+    else if(c===btn)c.classList.add('wrong');
+  });
+  if(correct){
+    score++; streak++; best=Math.max(best,streak);
+    floater('+1','var(--good)');
+  }else{
+    streak=0;
+    missed.push(VOCAB[idx]);
+    floater('✗','var(--bad)');
+  }
+  updateHUD();
+  setTimeout(()=>{ if(running) nextQ(); }, correct?360:820);
+}
+function floater(txt,col){
+  const f=$('floater'); f.textContent=txt; f.style.color=col;
+  f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+}
+function updateHUD(){
+  $('scoreV').textContent=score;
+  $('streakV').textContent=streak;
+  $('streakChip').classList.toggle('on',streak>=3);
+}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss;}
+
+function start(){
+  running=true; score=0; answered=0; streak=0; best=0; missed.length=0; remaining=20*60;
+  buildQueue();
+  $('start').style.display='none'; $('end').style.display='none';
+  $('play').style.display='flex'; $('hud').style.display='flex';
+  updateHUD(); $('timerV').textContent=fmt(remaining);
+  tick=setInterval(()=>{
+    remaining--; $('timerV').textContent=fmt(Math.max(0,remaining));
+    const t=$('timer'); t.classList.toggle('warn',remaining<=120&&remaining>30); t.classList.toggle('danger',remaining<=30);
+    if(remaining<=0) finish(false);
+  },1000);
+  nextQ();
+}
+function finish(done){
+  if(!running)return;
+  running=false; clearInterval(tick);
+  $('play').style.display='none'; $('hud').style.display='none'; $('end').style.display='flex';
+  const acc=answered?Math.round(score/answered*100):0;
+  const elapsedMin=Math.max(0.1,(20*60-remaining)/60);
+  const rate=(answered/elapsedMin).toFixed(1);
+  $('bigScore').innerHTML=score+'<small>/'+answered+'</small>';
+  $('sAcc').textContent=acc+'%';
+  $('sAns').textContent=answered+' / '+TOTAL;
+  $('sStreak').textContent=best;
+  $('sRate').textContent=rate;
+  let band;
+  if(done&&acc>=95)band="Toute la liste, sans faute 🏆";
+  else if(done)band="Liste terminée ! 🎉";
+  else if(acc>=90)band="Excellent";
+  else if(acc>=75)band="Très bien";
+  else if(acc>=60)band="Bien";
+  else band="À entraîner";
+  $('band').textContent=band;
+  const seen=new Set(), uniq=[];
+  missed.forEach(m=>{const k=m[0];if(!seen.has(k)){seen.add(k);uniq.push(m);}});
+  if(uniq.length===0){
+    $('missedWrap').style.display='none';
+    $('perfect').style.display='block';
+  }else{
+    $('missedWrap').style.display='block';
+    $('perfect').style.display='none';
+    $('missedDesc').textContent=`${uniq.length} mot(s) manqué(s) — révise-les puis rejoue.`;
+    $('missGrid').innerHTML=uniq.map(m=>`<div class="miss-row"><span class="mf">${m[0]}</span><span class="me">${m[1]}</span></div>`).join('');
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(!running||locked)return;
+  const k=parseInt(e.key,10);
+  if(k>=1&&k<=4){const c=$('choices').children[k-1]; if(c)c.click();}
+});
+
+$('startBtn').addEventListener('click',start);
+$('againBtn').addEventListener('click',start);
+$('facts').insertAdjacentHTML('afterbegin',`<div class="fact">📚 <b>${VOCAB.length}</b> mots</div>`);
+</script>
