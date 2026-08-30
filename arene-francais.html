@@ -1,0 +1,707 @@
+<meta charset="utf-8">
+<title>L'Arène du français — 7 jeux de phrases</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --ground:#f6f1e7; --card:#fffdf8; --card2:#f1ece1;
+    --ink:#1b1815; --ink-soft:#5b544b; --ink-faint:#8b8377;
+    --line:#e2dbcc; --line-2:#cec5b2;
+    --gold:#a9741a; --gold-bg:#f6ead1; --gold-ink:#7d5410;
+    --jade:#1d8a63; --jade-bg:#e0f2e9;
+    --rust:#c2453a; --rust-bg:#fae7e4;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --shadow:0 1px 2px rgba(40,30,10,.06), 0 10px 26px rgba(40,30,10,.07);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ground:#14120f; --card:#1e1b17; --card2:#262219;
+    --ink:#f2ece1; --ink-soft:#b6ad9e; --ink-faint:#8a8173;
+    --line:#312b23; --line-2:#453d31;
+    --gold:#d9a441; --gold-bg:#2e2517; --gold-ink:#e8bd66;
+    --jade:#4cc491; --jade-bg:#162b22;
+    --rust:#e8776a; --rust-bg:#2e1a18;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --ground:#14120f; --card:#1e1b17; --card2:#262219;
+    --ink:#f2ece1; --ink-soft:#b6ad9e; --ink-faint:#8a8173;
+    --line:#312b23; --line-2:#453d31;
+    --gold:#d9a441; --gold-bg:#2e2517; --gold-ink:#e8bd66;
+    --jade:#4cc491; --jade-bg:#162b22;
+    --rust:#e8776a; --rust-bg:#2e1a18;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px;margin:0 auto;padding:0 18px 60px}
+  button{font-family:inherit}
+
+  /* ===== MENU ===== */
+  #menu{padding:34px 0 20px}
+  .crest{text-align:center;margin-bottom:26px}
+  .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,7vw,46px);line-height:1.05;margin:11px 0 9px;letter-spacing:-.015em;text-wrap:balance}
+  .tag{color:var(--ink-soft);font-size:15px;max-width:46ch;margin:0 auto}
+  .rank{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin:22px 0 20px;box-shadow:var(--shadow)}
+  .rank .medal{font-size:26px;line-height:1}
+  .rank .who{flex:1;min-width:0}
+  .rank .lvl{font-family:var(--serif);font-size:17px;font-weight:600}
+  .rank .xpline{font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .xpbar{height:6px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:6px}
+  .xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#e2c078);border-radius:99px}
+  .games{display:grid;gap:11px}
+  .game{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:15px;padding:14px 15px;color:var(--ink);cursor:pointer;transition:border-color .14s,transform .06s,box-shadow .14s;box-shadow:var(--shadow)}
+  .game:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .game:active{transform:scale(.995)}
+  .game:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .game .ico{flex:none;width:44px;height:44px;border-radius:12px;background:var(--gold-bg);display:flex;align-items:center;justify-content:center;font-size:21px}
+  .game .txt{flex:1;min-width:0;display:block}
+  .game .nm{display:block;font-family:var(--serif);font-size:17.5px;font-weight:600;line-height:1.25}
+  .game .ds{display:block;font-size:12.8px;color:var(--ink-soft);margin-top:3px;line-height:1.35}
+  .game .bst{flex:none;text-align:right;font-variant-numeric:tabular-nums}
+  .game .bst b{display:block;font-family:var(--serif);font-size:17px;color:var(--gold)}
+  .game .bst span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+  .hint{text-align:center;font-size:12.5px;color:var(--ink-faint);margin-top:20px}
+
+  /* ===== HUD ===== */
+  #hud{display:none;position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin:0 -18px 4px;padding:10px 18px}
+  .hud-in{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:9px}
+  .pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700}
+  .pill small{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);font-weight:700}
+  .pill.gap{margin-right:auto;font-weight:600;font-size:12.5px;color:var(--ink-soft)}
+  .pill.time.warn{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+  .pill.time.danger{border-color:var(--rust);color:var(--rust);background:var(--rust-bg)}
+  .combo{color:var(--gold);opacity:.35;transition:.15s}
+  .combo.on{opacity:1}
+  .quit{background:none;border:1px solid var(--line);color:var(--ink-faint);border-radius:9px;padding:6px 9px;font-size:12px;cursor:pointer}
+  .quit:hover{border-color:var(--line-2);color:var(--ink)}
+
+  /* ===== PLAY ===== */
+  #play{display:none;padding-top:16px}
+  .prog{height:5px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:20px}
+  .prog i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .3s ease}
+  .task{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;margin-bottom:12px}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:24px 20px;box-shadow:var(--shadow);margin-bottom:16px}
+  .sentence{font-family:var(--serif);font-size:clamp(19px,4.4vw,25px);line-height:1.42;text-wrap:balance;text-align:center}
+  .sentence.en{font-family:var(--sans);font-size:clamp(17px,3.9vw,21px);color:var(--ink)}
+  .blank{display:inline-block;min-width:74px;border-bottom:2.5px solid var(--gold);color:var(--gold);text-align:center;font-weight:700}
+  .cue{text-align:center;font-size:13px;color:var(--ink-faint);margin-top:12px;font-style:italic}
+  .opts{display:grid;gap:9px}
+  .opt{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 13px;font-size:15.5px;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s,transform .05s}
+  .opt:hover{border-color:var(--line-2)}
+  .opt:active{transform:scale(.995)}
+  .opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .opt .k{flex:none;width:23px;height:23px;border-radius:7px;background:var(--card2);border:1px solid var(--line);color:var(--ink-faint);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .opt.good{border-color:var(--jade);background:var(--jade-bg)}
+  .opt.good .k{background:var(--jade);border-color:var(--jade);color:#fff}
+  .opt.bad{border-color:var(--rust);background:var(--rust-bg)}
+  .opt.bad .k{background:var(--rust);border-color:var(--rust);color:#fff}
+  .locked .opt{pointer-events:none}
+
+  /* build mode */
+  .tray{min-height:64px;background:var(--card2);border:1.5px dashed var(--line-2);border-radius:13px;padding:10px;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;margin-bottom:13px}
+  .tray:empty::after{content:"Clique les mots dans le bon ordre…";color:var(--ink-faint);font-size:13.5px;font-style:italic}
+  .bank{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-family:var(--serif);font-size:16px;color:var(--ink);cursor:pointer;transition:.12s}
+  .chip:hover{border-color:var(--gold)}
+  .chip.placed{background:var(--gold-bg);border-color:var(--gold);color:var(--gold-ink)}
+  .chip.used{opacity:.25;pointer-events:none}
+  .tray.good{border-style:solid;border-color:var(--jade);background:var(--jade-bg)}
+  .tray.bad{border-style:solid;border-color:var(--rust);background:var(--rust-bg)}
+
+  /* correction */
+  .fix{display:none;border-radius:15px;padding:15px 16px;margin-top:14px;border:1.5px solid var(--line);background:var(--card)}
+  .fix.show{display:block}
+  .fix.ok{border-color:var(--jade);background:var(--jade-bg)}
+  .fix.no{border-color:var(--rust);background:var(--rust-bg)}
+  .fix .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px}
+  .fix.ok .verdict{color:var(--jade)}
+  .fix.no .verdict{color:var(--rust)}
+  .fix .fr{font-family:var(--serif);font-size:16.5px;line-height:1.4;margin-bottom:5px}
+  .fix .fr b{color:var(--gold-ink);border-bottom:2px solid var(--gold)}
+  .fix .en{font-size:14.5px;color:var(--ink-soft)}
+  .fix .en::before{content:"🇬🇧 ";}
+  .next{margin-top:13px;width:100%;background:var(--ink);color:var(--ground);border:none;border-radius:11px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
+  .next:hover{opacity:.9}
+  .pop{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-family:var(--serif);font-size:38px;font-weight:700;pointer-events:none;opacity:0;z-index:50}
+  .pop.go{animation:rise .7s ease-out}
+  @keyframes rise{0%{opacity:0;transform:translate(-50%,14px) scale(.85)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px) scale(1.12)}}
+  @media (prefers-reduced-motion:reduce){.pop.go{animation:none}}
+
+  /* ===== END ===== */
+  #end{display:none;padding:26px 0 40px}
+  .final{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:28px 22px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .final::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--gold),#e2c078)}
+  .final .band{font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  .final .pts{font-family:var(--serif);font-size:clamp(46px,13vw,70px);font-weight:600;line-height:1;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+  .final .pts small{font-size:.3em;color:var(--ink-faint)}
+  .final .rec{font-size:13.5px;color:var(--ink-soft)}
+  .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:18px}
+  .cell{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px}
+  .cell b{display:block;font-family:var(--serif);font-size:22px;font-variant-numeric:tabular-nums}
+  .cell span{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint)}
+  .revw{margin-top:24px}
+  .revw h3{font-family:var(--serif);font-size:19px;margin:0 0 3px}
+  .revw p{font-size:13px;color:var(--ink-soft);margin:0 0 12px}
+  .rv{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:8px}
+  .rv .f{font-family:var(--serif);font-size:15.5px;line-height:1.35}
+  .rv .f b{color:var(--gold-ink);border-bottom:2px solid var(--gold)}
+  .rv .e{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+  .rv .e::before{content:"🇬🇧 ";}
+  .acts{display:grid;gap:9px;margin-top:22px}
+  .act{border-radius:12px;padding:13px;font-size:15.5px;font-weight:700;cursor:pointer;border:1.5px solid transparent}
+  .act.p{background:var(--gold);color:#1b1815}
+  .act.p:hover{filter:brightness(1.06)}
+  .act.s{background:transparent;border-color:var(--line-2);color:var(--ink)}
+  .act.s:hover{background:var(--card)}
+  .perfect{color:var(--jade);font-weight:700;margin-top:16px}
+</style>
+
+<div id="hud">
+  <div class="hud-in">
+    <div class="pill gap" id="hMode">—</div>
+    <div class="pill" id="hLives" style="display:none"></div>
+    <div class="pill time" id="hTime" style="display:none"><small>Temps</small><span id="hTimeV">3:00</span></div>
+    <div class="pill combo" id="hCombo"><small>Combo</small><span id="hComboV">×1</span></div>
+    <div class="pill"><small>Points</small><span id="hScore">0</span></div>
+    <button class="quit" id="quitBtn">✕</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="crest">
+      <div class="kicker">Entraînement intensif · B2 · C1</div>
+      <h1>L'Arène du français</h1>
+      <p class="tag">Sept jeux pour devenir un as. Ici, on ne révise pas des mots isolés : on travaille sur de <b>vraies phrases</b>, et la traduction anglaise s'affiche à chaque correction.</p>
+    </div>
+
+    <div class="rank">
+      <div class="medal" id="rMedal">🥉</div>
+      <div class="who">
+        <div class="lvl" id="rLevel">Apprenti</div>
+        <div class="xpline" id="rXp">0 XP</div>
+        <div class="xpbar"><i id="rBar" style="width:0%"></i></div>
+      </div>
+    </div>
+
+    <div class="games" id="games"></div>
+    <p class="hint">Astuce : les touches <b>1 · 2 · 3 · 4</b> répondent, <b>Entrée</b> continue.</p>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play">
+    <div class="prog"><i id="pFill"></i></div>
+    <div class="task" id="pTask"></div>
+    <div class="stage" id="pStage"></div>
+    <div id="pAnswer"></div>
+    <div class="fix" id="pFix">
+      <div class="verdict" id="fVerdict"></div>
+      <div class="fr" id="fFr"></div>
+      <div class="en" id="fEn"></div>
+      <button class="next" id="fNext">Continuer →</button>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section id="end">
+    <div class="final">
+      <div class="band" id="eBand">Manche terminée</div>
+      <div class="pts" id="ePts">0<small> pts</small></div>
+      <div class="rec" id="eRec"></div>
+      <div class="grid4">
+        <div class="cell"><b id="eAcc">0%</b><span>Précision</span></div>
+        <div class="cell"><b id="eCombo">×1</b><span>Meilleur combo</span></div>
+        <div class="cell"><b id="eRight">0</b><span>Bonnes réponses</span></div>
+        <div class="cell"><b id="eXp">+0</b><span>XP gagnés</span></div>
+      </div>
+      <div class="perfect" id="ePerfect" style="display:none">🏆 Sans aucune faute !</div>
+    </div>
+    <div class="revw" id="eRevw">
+      <h3>À revoir</h3>
+      <p id="eRevwD"></p>
+      <div id="eList"></div>
+    </div>
+    <div class="acts">
+      <button class="act p" id="eAgain">Rejouer cette manche</button>
+      <button class="act s" id="eMenu">← Choisir un autre jeu</button>
+    </div>
+  </section>
+</div>
+
+<div class="pop" id="pop"></div>
+
+<script>
+// Banque de phrases : [français, anglais, mot à trouver, catégorie]
+// catégories : v=verbe, n=nom, a=adjectif, p=préposition, x=connecteur, e=expression
+const SENTENCES = [
+// ---------- VERBES ----------
+["Il a fini par céder à la pression.","He ended up giving in to the pressure.","céder","v"],
+["Cette mesure risque de nuire à l'économie locale.","This measure could harm the local economy.","nuire","v"],
+["Je tiens à te prévenir avant qu'il soit trop tard.","I want to warn you before it's too late.","prévenir","v","I want to prevent you before it's too late."],
+["Nous devons tenir compte de son expérience.","We must take his experience into account.","tenir compte","v"],
+["Le gouvernement a fini par reconnaître son erreur.","The government finally admitted its mistake.","reconnaître","v"],
+["Elle s'est efforcée de garder son calme.","She strove to keep her calm.","efforcée","v"],
+["Ce rapport vient étayer notre hypothèse.","This report backs up our hypothesis.","étayer","v"],
+["Il ne faut pas sous-estimer la difficulté du texte.","We must not underestimate the difficulty of the text.","sous-estimer","v"],
+["Ses propos ont suscité une vive polémique.","His remarks sparked a heated controversy.","suscité","v"],
+["La crise a engendré de nombreuses faillites.","The crisis generated many bankruptcies.","engendré","v"],
+["Je me méfie de ses promesses.","I am wary of his promises.","méfie","v"],
+["Il a réussi à contourner l'obstacle.","He managed to get around the obstacle.","contourner","v"],
+["Elle a esquivé la question du journaliste.","She dodged the journalist's question.","esquivé","v"],
+["Nous avons dû renoncer à ce projet.","We had to give up on this project.","renoncer","v"],
+["Le succès de l'entreprise repose sur ses employés.","The company's success rests on its employees.","repose","v"],
+["Il a avoué avoir menti à ses parents.","He confessed to having lied to his parents.","avoué","v"],
+["Cette loi vise à protéger les consommateurs.","This law aims to protect consumers.","vise","v"],
+["Elle a su surmonter toutes les épreuves.","She was able to overcome all the hardships.","surmonter","v"],
+["Le maire a démenti ces accusations.","The mayor denied these accusations.","démenti","v"],
+["Il s'agit d'une question très délicate.","It is a very delicate matter.","s'agit","v"],
+["Nous devons faire face à cette situation.","We must face up to this situation.","faire face","v"],
+["Ce détail a échappé à tout le monde.","This detail escaped everyone.","échappé","v"],
+["Cette réforme a fini par s'imposer.","This reform eventually established itself.","s'imposer","v"],
+["Le témoin a refusé de témoigner.","The witness refused to testify.","témoigner","v"],
+["Elle a entamé une nouvelle carrière.","She began a new career.","entamé","v"],
+["Ils ont bafoué toutes les règles.","They flouted all the rules.","bafoué","v"],
+["Le juge a tranché en faveur du plaignant.","The judge ruled in favor of the plaintiff.","tranché","v"],
+["Nous cherchons à approfondir cette question.","We are seeking to explore this question further.","approfondir","v"],
+["Il a préconisé une approche plus prudente.","He advocated a more cautious approach.","préconisé","v"],
+["Cette découverte a bouleversé la recherche.","This discovery turned research upside down.","bouleversé","v"],
+["Elle s'est épanouie dans ce nouveau poste.","She flourished in this new position.","épanouie","v"],
+["Le projet a abouti après trois ans.","The project came to fruition after three years.","abouti","v"],
+["Il faut éviter de généraliser trop vite.","One must avoid generalizing too quickly.","éviter","v"],
+["Ces mesures ont atténué la crise.","These measures eased the crisis.","atténué","v"],
+["Cette théorie a été réfutée par les experts.","This theory was refuted by the experts.","réfutée","v"],
+["Nous devons privilégier la qualité.","We must prioritize quality.","privilégier","v"],
+["Il a gâché toutes ses chances.","He wasted all his chances.","gâché","v"],
+["Elle a relevé le défi avec brio.","She took up the challenge brilliantly.","relevé","v"],
+["Ils se sont heurtés à de nombreux obstacles.","They came up against many obstacles.","heurtés","v"],
+["Cette décision découle d'une longue réflexion.","This decision stems from long reflection.","découle","v"],
+["Il a su cerner le problème rapidement.","He grasped the problem quickly.","cerner","v"],
+["Elle n'a pas hésité à dénoncer ces pratiques.","She did not hesitate to denounce these practices.","dénoncer","v"],
+["Ce livre m'a profondément marqué.","This book deeply affected me.","marqué","v"],
+["Il convient de rappeler les faits.","It is worth recalling the facts.","convient","v"],
+["Son attitude commence à me saouler.","His attitude is starting to annoy me.","saouler","v","His attitude is starting to get me drunk."],
+["Il a viré son assistant sans explication.","He fired his assistant without explanation.","viré","v"],
+["Je ne cautionne pas ce genre de méthode.","I do not condone this kind of method.","cautionne","v"],
+["Elle continue de nier les faits.","She keeps denying the facts.","nier","v"],
+["Il s'est mis à crier dans la rue.","He started shouting in the street.","crier","v","He started crying in the street."],
+["Nous avons prévu de partir en France.","We plan to leave for France.","prévu","v"],
+["Ce collègue me rend complètement fou.","This colleague drives me completely crazy.","rend","v"],
+["Il a fallu se battre pour obtenir gain de cause.","We had to fight to win the case.","battre","v"],
+["Elle a côtoyé les plus grands artistes.","She spent time around the greatest artists.","côtoyé","v"],
+["Le prix a fini par doubler.","The price ended up doubling.","doubler","v"],
+["Il a su tirer profit de cette expérience.","He knew how to benefit from this experience.","tirer profit","v"],
+
+// ---------- NOMS ----------
+["L'enjeu de cette réunion est considérable.","The stakes of this meeting are considerable.","enjeu","n"],
+["Il a su éviter cet écueil avec habileté.","He skilfully avoided that pitfall.","écueil","n"],
+["La portée de cette décision reste incertaine.","The scope of this decision remains uncertain.","portée","n"],
+["Le chômage demeure un véritable fléau.","Unemployment remains a real scourge.","fléau","n"],
+["Cette réforme marque un tournant historique.","This reform marks a historic turning point.","tournant","n"],
+["Son raisonnement manque de rigueur.","His reasoning lacks rigor.","raisonnement","n"],
+["Il y a un décalage entre le discours et les actes.","There is a gap between the words and the actions.","décalage","n"],
+["L'essor du numérique a tout transformé.","The rise of digital technology has transformed everything.","essor","n"],
+["Cette lacune dans le dossier est problématique.","This gap in the file is problematic.","lacune","n"],
+["Le fardeau administratif décourage les petites entreprises.","The administrative burden discourages small businesses.","fardeau","n"],
+["Son témoignage constitue une preuve accablante.","His testimony constitutes damning evidence.","preuve","n"],
+["Nous avons subi un revers important.","We suffered a significant setback.","revers","n"],
+["Le seuil de rentabilité sera atteint en juin.","The break-even point will be reached in June.","seuil","n"],
+["Cette prouesse technique a impressionné tout le monde.","This technical feat impressed everyone.","prouesse","n"],
+["Son entourage l'a beaucoup soutenue.","Those around her supported her a lot.","entourage","n"],
+["Le clivage politique s'est accentué.","The political divide has deepened.","clivage","n"],
+["Il faut tenir compte de la conjoncture actuelle.","One must take the current climate into account.","conjoncture","n"],
+["Cette percée scientifique change tout.","This scientific breakthrough changes everything.","percée","n"],
+["Le malaise était perceptible dans la salle.","The unease was noticeable in the room.","malaise","n"],
+["La démarche du chercheur était rigoureuse.","The researcher's approach was rigorous.","démarche","n"],
+["Les blessures psychologiques mettent du temps à guérir.","Psychological wounds take time to heal.","blessures","n"],
+["Son discours était plein de nuances.","His speech was full of nuance.","nuances","n"],
+["L'aboutissement de ce travail est remarquable.","The culmination of this work is remarkable.","aboutissement","n"],
+["Le fondement de cette théorie est fragile.","The foundation of this theory is fragile.","fondement","n"],
+["Cette entrave à la liberté est inacceptable.","This hindrance to freedom is unacceptable.","entrave","n"],
+["Il a agi avec beaucoup de discernement.","He acted with a great deal of judgment.","discernement","n"],
+["Les exigences du poste sont élevées.","The requirements of the position are high.","exigences","n"],
+["Cette contradiction affaiblit son argument.","This contradiction weakens his argument.","contradiction","n"],
+["Sa méfiance envers les médias est connue.","His distrust of the media is well known.","méfiance","n"],
+["Le manque de moyens freine le projet.","The lack of resources is slowing the project.","manque","n"],
+["Cette solution offre un vrai levier d'action.","This solution offers a real lever for action.","levier","n"],
+["La foudre est tombée sur le toit de l'église.","Lightning struck the roof of the church.","foudre","n","Thunder struck the roof of the church."],
+["Il a passé une nuit blanche avant l'examen.","He had a sleepless night before the exam.","nuit blanche","n"],
+["J'ai fait la grasse matinée dimanche.","I slept in on Sunday.","grasse matinée","n"],
+["Le trajet dure environ deux heures.","The journey takes about two hours.","trajet","n"],
+["Son enfance a été difficile.","His childhood was difficult.","enfance","n"],
+["L'apprentissage d'une langue demande du temps.","Learning a language takes time.","apprentissage","n"],
+["Il y a eu des hauts et des bas.","There were ups and downs.","hauts et des bas","n"],
+["Les actualités sont déprimantes en ce moment.","The news is depressing at the moment.","actualités","n"],
+["Ce quartier offre un cadre de vie agréable.","This neighborhood offers a pleasant living environment.","cadre de vie","n"],
+
+// ---------- ADJECTIFS ----------
+["Son argument est particulièrement pertinent.","His argument is particularly relevant.","pertinent","a"],
+["Les preuves sont accablantes.","The evidence is damning.","accablantes","a"],
+["C'est une erreur flagrante.","It is a blatant error.","flagrante","a"],
+["Son attitude était méprisante.","His attitude was contemptuous.","méprisante","a"],
+["Le résultat est très décevant.","The result is very disappointing.","décevant","a"],
+["Cette situation est devenue insoutenable.","This situation has become unbearable.","insoutenable","a"],
+["Il s'agit d'un problème épineux.","It is a thorny problem.","épineux","a"],
+["Sa réussite est indéniable.","His success is undeniable.","indéniable","a"],
+["C'est un professionnel chevronné.","He is a seasoned professional.","chevronné","a"],
+["Le témoignage est probant.","The testimony is conclusive.","probant","a"],
+["Elle est restée lucide malgré la panique.","She stayed clear-headed despite the panic.","lucide","a"],
+["Ce détail est loin d'être anodin.","This detail is far from trivial.","anodin","a"],
+["Son accueil était chaleureux.","His welcome was warm.","chaleureux","a"],
+["C'est une avancée majeure et durable.","It is a major and lasting advance.","durable","a"],
+["Il reste sceptique face à ces promesses.","He remains skeptical about these promises.","sceptique","a"],
+["Son comportement est vraiment mesquin.","His behavior is really petty.","mesquin","a"],
+["Cette hypothèse paraît invraisemblable.","This hypothesis seems implausible.","invraisemblable","a"],
+["Le débat a été houleux mais fructueux.","The debate was heated but fruitful.","fructueux","a"],
+["Elle est tenace face à l'adversité.","She is tenacious in the face of adversity.","tenace","a"],
+["C'est une lecture incontournable.","It is an essential read.","incontournable","a"],
+["Son style est sobre et élégant.","His style is understated and elegant.","sobre","a"],
+["Ces propos sont franchement grossiers.","These remarks are frankly rude.","grossiers","a"],
+["Le rôle de l'État est prépondérant.","The role of the State is predominant.","prépondérant","a"],
+["Sa réaction était totalement démesurée.","His reaction was totally disproportionate.","démesurée","a"],
+["Un silence pesant s'installa dans la pièce.","A heavy silence settled in the room.","pesant","a"],
+["Cette victoire est éphémère.","This victory is short-lived.","éphémère","a"],
+["Son regard était hautain.","His look was haughty.","hautain","a"],
+["Le rapport est exhaustif.","The report is exhaustive.","exhaustif","a"],
+["Ce constat est préoccupant.","This finding is worrying.","préoccupant","a"],
+["Elle est pointilleuse sur les détails.","She is picky about details.","pointilleuse","a"],
+["Ce paysage est vraiment dépaysant.","This landscape really feels like another world.","dépaysant","a"],
+["Le distributeur est hors-service depuis lundi.","The ATM has been out of order since Monday.","hors-service","a"],
+["Il est devenu aigri avec les années.","He has grown embittered over the years.","aigri","a"],
+["Son raisonnement est cohérent.","His reasoning is coherent.","cohérent","a"],
+["Cette remarque était particulièrement maladroite.","This remark was particularly clumsy.","maladroite","a"],
+
+// ---------- PRÉPOSITIONS ----------
+["Nous avons réussi malgré les difficultés.","We succeeded despite the difficulties.","malgré","p"],
+["C'est grâce à toi que j'ai réussi.","It's thanks to you that I succeeded.","grâce à","p"],
+["Le match a été annulé à cause de la pluie.","The match was cancelled because of the rain.","à cause de","p"],
+["Il travaille dur afin de réussir.","He works hard in order to succeed.","afin de","p"],
+["Il a choisi de partir au lieu de rester.","He chose to leave instead of staying.","au lieu de","p"],
+["Lors de la réunion, personne n'a réagi.","During the meeting, no one reacted.","Lors de","p"],
+["Au cours de l'année, tout a changé.","Over the course of the year, everything changed.","Au cours de","p"],
+["La décision a été prise au sein du conseil.","The decision was made within the board.","au sein du","p"],
+["Il est méfiant à l'égard des inconnus.","He is wary towards strangers.","à l'égard des","p"],
+["Cela va au-delà de mes compétences.","That goes beyond my skills.","au-delà de","p"],
+["Tout le monde est venu hormis Paul.","Everyone came except for Paul.","hormis","p"],
+["Outre le prix, la qualité compte aussi.","Besides the price, quality matters too.","Outre","p"],
+["Selon lui, la réunion était inutile.","According to him, the meeting was pointless.","Selon","p"],
+["Quant à moi, je préfère attendre.","As for me, I prefer to wait.","Quant à","p"],
+["Il a été condamné en vertu de cette loi.","He was convicted under this law.","en vertu de","p"],
+["Elle a agi au détriment de sa santé.","She acted to the detriment of her health.","au détriment de","p"],
+["Faute de preuves, l'affaire a été classée.","For lack of evidence, the case was closed.","Faute de","p"],
+["À l'issue du débat, un vote a eu lieu.","At the end of the debate, a vote took place.","À l'issue du","p"],
+["Il a obtenu ce poste moyennant un long effort.","He obtained this position through long effort.","moyennant","p"],
+["Envers ses amis, il est toujours loyal.","Towards his friends, he is always loyal.","Envers","p"],
+["Dès son arrivée, tout s'est accéléré.","From the moment he arrived, everything sped up.","Dès","p"],
+["En dépit des critiques, il a persévéré.","In spite of the criticism, he persevered.","En dépit des","p"],
+["À force de travailler, elle a réussi.","Through sheer hard work, she succeeded.","À force de","p"],
+["Il a marché à travers la forêt.","He walked through the forest.","à travers","p"],
+
+// ---------- CONNECTEURS / ADVERBES ----------
+["Le projet est ambitieux ; néanmoins, il reste réalisable.","The project is ambitious; nevertheless, it remains achievable.","néanmoins","x"],
+["Il est doué ; cependant, il manque de rigueur.","He is talented; however, he lacks rigor.","cependant","x"],
+["Elle a beaucoup travaillé ; par conséquent, elle a réussi.","She worked hard; consequently, she succeeded.","par conséquent","x"],
+["Ce livre est intéressant ; d'ailleurs, je te le prête.","This book is interesting; besides, I'll lend it to you.","d'ailleurs","x"],
+["Certes, c'est difficile, mais pas impossible.","Admittedly, it's difficult, but not impossible.","Certes","x"],
+["Il n'a pas répondu ; en effet, il dormait.","He didn't answer; indeed, he was asleep.","en effet","x"],
+["Le prix est élevé, voire excessif.","The price is high, or even excessive.","voire","x"],
+["Désormais, tout se fera en ligne.","From now on, everything will be done online.","Désormais","x"],
+["Il s'agit notamment des jeunes diplômés.","This concerns young graduates in particular.","notamment","x"],
+["Manifestement, il n'avait pas compris.","Obviously, he had not understood.","Manifestement","x"],
+["Le résultat est nettement meilleur.","The result is markedly better.","nettement","x"],
+["Il n'a guère apprécié la remarque.","He hardly appreciated the remark.","guère","x"],
+["Elle a agi délibérément.","She acted deliberately.","délibérément","x"],
+["Paradoxalement, l'échec l'a rendu plus fort.","Paradoxically, failure made him stronger.","Paradoxalement","x"],
+["En revanche, le service était impeccable.","On the other hand, the service was flawless.","En revanche","x"],
+["Il a répondu aussitôt à mon message.","He replied to my message immediately.","aussitôt","x"],
+
+// ---------- EXPRESSIONS ----------
+["Force est de constater que rien n'a changé.","One must admit that nothing has changed.","Force est de constater","e"],
+["Il a beau essayer, il n'y arrive pas.","However much he tries, he can't do it.","a beau","e"],
+["Quoi qu'il en soit, nous partirons demain.","In any case, we will leave tomorrow.","Quoi qu'il en soit","e"],
+["Dans la mesure où tu es libre, viens avec nous.","Insofar as you are free, come with us.","Dans la mesure où","e"],
+["Il a compris d'emblée ce qu'il fallait faire.","He understood right away what had to be done.","d'emblée","e"],
+["À première vue, tout semble normal.","At first glance, everything seems normal.","À première vue","e"],
+["En fin de compte, il avait raison.","In the end, he was right.","En fin de compte","e"],
+["Il faut y aller coûte que coûte.","We must go at all costs.","coûte que coûte","e"],
+["Elle a accepté à contrecœur.","She accepted reluctantly.","à contrecœur","e"],
+["La crise l'a frappé de plein fouet.","The crisis hit him head-on.","de plein fouet","e"],
+["Il travaille sans relâche depuis des mois.","He has been working relentlessly for months.","sans relâche","e"],
+["Tôt ou tard, la vérité éclatera.","Sooner or later, the truth will come out.","Tôt ou tard","e"],
+["Au fur et à mesure, tout devient plus clair.","Gradually, everything becomes clearer.","Au fur et à mesure","e"],
+["Il a réussi envers et contre tout.","He succeeded against all odds.","envers et contre tout","e"],
+["À juste titre, elle s'est plainte du bruit.","Rightly so, she complained about the noise.","À juste titre","e"],
+["Tu me manques beaucoup.","I miss you a lot.","manques","e","You miss me a lot."]
+];
+
+
+/* ---------- utilitaires ---------- */
+const $ = id => document.getElementById(id);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function capLike(model,w){
+  const up = model[0] === model[0].toUpperCase() && model[0] !== model[0].toLowerCase();
+  return up ? w.charAt(0).toUpperCase()+w.slice(1) : w.charAt(0).toLowerCase()+w.slice(1);
+}
+function store(k,v){try{ if(v===undefined) return JSON.parse(localStorage.getItem('arene_'+k)); localStorage.setItem('arene_'+k,JSON.stringify(v)); }catch(e){ return null; }}
+
+/* ---------- progression ---------- */
+const LEVELS=[[0,'Apprenti','🥉'],[400,'Initié','🥈'],[1200,'Confirmé','🥇'],[2800,'Expert','🎖️'],[5500,'Maître','🏅'],[10000,'As du français','👑']];
+function levelOf(xp){let i=0;for(let k=0;k<LEVELS.length;k++){if(xp>=LEVELS[k][0])i=k;}return i;}
+function paintRank(){
+  const xp = store('xp') || 0;
+  const i = levelOf(xp), cur=LEVELS[i], nxt=LEVELS[i+1];
+  $('rMedal').textContent=cur[2]; $('rLevel').textContent=cur[1];
+  if(nxt){ const span=nxt[0]-cur[0], got=xp-cur[0];
+    $('rXp').textContent=xp+' XP — encore '+(nxt[0]-xp)+' pour « '+nxt[1]+' »';
+    $('rBar').style.width=Math.min(100,got/span*100)+'%';
+  } else { $('rXp').textContent=xp+' XP — niveau maximum atteint'; $('rBar').style.width='100%'; }
+}
+
+/* ---------- les jeux ---------- */
+const GAMES=[
+ {id:'gap',   ico:'🎯', nm:'Le mot manquant',      ds:'Complète la phrase avec le bon mot.',            task:'Complète la phrase', n:15},
+ {id:'fr2en', ico:'🇬🇧', nm:'Traduis en anglais',   ds:'Lis la phrase française, choisis la traduction.',task:'Traduis en anglais', n:15},
+ {id:'en2fr', ico:'🇫🇷', nm:'Traduis en français',  ds:'Lis l’anglais, retrouve la phrase française.',   task:'Traduis en français', n:15},
+ {id:'build', ico:'🧩', nm:'Reconstruis la phrase', ds:'Remets les mots dans le bon ordre.',             task:'Remets les mots dans l’ordre', n:10},
+ {id:'prep',  ico:'🔗', nm:'La bonne préposition',  ds:'Le piège nº1 des étrangers : la bonne locution.',task:'Choisis la bonne préposition', n:12},
+ {id:'survie',ico:'⚔️', nm:'Survie',               ds:'Tout mélangé, 3 vies. Jusqu’où iras-tu ?',        task:'Survie', n:0},
+ {id:'sprint',ico:'🏁', nm:'Sprint 3 minutes',      ds:'Un maximum de points en 180 secondes.',          task:'Sprint', n:0}
+];
+
+function paintMenu(){
+  $('games').innerHTML='';
+  GAMES.forEach(g=>{
+    const b=document.createElement('button');
+    b.className='game'; b.type='button';
+    const best=store('best_'+g.id)||0;
+    b.innerHTML='<span class="ico">'+g.ico+'</span><span class="txt"><span class="nm">'+g.nm+'</span><span class="ds">'+g.ds+'</span></span>'+
+      (best?'<span class="bst"><b>'+best+'</b><span>record</span></span>':'');
+    b.addEventListener('click',()=>startGame(g.id));
+    $('games').appendChild(b);
+  });
+  paintRank();
+}
+
+/* ---------- générateurs de questions ---------- */
+function pickOthers(pool,not,n,get){
+  const out=[],seen=new Set([get(not)]);
+  for(const s of shuffle(pool)){ const v=get(s); if(seen.has(v))continue; seen.add(v); out.push(v); if(out.length===n)break; }
+  return out;
+}
+function qGap(s,onlyPrep){
+  const [f,e,g,c]=s;
+  const pool=SENTENCES.filter(x=>x[3]===c && x[2]!==g);
+  const others=pickOthers(pool,s,3,x=>x[2]).map(w=>capLike(g,w));
+  return {kind:'choice', task:onlyPrep?'Choisis la bonne préposition':'Complète la phrase',
+    stage:'<div class="sentence">'+esc(f).replace(esc(g),'<span class="blank">?</span>')+'</div><div class="cue">'+esc(e)+'</div>',
+    options:shuffle([g,...others]), answer:g, fr:f, en:e, hi:g};
+}
+function qFr2En(s){
+  const [f,e,g,c,trap]=s;
+  const pool=SENTENCES.filter(x=>x[1]!==e);
+  const need=trap?2:3;
+  const others=pickOthers(pool,s,need,x=>x[1]);
+  const opts=trap?[e,trap,...others]:[e,...others];
+  return {kind:'choice', task:'Traduis en anglais',
+    stage:'<div class="sentence">'+esc(f)+'</div>',
+    options:shuffle(opts), answer:e, fr:f, en:e, hi:g};
+}
+function qEn2Fr(s){
+  const [f,e,g,c]=s;
+  const pool=SENTENCES.filter(x=>x[3]===c && x[0]!==f);
+  let others=pickOthers(pool,s,3,x=>x[0]);
+  if(others.length<3) others=others.concat(pickOthers(SENTENCES.filter(x=>x[0]!==f),s,3-others.length,x=>x[0]));
+  return {kind:'choice', task:'Traduis en français',
+    stage:'<div class="sentence en">'+esc(e)+'</div>',
+    options:shuffle([f,...others]), answer:f, fr:f, en:e, hi:g};
+}
+function qBuild(s){
+  const [f,e,g]=s;
+  return {kind:'build', task:'Remets les mots dans l’ordre',
+    stage:'<div class="sentence en">'+esc(e)+'</div><div class="cue">Reconstitue la phrase française</div>',
+    tokens:f.split(' '), answer:f, fr:f, en:e, hi:g};
+}
+const BUILDABLE = SENTENCES.filter(s=>{const n=s[0].split(' ').length;return n>=4&&n<=9;});
+const PREPS = SENTENCES.filter(s=>s[3]==='p');
+
+function makeQ(mode){
+  if(mode==='gap')   return qGap(SENTENCES[Math.floor(Math.random()*SENTENCES.length)],false);
+  if(mode==='prep')  return qGap(PREPS[Math.floor(Math.random()*PREPS.length)],true);
+  if(mode==='fr2en') return qFr2En(SENTENCES[Math.floor(Math.random()*SENTENCES.length)]);
+  if(mode==='en2fr') return qEn2Fr(SENTENCES[Math.floor(Math.random()*SENTENCES.length)]);
+  if(mode==='build') return qBuild(BUILDABLE[Math.floor(Math.random()*BUILDABLE.length)]);
+  const mix=['gap','fr2en','en2fr','prep','build'];
+  return makeQ(mix[Math.floor(Math.random()*mix.length)]);
+}
+
+/* ---------- moteur ---------- */
+let G=null, tick=null;
+
+function startGame(id){
+  const g=GAMES.find(x=>x.id===id);
+  G={id, cfg:g, score:0, asked:0, right:0, streak:0, best:0, lives:3, left:180, review:[], q:null, locked:false};
+  $('menu').style.display='none'; $('end').style.display='none';
+  $('play').style.display='block'; $('hud').style.display='block';
+  $('hMode').textContent=g.ico+' '+g.nm;
+  $('hLives').style.display = id==='survie'?'flex':'none';
+  $('hTime').style.display  = id==='sprint'?'flex':'none';
+  if(tick) clearInterval(tick);
+  if(id==='sprint'){ $('hTimeV').textContent='3:00';
+    tick=setInterval(()=>{ G.left--; const m=Math.floor(G.left/60),s=G.left%60;
+      $('hTimeV').textContent=m+':'+(s<10?'0':'')+s;
+      $('hTime').classList.toggle('warn',G.left<=60&&G.left>15);
+      $('hTime').classList.toggle('danger',G.left<=15);
+      if(G.left<=0) finish();
+    },1000);
+  }
+  paintHud(); nextQ();
+  window.scrollTo({top:0});
+}
+function paintHud(){
+  $('hScore').textContent=G.score;
+  const mult=Math.min(5,1+Math.floor(G.streak/3));
+  $('hComboV').textContent='×'+mult;
+  $('hCombo').classList.toggle('on',G.streak>=3);
+  $('hLives').innerHTML='<small>Vies</small><span>'+'❤️'.repeat(Math.max(0,G.lives))+'</span>';
+  const n=G.cfg.n;
+  $('pFill').style.width = n ? (G.asked/n*100)+'%' : (G.id==='sprint' ? ((180-G.left)/180*100)+'%' : '100%');
+}
+function nextQ(){
+  const n=G.cfg.n;
+  if(n && G.asked>=n) return finish();
+  G.q=makeQ(G.id); G.locked=false;
+  $('pTask').textContent = G.q.task + (n?'  ·  '+(G.asked+1)+'/'+n:'');
+  $('pStage').innerHTML=G.q.stage;
+  $('pFix').className='fix';
+  const box=$('pAnswer'); box.innerHTML='';
+  if(G.q.kind==='choice') renderChoice(box); else renderBuild(box);
+  paintHud();
+}
+function renderChoice(box){
+  const wrap=document.createElement('div'); wrap.className='opts';
+  G.q.options.forEach((val,i)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.type='button';
+    b.innerHTML='<span class="k">'+(i+1)+'</span><span class="l">'+esc(val)+'</span>';
+    b.addEventListener('click',()=>answer(val,b,wrap));
+    wrap.appendChild(b);
+  });
+  box.appendChild(wrap);
+}
+function renderBuild(box){
+  const tray=document.createElement('div'); tray.className='tray'; tray.id='tray';
+  const bank=document.createElement('div'); bank.className='bank';
+  const order=[];
+  shuffle(G.q.tokens).forEach(tok=>{
+    const c=document.createElement('button'); c.className='chip'; c.type='button'; c.textContent=tok;
+    c.addEventListener('click',()=>{
+      if(G.locked) return;
+      c.classList.add('used');
+      const p=document.createElement('button'); p.className='chip placed'; p.type='button'; p.textContent=tok;
+      p.addEventListener('click',()=>{ if(G.locked)return; p.remove(); c.classList.remove('used'); order.splice(order.indexOf(p),1); });
+      order.push(p); tray.appendChild(p);
+      if(order.length===G.q.tokens.length){
+        const built=order.map(x=>x.textContent).join(' ');
+        tray.classList.add(built===G.q.answer?'good':'bad');
+        answer(built,null,null);
+      }
+    });
+    bank.appendChild(c);
+  });
+  box.appendChild(tray); box.appendChild(bank);
+}
+function answer(val,btn,wrap){
+  if(G.locked) return; G.locked=true;
+  G.asked++;
+  const ok = val===G.q.answer;
+  if(wrap){
+    wrap.classList.add('locked');
+    [...wrap.children].forEach(c=>{
+      const t=c.querySelector('.l').textContent;
+      if(t===G.q.answer) c.classList.add('good');
+      else if(c===btn) c.classList.add('bad');
+    });
+  }
+  const mult=Math.min(5,1+Math.floor(G.streak/3));
+  if(ok){
+    G.right++; G.streak++; G.best=Math.max(G.best,G.streak);
+    const pts=10*mult; G.score+=pts; pop('+'+pts,'var(--jade)');
+  }else{
+    G.streak=0; if(G.id==='survie') G.lives--;
+    pop('✕','var(--rust)');
+    G.review.push(G.q);
+  }
+  paintHud();
+  const fix=$('pFix');
+  fix.className='fix show '+(ok?'ok':'no');
+  $('fVerdict').textContent = ok ? '✓ Correct'+(mult>1?'  ·  combo ×'+mult:'') : '✗ La bonne réponse :';
+  $('fFr').innerHTML = esc(G.q.fr).replace(esc(G.q.hi),'<b>'+esc(G.q.hi)+'</b>');
+  $('fEn').textContent = G.q.en;
+  if(G.id==='survie' && G.lives<=0){ setTimeout(finish,900); return; }
+  if(ok){ setTimeout(()=>{ if(G) nextQ(); }, 950); }
+}
+function pop(t,c){const p=$('pop');p.textContent=t;p.style.color=c;p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}
+$('fNext').addEventListener('click',()=>{ if(G) nextQ(); });
+
+/* ---------- fin ---------- */
+function finish(){
+  if(!G) return;
+  if(tick){clearInterval(tick);tick=null;}
+  const g=G.cfg, acc=G.asked?Math.round(G.right/G.asked*100):0;
+  const prev=store('best_'+G.id)||0, record=G.score>prev;
+  if(record) store('best_'+G.id,G.score);
+  const xp=(store('xp')||0)+G.score; store('xp',xp);
+
+  $('play').style.display='none'; $('hud').style.display='none'; $('end').style.display='block';
+  $('ePts').innerHTML=G.score+'<small> pts</small>';
+  $('eRec').textContent = record ? '🎉 Nouveau record personnel !' : 'Record à battre : '+prev+' pts';
+  $('eAcc').textContent=acc+'%';
+  $('eCombo').textContent='×'+Math.min(5,1+Math.floor(G.best/3));
+  $('eRight').textContent=G.right+'/'+G.asked;
+  $('eXp').textContent='+'+G.score;
+  let band;
+  if(G.id==='survie') band='Survie — '+G.right+' bonnes réponses';
+  else if(acc>=95) band='Sans faute ou presque';
+  else if(acc>=80) band='Très solide';
+  else if(acc>=60) band='En progrès';
+  else band='À retravailler';
+  $('eBand').textContent=band;
+  $('ePerfect').style.display = (G.asked>0 && G.review.length===0) ? 'block' : 'none';
+
+  const seen=new Set(), uniq=[];
+  G.review.forEach(q=>{ if(seen.has(q.fr))return; seen.add(q.fr); uniq.push(q); });
+  if(uniq.length===0){ $('eRevw').style.display='none'; }
+  else{
+    $('eRevw').style.display='block';
+    $('eRevwD').textContent=uniq.length+' phrase(s) à revoir — avec la traduction anglaise.';
+    $('eList').innerHTML=uniq.map(q=>'<div class="rv"><div class="f">'+esc(q.fr).replace(esc(q.hi),'<b>'+esc(q.hi)+'</b>')+'</div><div class="e">'+esc(q.en)+'</div></div>').join('');
+  }
+  paintRank();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toMenu(){
+  if(tick){clearInterval(tick);tick=null;}
+  G=null;
+  $('play').style.display='none'; $('end').style.display='none'; $('hud').style.display='none';
+  $('menu').style.display='block';
+  paintMenu(); window.scrollTo({top:0});
+}
+$('quitBtn').addEventListener('click',toMenu);
+$('eMenu').addEventListener('click',toMenu);
+$('eAgain').addEventListener('click',()=>{ const id=$('eAgain').dataset.id; startGame(id||'gap'); });
+const _f=finish; finish=function(){ const id=G?G.id:'gap'; _f(); $('eAgain').dataset.id=id; };
+
+/* clavier */
+document.addEventListener('keydown',e=>{
+  if(!G) return;
+  if(e.key==='Enter' && G.locked){ nextQ(); return; }
+  if(G.locked || G.q.kind!=='choice') return;
+  const k=parseInt(e.key,10);
+  if(k>=1&&k<=4){ const c=document.querySelectorAll('#pAnswer .opt')[k-1]; if(c)c.click(); }
+});
+
+paintMenu();
+</script>
