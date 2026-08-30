@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>L'Arène du français — 7 jeux de phrases</title>
+<title>L'Arène du français — 8 jeux pour devenir un as</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
@@ -38,19 +38,19 @@
 
   /* ===== MENU ===== */
   #menu{padding:34px 0 20px}
-  .crest{text-align:center;margin-bottom:26px}
+  .crest{text-align:center;margin-bottom:24px}
   .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
   h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,7vw,46px);line-height:1.05;margin:11px 0 9px;letter-spacing:-.015em;text-wrap:balance}
-  .tag{color:var(--ink-soft);font-size:15px;max-width:46ch;margin:0 auto}
-  .rank{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 15px;margin:22px 0 20px;box-shadow:var(--shadow)}
-  .rank .medal{font-size:26px;line-height:1}
+  .tag{color:var(--ink-soft);font-size:15px;max-width:47ch;margin:0 auto}
+  .rank{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin:22px 0 18px;box-shadow:var(--shadow)}
+  .rank .medal{font-size:27px;line-height:1;flex:none}
   .rank .who{flex:1;min-width:0}
   .rank .lvl{font-family:var(--serif);font-size:17px;font-weight:600}
-  .rank .xpline{font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
-  .xpbar{height:6px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:6px}
+  .rank .xpline{font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums;margin-top:1px}
+  .xpbar{height:6px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:7px}
   .xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#e2c078);border-radius:99px}
   .games{display:grid;gap:11px}
-  .game{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:15px;padding:14px 15px;color:var(--ink);cursor:pointer;transition:border-color .14s,transform .06s,box-shadow .14s;box-shadow:var(--shadow)}
+  .game{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:15px;padding:14px 15px;color:var(--ink);cursor:pointer;transition:border-color .14s,transform .06s;box-shadow:var(--shadow)}
   .game:hover{border-color:var(--gold);transform:translateY(-1px)}
   .game:active{transform:scale(.995)}
   .game:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -60,32 +60,62 @@
   .game .ds{display:block;font-size:12.8px;color:var(--ink-soft);margin-top:3px;line-height:1.35}
   .game .bst{flex:none;text-align:right;font-variant-numeric:tabular-nums}
   .game .bst b{display:block;font-family:var(--serif);font-size:17px;color:var(--gold)}
-  .game .bst span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+  .game .bst span{display:block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
   .hint{text-align:center;font-size:12.5px;color:var(--ink-faint);margin-top:20px}
 
   /* ===== HUD ===== */
-  #hud{display:none;position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin:0 -18px 4px;padding:10px 18px}
-  .hud-in{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:9px}
-  .pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700}
+  #hud{display:none;position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin:0 -18px 4px;padding:10px 18px}
+  .hud-in{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:8px}
+  .pill{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;white-space:nowrap}
   .pill small{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);font-weight:700}
-  .pill.gap{margin-right:auto;font-weight:600;font-size:12.5px;color:var(--ink-soft)}
-  .pill.time.warn{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
-  .pill.time.danger{border-color:var(--rust);color:var(--rust);background:var(--rust-bg)}
+  .pill.gap{margin-right:auto;font-weight:600;font-size:12.5px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis}
   .combo{color:var(--gold);opacity:.35;transition:.15s}
   .combo.on{opacity:1}
-  .quit{background:none;border:1px solid var(--line);color:var(--ink-faint);border-radius:9px;padding:6px 9px;font-size:12px;cursor:pointer}
+  .quit{background:none;border:1px solid var(--line);color:var(--ink-faint);border-radius:9px;padding:6px 9px;font-size:12px;cursor:pointer;flex:none}
   .quit:hover{border-color:var(--line-2);color:var(--ink)}
 
   /* ===== PLAY ===== */
-  #play{display:none;padding-top:16px}
-  .prog{height:5px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:20px}
+  #play{display:none;padding-top:14px}
+  .arena{margin-bottom:14px}
+  /* boss */
+  .fighter{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+  .fighter .av{font-size:29px;flex:none;line-height:1}
+  .fighter .bar{flex:1;display:block;min-width:0}
+  .fighter .nmx{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:5px}
+  .fighter .nmx em{font-style:normal;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .hp{display:block;height:12px;background:var(--card2);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+  .hp i{display:block;height:100%;border-radius:99px;transition:width .35s ease}
+  .hp.foe i{background:linear-gradient(90deg,var(--rust),#e08a80)}
+  .hp.me i{background:linear-gradient(90deg,var(--jade),#7fd8b3)}
+  .hit{animation:shake .3s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  /* timer bar */
+  .clock{height:5px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .clock i{display:block;height:100%;background:var(--gold);border-radius:99px;width:100%}
+  .clock.low i{background:var(--rust)}
+  /* tour */
+  .ladder{display:flex;flex-direction:column-reverse;gap:3px;margin-bottom:14px}
+  .rung{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:4px 10px;border-radius:8px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .rung b{margin-left:auto;font-weight:700}
+  .rung.done{background:var(--jade-bg);color:var(--jade)}
+  .rung.now{background:var(--gold-bg);color:var(--gold-ink);font-weight:700}
+  .prog{height:5px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:18px}
   .prog i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .3s ease}
-  .task{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;margin-bottom:12px}
-  .stage{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:24px 20px;box-shadow:var(--shadow);margin-bottom:16px}
-  .sentence{font-family:var(--serif);font-size:clamp(19px,4.4vw,25px);line-height:1.42;text-wrap:balance;text-align:center}
-  .sentence.en{font-family:var(--sans);font-size:clamp(17px,3.9vw,21px);color:var(--ink)}
-  .blank{display:inline-block;min-width:74px;border-bottom:2.5px solid var(--gold);color:var(--gold);text-align:center;font-weight:700}
-  .cue{text-align:center;font-size:13px;color:var(--ink-faint);margin-top:12px;font-style:italic}
+
+  .task{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;margin-bottom:11px}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:22px 19px;box-shadow:var(--shadow);margin-bottom:15px}
+  .sentence{font-family:var(--serif);font-size:clamp(19px,4.3vw,24px);line-height:1.42;text-wrap:balance;text-align:center}
+  .sentence.en{font-family:var(--sans);font-size:clamp(17px,3.8vw,20px)}
+  .blank{display:inline-block;min-width:70px;border-bottom:2.5px solid var(--gold);color:var(--gold);text-align:center;font-weight:700}
+  .cue{text-align:center;font-size:13px;color:var(--ink-faint);margin-top:11px;font-style:italic}
+  /* hunt : mots cliquables */
+  .hunt{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .hw{font-family:var(--serif);font-size:19px;background:var(--card2);border:1.5px solid transparent;border-radius:8px;padding:5px 9px;cursor:pointer;color:var(--ink);transition:.12s}
+  .hw:hover{border-color:var(--gold)}
+  .hw.good{background:var(--jade-bg);border-color:var(--jade);color:var(--jade)}
+  .hw.bad{background:var(--rust-bg);border-color:var(--rust);color:var(--rust)}
+  .locked .hw{pointer-events:none}
+
   .opts{display:grid;gap:9px}
   .opt{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 13px;font-size:15.5px;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s,transform .05s}
   .opt:hover{border-color:var(--line-2)}
@@ -98,16 +128,26 @@
   .opt.bad .k{background:var(--rust);border-color:var(--rust);color:#fff}
   .locked .opt{pointer-events:none}
 
-  /* build mode */
-  .tray{min-height:64px;background:var(--card2);border:1.5px dashed var(--line-2);border-radius:13px;padding:10px;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;margin-bottom:13px}
+  .tray{min-height:60px;background:var(--card2);border:1.5px dashed var(--line-2);border-radius:13px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;margin-bottom:12px}
   .tray:empty::after{content:"Clique les mots dans le bon ordre…";color:var(--ink-faint);font-size:13.5px;font-style:italic}
-  .bank{display:flex;flex-wrap:wrap;gap:7px}
-  .chip{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-family:var(--serif);font-size:16px;color:var(--ink);cursor:pointer;transition:.12s}
+  .bank{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 11px;font-size:15.5px;color:var(--ink);cursor:pointer;transition:.12s}
+  .chip.fr{font-family:var(--serif);font-size:16px}
   .chip:hover{border-color:var(--gold)}
   .chip.placed{background:var(--gold-bg);border-color:var(--gold);color:var(--gold-ink)}
-  .chip.used{opacity:.25;pointer-events:none}
+  .chip.used{opacity:.22;pointer-events:none}
   .tray.good{border-style:solid;border-color:var(--jade);background:var(--jade-bg)}
   .tray.bad{border-style:solid;border-color:var(--rust);background:var(--rust-bg)}
+
+  /* paires */
+  .pairs{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .pcol{display:grid;gap:7px;align-content:start}
+  .pcard{text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:10px 11px;font-size:13.5px;line-height:1.3;color:var(--ink);cursor:pointer;transition:.12s}
+  .pcard.fr{font-family:var(--serif);font-size:14.5px}
+  .pcard:hover{border-color:var(--line-2)}
+  .pcard.sel{border-color:var(--gold);background:var(--gold-bg)}
+  .pcard.done{border-color:var(--jade);background:var(--jade-bg);opacity:.45;pointer-events:none}
+  .pcard.miss{border-color:var(--rust);background:var(--rust-bg)}
 
   /* correction */
   .fix{display:none;border-radius:15px;padding:15px 16px;margin-top:14px;border:1.5px solid var(--line);background:var(--card)}
@@ -120,13 +160,19 @@
   .fix .fr{font-family:var(--serif);font-size:16.5px;line-height:1.4;margin-bottom:5px}
   .fix .fr b{color:var(--gold-ink);border-bottom:2px solid var(--gold)}
   .fix .en{font-size:14.5px;color:var(--ink-soft)}
-  .fix .en::before{content:"🇬🇧 ";}
+  .fix .en::before{content:"🇬🇧 "}
+  .fix .why{font-size:13.5px;color:var(--ink-soft);margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+  .fix .why b{color:var(--ink)}
   .next{margin-top:13px;width:100%;background:var(--ink);color:var(--ground);border:none;border-radius:11px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
   .next:hover{opacity:.9}
-  .pop{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-family:var(--serif);font-size:38px;font-weight:700;pointer-events:none;opacity:0;z-index:50}
+  .choice2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+  .choice2 button{border-radius:11px;padding:12px;font-size:14.5px;font-weight:700;cursor:pointer;border:1.5px solid transparent}
+  .cash{background:var(--jade);color:#fff}
+  .risk{background:var(--gold);color:#231c10}
+  .pop{position:fixed;left:50%;top:36%;transform:translateX(-50%);font-family:var(--serif);font-size:36px;font-weight:700;pointer-events:none;opacity:0;z-index:50}
   .pop.go{animation:rise .7s ease-out}
   @keyframes rise{0%{opacity:0;transform:translate(-50%,14px) scale(.85)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px) scale(1.12)}}
-  @media (prefers-reduced-motion:reduce){.pop.go{animation:none}}
+  @media (prefers-reduced-motion:reduce){.pop.go,.hit{animation:none}}
 
   /* ===== END ===== */
   #end{display:none;padding:26px 0 40px}
@@ -147,10 +193,10 @@
   .rv .f{font-family:var(--serif);font-size:15.5px;line-height:1.35}
   .rv .f b{color:var(--gold-ink);border-bottom:2px solid var(--gold)}
   .rv .e{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
-  .rv .e::before{content:"🇬🇧 ";}
+  .rv .e::before{content:"🇬🇧 "}
   .acts{display:grid;gap:9px;margin-top:22px}
   .act{border-radius:12px;padding:13px;font-size:15.5px;font-weight:700;cursor:pointer;border:1.5px solid transparent}
-  .act.p{background:var(--gold);color:#1b1815}
+  .act.p{background:var(--gold);color:#231c10}
   .act.p:hover{filter:brightness(1.06)}
   .act.s{background:transparent;border-color:var(--line-2);color:var(--ink)}
   .act.s:hover{background:var(--card)}
@@ -160,24 +206,20 @@
 <div id="hud">
   <div class="hud-in">
     <div class="pill gap" id="hMode">—</div>
-    <div class="pill" id="hLives" style="display:none"></div>
-    <div class="pill time" id="hTime" style="display:none"><small>Temps</small><span id="hTimeV">3:00</span></div>
     <div class="pill combo" id="hCombo"><small>Combo</small><span id="hComboV">×1</span></div>
-    <div class="pill"><small>Points</small><span id="hScore">0</span></div>
+    <div class="pill"><small id="hScoreK">Points</small><span id="hScore">0</span></div>
     <button class="quit" id="quitBtn">✕</button>
   </div>
 </div>
 
 <div class="wrap">
 
-  <!-- MENU -->
   <section id="menu">
     <div class="crest">
       <div class="kicker">Entraînement intensif · B2 · C1</div>
       <h1>L'Arène du français</h1>
-      <p class="tag">Sept jeux pour devenir un as. Ici, on ne révise pas des mots isolés : on travaille sur de <b>vraies phrases</b>, et la traduction anglaise s'affiche à chaque correction.</p>
+      <p class="tag">Huit jeux pour devenir un as. Ici on ne clique pas des mots isolés : on travaille sur de <b>vraies phrases</b>, on <b>traduit</b>, on traque les erreurs — et l'anglais s'affiche à chaque correction.</p>
     </div>
-
     <div class="rank">
       <div class="medal" id="rMedal">🥉</div>
       <div class="who">
@@ -186,14 +228,12 @@
         <div class="xpbar"><i id="rBar" style="width:0%"></i></div>
       </div>
     </div>
-
     <div class="games" id="games"></div>
     <p class="hint">Astuce : les touches <b>1 · 2 · 3 · 4</b> répondent, <b>Entrée</b> continue.</p>
   </section>
 
-  <!-- PLAY -->
   <section id="play">
-    <div class="prog"><i id="pFill"></i></div>
+    <div class="arena" id="pArena"></div>
     <div class="task" id="pTask"></div>
     <div class="stage" id="pStage"></div>
     <div id="pAnswer"></div>
@@ -201,11 +241,11 @@
       <div class="verdict" id="fVerdict"></div>
       <div class="fr" id="fFr"></div>
       <div class="en" id="fEn"></div>
-      <button class="next" id="fNext">Continuer →</button>
+      <div class="why" id="fWhy" style="display:none"></div>
+      <div id="fCtl"></div>
     </div>
   </section>
 
-  <!-- END -->
   <section id="end">
     <div class="final">
       <div class="band" id="eBand">Manche terminée</div>
@@ -225,12 +265,11 @@
       <div id="eList"></div>
     </div>
     <div class="acts">
-      <button class="act p" id="eAgain">Rejouer cette manche</button>
+      <button class="act p" id="eAgain">Rejouer</button>
       <button class="act s" id="eMenu">← Choisir un autre jeu</button>
     </div>
   </section>
 </div>
-
 <div class="pop" id="pop"></div>
 
 <script>
@@ -436,272 +475,433 @@ const SENTENCES = [
 ["Tu me manques beaucoup.","I miss you a lot.","manques","e","You miss me a lot."]
 ];
 
-
-/* ---------- utilitaires ---------- */
-const $ = id => document.getElementById(id);
-function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-function capLike(model,w){
-  const up = model[0] === model[0].toUpperCase() && model[0] !== model[0].toLowerCase();
-  return up ? w.charAt(0).toUpperCase()+w.slice(1) : w.charAt(0).toLowerCase()+w.slice(1);
-}
-function store(k,v){try{ if(v===undefined) return JSON.parse(localStorage.getItem('arene_'+k)); localStorage.setItem('arene_'+k,JSON.stringify(v)); }catch(e){ return null; }}
-
-/* ---------- progression ---------- */
-const LEVELS=[[0,'Apprenti','🥉'],[400,'Initié','🥈'],[1200,'Confirmé','🥇'],[2800,'Expert','🎖️'],[5500,'Maître','🏅'],[10000,'As du français','👑']];
-function levelOf(xp){let i=0;for(let k=0;k<LEVELS.length;k++){if(xp>=LEVELS[k][0])i=k;}return i;}
-function paintRank(){
-  const xp = store('xp') || 0;
-  const i = levelOf(xp), cur=LEVELS[i], nxt=LEVELS[i+1];
-  $('rMedal').textContent=cur[2]; $('rLevel').textContent=cur[1];
-  if(nxt){ const span=nxt[0]-cur[0], got=xp-cur[0];
-    $('rXp').textContent=xp+' XP — encore '+(nxt[0]-xp)+' pour « '+nxt[1]+' »';
-    $('rBar').style.width=Math.min(100,got/span*100)+'%';
-  } else { $('rXp').textContent=xp+' XP — niveau maximum atteint'; $('rBar').style.width='100%'; }
-}
-
-/* ---------- les jeux ---------- */
-const GAMES=[
- {id:'gap',   ico:'🎯', nm:'Le mot manquant',      ds:'Complète la phrase avec le bon mot.',            task:'Complète la phrase', n:15},
- {id:'fr2en', ico:'🇬🇧', nm:'Traduis en anglais',   ds:'Lis la phrase française, choisis la traduction.',task:'Traduis en anglais', n:15},
- {id:'en2fr', ico:'🇫🇷', nm:'Traduis en français',  ds:'Lis l’anglais, retrouve la phrase française.',   task:'Traduis en français', n:15},
- {id:'build', ico:'🧩', nm:'Reconstruis la phrase', ds:'Remets les mots dans le bon ordre.',             task:'Remets les mots dans l’ordre', n:10},
- {id:'prep',  ico:'🔗', nm:'La bonne préposition',  ds:'Le piège nº1 des étrangers : la bonne locution.',task:'Choisis la bonne préposition', n:12},
- {id:'survie',ico:'⚔️', nm:'Survie',               ds:'Tout mélangé, 3 vies. Jusqu’où iras-tu ?',        task:'Survie', n:0},
- {id:'sprint',ico:'🏁', nm:'Sprint 3 minutes',      ds:'Un maximum de points en 180 secondes.',          task:'Sprint', n:0}
+// Nuances : [phrase avec ___, bonne réponse, [3 pièges proches], explication, anglais]
+const NUANCES = [
+["Ça ___ très bon dans la cuisine !","sent",["ressent","pressent","consent"],"<b>Sentir</b> = percevoir une odeur. <b>Ressentir</b> = éprouver une émotion.","It smells really good in the kitchen!"],
+["J'ai ___ une profonde tristesse en apprenant la nouvelle.","ressenti",["senti","pressenti","consenti"],"<b>Ressentir</b> s'emploie pour une émotion profonde ; <b>sentir</b> pour une odeur ou une sensation physique.","I felt a deep sadness when I heard the news."],
+["Je dois te ___ : la route est fermée.","prévenir",["prévoir","provenir","pourvoir"],"<b>Prévenir quelqu'un</b> = l'avertir. <b>Prévoir</b> = anticiper, planifier.","I have to warn you: the road is closed."],
+["Nous devons ___ une hausse des prix cette année.","prévoir",["prévenir","provenir","prouver"],"<b>Prévoir</b> = anticiper un événement. <b>Prévenir</b> = avertir une personne.","We must anticipate a price increase this year."],
+["Tu ___ mon frère ? Il travaille ici.","connais",["sais","apprends","comprends"],"<b>Connaître</b> + une personne, un lieu. <b>Savoir</b> + un fait, une information.","Do you know my brother? He works here."],
+["Je ___ qu'il est parti hier soir.","sais",["connais","apprends","comprends"],"<b>Savoir que</b> + un fait. <b>Connaître</b> se construit avec un nom, jamais avec « que ».","I know that he left last night."],
+["___-moi ce livre demain, s'il te plaît.","Apporte",["Amène","Emmène","Emporte"],"<b>Apporter</b> = pour un objet. <b>Amener</b> = pour une personne.","Bring me this book tomorrow, please."],
+["___ ta sœur à la fête, elle sera contente.","Amène",["Apporte","Emporte","Rapporte"],"<b>Amener</b> = pour une personne. <b>Apporter</b> = pour un objet.","Bring your sister to the party, she'll be happy."],
+["Il ___ beaucoup à son père.","ressemble",["semble","rassemble","assemble"],"<b>Ressembler à</b> = être similaire. <b>Sembler</b> = paraître, avoir l'air.","He looks a lot like his father."],
+["Cette solution ___ efficace, mais il faut tester.","semble",["ressemble","rassemble","assemble"],"<b>Sembler</b> = paraître. <b>Ressembler à</b> = être similaire à quelqu'un ou quelque chose.","This solution seems effective, but we need to test it."],
+["Elle a ___ son examen, elle devra le repasser.","raté",["manqué","échoué","perdu"],"<b>Rater un examen</b> (transitif direct). On dit <b>échouer À</b> un examen — jamais « échouer un examen ».","She failed her exam, she'll have to retake it."],
+["Tu me ___ beaucoup depuis ton départ.","manques",["rates","perds","oublies"],"« <b>Tu me manques</b> » = I miss you. La construction est inversée en français !","I miss you a lot since you left."],
+["Il faut ___ ce genre d'erreur à l'avenir.","éviter",["esquiver","empêcher","échapper"],"<b>Éviter</b> = ne pas faire, au sens général. <b>Esquiver</b> = éviter physiquement, sur le moment.","We must avoid this kind of mistake in the future."],
+["Le boxeur a ___ le coup de justesse.","esquivé",["évité","empêché","écarté"],"<b>Esquiver</b> = éviter un coup par un mouvement du corps.","The boxer dodged the punch just in time."],
+["Ils ont ___ le centre-ville à cause des travaux.","contourné",["esquivé","évité","dépassé"],"<b>Contourner</b> = passer autour d'un obstacle.","They went around the city center because of the roadworks."],
+["Cette espèce risque de ___ d'ici dix ans.","s'éteindre",["s'effacer","effacer","s'étendre"],"<b>S'éteindre</b> = disparaître définitivement (une espèce, un feu, une lumière).","This species could go extinct within ten years."],
+["Il préfère ___ et laisser les autres parler.","s'effacer",["s'éteindre","effacer","s'affaiblir"],"<b>S'effacer</b> = se mettre en retrait, se faire discret.","He prefers to step back and let others speak."],
+["Peux-tu ___ cette phrase ? Elle est fausse.","effacer",["s'effacer","s'éteindre","éteindre"],"<b>Effacer</b> = supprimer un texte, une trace. <b>S'effacer</b> = se faire discret.","Can you erase this sentence? It's wrong."],
+["Ce café est trop ___ pour moi, ajoute du sucre.","amer",["aigri","aigu","avare"],"<b>Amer</b> = un goût. <b>Aigri</b> = une personne rendue dure par la vie.","This coffee is too bitter for me, add some sugar."],
+["Il s'est mis à ___ si fort que tout l'immeuble l'a entendu.","crier",["pleurer","chuchoter","murmurer"],"<b>Crier</b> = to shout. Attention : <em>to cry</em> (pleurer) est un faux-ami !","He started shouting so loudly that the whole building heard him."],
+["Il ___ avoir tout inventé lui-même.","prétend",["fait semblant","feint","simule"],"<b>Prétendre</b> = affirmer, soutenir (to claim). Ce n'est PAS « to pretend » = faire semblant.","He claims to have invented everything himself."],
+["Il a ___ son erreur devant toute l'équipe.","admis",["permis","promis","soumis"],"<b>Admettre</b> = reconnaître (une erreur, un fait).","He admitted his mistake in front of the whole team."],
+["Cette réforme ___ sur trois piliers.","repose",["pose","dépose","impose"],"<b>Reposer sur</b> = être fondé sur, s'appuyer sur.","This reform rests on three pillars."],
+["Il a échoué parce qu'il a ___ la difficulté.","sous-estimé",["surestimé","estimé","contesté"],"<b>Sous-estimer</b> = croire plus facile que la réalité. <b>Surestimer</b> = croire plus grand.","He failed because he underestimated the difficulty."],
+["Elle a ___ toutes les épreuves avec courage.","surmonté",["soumis","sommé","surestimé"],"<b>Surmonter</b> = venir à bout d'une difficulté.","She overcame all the hardships with courage."],
+["Cette décision ___ d'une longue réflexion.","découle",["coule","écoule","recule"],"<b>Découler de</b> = être la conséquence logique de.","This decision stems from long reflection."],
+["Il a fini par ___ à la pression du groupe.","céder",["concéder","accéder","précéder"],"<b>Céder à</b> = ne plus résister. <b>Concéder</b> = accorder un point dans un débat.","He ended up giving in to the group's pressure."],
+["Ses propos ont ___ une vive polémique.","suscité",["subi","soutenu","souligné"],"<b>Susciter</b> = faire naître, provoquer (une réaction, un débat).","His remarks sparked a heated controversy."],
+["Le témoin a refusé de ___ au procès.","témoigner",["tempérer","tâtonner","tergiverser"],"<b>Témoigner</b> = faire une déposition, dire ce qu'on a vu.","The witness refused to testify at the trial."],
+["Ce détail est loin d'être ___ : il change tout.","anodin",["anonyme","antique","ancien"],"<b>Anodin</b> = sans importance, insignifiant.","This detail is far from trivial: it changes everything."]
 ];
+
+
+const $=id=>document.getElementById(id);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function capLike(m,w){const up=m[0]===m[0].toUpperCase()&&m[0]!==m[0].toLowerCase();return up?w.charAt(0).toUpperCase()+w.slice(1):w.charAt(0).toLowerCase()+w.slice(1);}
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('arene_'+k));localStorage.setItem('arene_'+k,JSON.stringify(v));}catch(e){return null;}}
+const strip=w=>w.replace(/[.,;:!?«»…]/g,'');
+
+/* progression */
+const LEVELS=[[0,'Apprenti','🥉'],[500,'Initié','🥈'],[1500,'Confirmé','🥇'],[3500,'Expert','🎖️'],[7000,'Maître','🏅'],[13000,'As du français','👑']];
+function paintRank(){
+  const xp=store('xp')||0;let i=0;LEVELS.forEach((l,k)=>{if(xp>=l[0])i=k;});
+  const cur=LEVELS[i],nxt=LEVELS[i+1];
+  $('rMedal').textContent=cur[2];$('rLevel').textContent=cur[1];
+  if(nxt){$('rXp').textContent=xp+' XP — encore '+(nxt[0]-xp)+' pour « '+nxt[1]+' »';
+    $('rBar').style.width=Math.min(100,(xp-cur[0])/(nxt[0]-cur[0])*100)+'%';}
+  else{$('rXp').textContent=xp+' XP — rang maximum';$('rBar').style.width='100%';}
+}
+
+/* ============ GÉNÉRATEURS DE QUESTIONS ============ */
+const PREPS=SENTENCES.filter(s=>s[3]==='p');
+const BUILD_FR=SENTENCES.filter(s=>{const n=s[0].split(' ').length;return n>=4&&n<=9;});
+const BUILD_EN=SENTENCES.filter(s=>{const n=s[1].split(' ').length;return n>=4&&n<=9;});
+const SHORT=SENTENCES.filter(s=>s[0].split(' ').length<=8);
+const HUNTABLE=SENTENCES.filter(s=>{
+  if(s[2].includes(' '))return false;
+  return s[0].split(' ').some(t=>strip(t)===s[2]);
+});
+function others(pool,n,taken,get){
+  const out=[],seen=new Set(taken);
+  for(const s of shuffle(pool)){const v=get(s);if(seen.has(v))continue;seen.add(v);out.push(v);if(out.length===n)break;}
+  return out;
+}
+function qGap(s){
+  const [f,e,g,c]=s;
+  const d=others(SENTENCES.filter(x=>x[3]===c&&x[2]!==g),3,[g],x=>x[2]).map(w=>capLike(g,w));
+  return{kind:'choice',task:'Complète la phrase',
+    stage:'<div class="sentence">'+esc(f).replace(esc(g),'<span class="blank">?</span>')+'</div><div class="cue">'+esc(e)+'</div>',
+    options:shuffle([g,...d]),answer:g,fr:f,en:e,hi:g};
+}
+function qPrep(){return Object.assign(qGap(rnd(PREPS)),{task:'Choisis la bonne préposition'});}
+function qFr2En(s){
+  const [f,e,g,c,trap]=s;
+  const d=others(SENTENCES.filter(x=>x[1]!==e),trap?2:3,[e,trap],x=>x[1]);
+  return{kind:'choice',task:'Traduis en anglais',
+    stage:'<div class="sentence">'+esc(f)+'</div>',
+    options:shuffle(trap?[e,trap,...d]:[e,...d]),answer:e,fr:f,en:e,hi:g};
+}
+function qEn2Fr(s){
+  const [f,e,g,c]=s;
+  let d=others(SENTENCES.filter(x=>x[3]===c&&x[0]!==f),3,[f],x=>x[0]);
+  if(d.length<3)d=d.concat(others(SENTENCES.filter(x=>x[0]!==f),3-d.length,[f,...d],x=>x[0]));
+  return{kind:'choice',task:'Traduis en français',
+    stage:'<div class="sentence en">'+esc(e)+'</div>',
+    options:shuffle([f,...d]),answer:f,fr:f,en:e,hi:g};
+}
+function qNuance(){
+  const [t,good,bad,why,en]=rnd(NUANCES);
+  const full=t.replace('___',good);
+  return{kind:'choice',task:'Le mot juste',
+    stage:'<div class="sentence">'+esc(t).replace('___','<span class="blank">?</span>')+'</div><div class="cue">'+esc(en)+'</div>',
+    options:shuffle([good,...bad]),answer:good,fr:full,en:en,hi:good,why:why};
+}
+function qHunt(){
+  const s=rnd(HUNTABLE);const [f,e,g,c]=s;
+  const toks=f.split(' ');
+  const idx=toks.findIndex(t=>strip(t)===g);
+  const wrong=capLike(g,others(SENTENCES.filter(x=>x[3]===c&&x[2]!==g&&!x[2].includes(' ')),1,[g],x=>x[2])[0]||'chose');
+  const shown=toks.slice();
+  shown[idx]=toks[idx].replace(g,wrong);
+  return{kind:'hunt',task:'Un mot est faux — trouve-le',
+    stage:'<div class="cue" style="margin:0 0 12px">'+esc(e)+'</div><div class="hunt" id="huntBox"></div>',
+    tokens:shown,badIndex:idx,answer:g,fr:f,en:e,hi:g,
+    why:'Le mot correct est <b>'+esc(g)+'</b>, pas « '+esc(strip(shown[idx]))+' ».'};
+}
+function qBuildFr(){
+  const s=rnd(BUILD_FR);
+  return{kind:'build',task:'Remets la phrase française dans l\'ordre',lang:'fr',
+    stage:'<div class="sentence en">'+esc(s[1])+'</div><div class="cue">Reconstitue la phrase française</div>',
+    tokens:s[0].split(' '),answer:s[0],fr:s[0],en:s[1],hi:s[2]};
+}
+function qBuildEn(){
+  const s=rnd(BUILD_EN);
+  return{kind:'build',task:'Construis la traduction anglaise',lang:'en',
+    stage:'<div class="sentence">'+esc(s[0])+'</div><div class="cue">Traduis en cliquant les mots dans l\'ordre</div>',
+    tokens:s[1].split(' '),answer:s[1],fr:s[0],en:s[1],hi:s[2]};
+}
+const MIX=[()=>qGap(rnd(SENTENCES)),()=>qFr2En(rnd(SENTENCES)),()=>qEn2Fr(rnd(SENTENCES)),qPrep,qNuance];
+function makeQ(type){
+  if(type==='gap')return qGap(rnd(SENTENCES));
+  if(type==='prep')return qPrep();
+  if(type==='nuance')return qNuance();
+  if(type==='hunt')return qHunt();
+  if(type==='buildFr')return qBuildFr();
+  if(type==='buildEn')return qBuildEn();
+  return rnd(MIX)();
+}
+
+/* ============ LES JEUX ============ */
+const GAMES=[
+ {id:'boss',  ico:'⚔️',shell:'boss',  nm:'Duel de boss',        ds:'Trois adversaires, des barres de vie, 12 s par question.'},
+ {id:'tour',  ico:'🗼',shell:'tour',  nm:'La tour',             ds:'12 étages, les points doublent. Encaisser… ou tout risquer ?'},
+ {id:'erreur',ico:'🔍',shell:'series',nm:'Chasse à l’erreur',   ds:'Un mot est faux dans la phrase. Clique dessus.',      types:['hunt'],n:12},
+ {id:'traduc',ico:'🧱',shell:'series',nm:'Traduction guidée',   ds:'Construis toi-même la traduction anglaise, mot par mot.',types:['buildEn'],n:10},
+ {id:'juste', ico:'🎭',shell:'series',nm:'Le mot juste',        ds:'Les nuances de prof : sentir/ressentir, amener/apporter…',types:['nuance'],n:15},
+ {id:'ordre', ico:'🧩',shell:'series',nm:'Reconstruis la phrase',ds:'Les mots sont mélangés, remets-les dans l’ordre.',    types:['buildFr'],n:10},
+ {id:'prepo', ico:'🔗',shell:'series',nm:'La bonne préposition',ds:'Le piège nº1 des étrangers : au sein de, faute de…',  types:['prep'],n:12},
+ {id:'paires',ico:'⚡',shell:'pairs', nm:'Paires éclair',        ds:'Relie les phrases FR ↔ EN. 90 secondes.'}
+];
+const BOSSES=[{n:'Le Faux-Ami',a:'🎭',hp:100},{n:'La Préposition',a:'🪤',hp:130},{n:'Le Subtil',a:'🐉',hp:170}];
+const FLOORS=[10,20,40,70,110,160,230,320,440,600,800,1100];
 
 function paintMenu(){
   $('games').innerHTML='';
   GAMES.forEach(g=>{
-    const b=document.createElement('button');
-    b.className='game'; b.type='button';
+    const b=document.createElement('button');b.className='game';b.type='button';
     const best=store('best_'+g.id)||0;
-    b.innerHTML='<span class="ico">'+g.ico+'</span><span class="txt"><span class="nm">'+g.nm+'</span><span class="ds">'+g.ds+'</span></span>'+
-      (best?'<span class="bst"><b>'+best+'</b><span>record</span></span>':'');
+    b.innerHTML='<span class="ico">'+g.ico+'</span><span class="txt"><span class="nm">'+esc(g.nm)+'</span><span class="ds">'+esc(g.ds)+'</span></span>'+(best?'<span class="bst"><b>'+best+'</b><span>record</span></span>':'');
     b.addEventListener('click',()=>startGame(g.id));
     $('games').appendChild(b);
   });
   paintRank();
 }
 
-/* ---------- générateurs de questions ---------- */
-function pickOthers(pool,not,n,get){
-  const out=[],seen=new Set([get(not)]);
-  for(const s of shuffle(pool)){ const v=get(s); if(seen.has(v))continue; seen.add(v); out.push(v); if(out.length===n)break; }
-  return out;
-}
-function qGap(s,onlyPrep){
-  const [f,e,g,c]=s;
-  const pool=SENTENCES.filter(x=>x[3]===c && x[2]!==g);
-  const others=pickOthers(pool,s,3,x=>x[2]).map(w=>capLike(g,w));
-  return {kind:'choice', task:onlyPrep?'Choisis la bonne préposition':'Complète la phrase',
-    stage:'<div class="sentence">'+esc(f).replace(esc(g),'<span class="blank">?</span>')+'</div><div class="cue">'+esc(e)+'</div>',
-    options:shuffle([g,...others]), answer:g, fr:f, en:e, hi:g};
-}
-function qFr2En(s){
-  const [f,e,g,c,trap]=s;
-  const pool=SENTENCES.filter(x=>x[1]!==e);
-  const need=trap?2:3;
-  const others=pickOthers(pool,s,need,x=>x[1]);
-  const opts=trap?[e,trap,...others]:[e,...others];
-  return {kind:'choice', task:'Traduis en anglais',
-    stage:'<div class="sentence">'+esc(f)+'</div>',
-    options:shuffle(opts), answer:e, fr:f, en:e, hi:g};
-}
-function qEn2Fr(s){
-  const [f,e,g,c]=s;
-  const pool=SENTENCES.filter(x=>x[3]===c && x[0]!==f);
-  let others=pickOthers(pool,s,3,x=>x[0]);
-  if(others.length<3) others=others.concat(pickOthers(SENTENCES.filter(x=>x[0]!==f),s,3-others.length,x=>x[0]));
-  return {kind:'choice', task:'Traduis en français',
-    stage:'<div class="sentence en">'+esc(e)+'</div>',
-    options:shuffle([f,...others]), answer:f, fr:f, en:e, hi:g};
-}
-function qBuild(s){
-  const [f,e,g]=s;
-  return {kind:'build', task:'Remets les mots dans l’ordre',
-    stage:'<div class="sentence en">'+esc(e)+'</div><div class="cue">Reconstitue la phrase française</div>',
-    tokens:f.split(' '), answer:f, fr:f, en:e, hi:g};
-}
-const BUILDABLE = SENTENCES.filter(s=>{const n=s[0].split(' ').length;return n>=4&&n<=9;});
-const PREPS = SENTENCES.filter(s=>s[3]==='p');
-
-function makeQ(mode){
-  if(mode==='gap')   return qGap(SENTENCES[Math.floor(Math.random()*SENTENCES.length)],false);
-  if(mode==='prep')  return qGap(PREPS[Math.floor(Math.random()*PREPS.length)],true);
-  if(mode==='fr2en') return qFr2En(SENTENCES[Math.floor(Math.random()*SENTENCES.length)]);
-  if(mode==='en2fr') return qEn2Fr(SENTENCES[Math.floor(Math.random()*SENTENCES.length)]);
-  if(mode==='build') return qBuild(BUILDABLE[Math.floor(Math.random()*BUILDABLE.length)]);
-  const mix=['gap','fr2en','en2fr','prep','build'];
-  return makeQ(mix[Math.floor(Math.random()*mix.length)]);
-}
-
-/* ---------- moteur ---------- */
-let G=null, tick=null;
+/* ============ MOTEUR ============ */
+let G=null,qTimer=null,gTimer=null;
 
 function startGame(id){
-  const g=GAMES.find(x=>x.id===id);
-  G={id, cfg:g, score:0, asked:0, right:0, streak:0, best:0, lives:3, left:180, review:[], q:null, locked:false};
-  $('menu').style.display='none'; $('end').style.display='none';
-  $('play').style.display='block'; $('hud').style.display='block';
-  $('hMode').textContent=g.ico+' '+g.nm;
-  $('hLives').style.display = id==='survie'?'flex':'none';
-  $('hTime').style.display  = id==='sprint'?'flex':'none';
-  if(tick) clearInterval(tick);
-  if(id==='sprint'){ $('hTimeV').textContent='3:00';
-    tick=setInterval(()=>{ G.left--; const m=Math.floor(G.left/60),s=G.left%60;
-      $('hTimeV').textContent=m+':'+(s<10?'0':'')+s;
-      $('hTime').classList.toggle('warn',G.left<=60&&G.left>15);
-      $('hTime').classList.toggle('danger',G.left<=15);
-      if(G.left<=0) finish();
-    },1000);
-  }
-  paintHud(); nextQ();
+  const cfg=GAMES.find(x=>x.id===id);
+  G={id,cfg,score:0,asked:0,right:0,streak:0,best:0,review:[],q:null,locked:false,
+     bossI:0,foeHp:0,myHp:100,floor:0,pot:0,banked:false,left:90,pairsDone:0,sel:null};
+  $('menu').style.display='none';$('end').style.display='none';
+  $('play').style.display='block';$('hud').style.display='block';
+  $('hMode').textContent=cfg.ico+' '+cfg.nm;
+  $('hScoreK').textContent = cfg.shell==='tour'?'Cagnotte':'Points';
+  if(cfg.shell==='boss')G.foeHp=BOSSES[0].hp;
+  clearTimers();
+  if(cfg.shell==='pairs')startPairs(); else nextQ();
   window.scrollTo({top:0});
 }
+function clearTimers(){if(qTimer){clearInterval(qTimer);qTimer=null;}if(gTimer){clearInterval(gTimer);gTimer=null;}}
 function paintHud(){
-  $('hScore').textContent=G.score;
-  const mult=Math.min(5,1+Math.floor(G.streak/3));
-  $('hComboV').textContent='×'+mult;
-  $('hCombo').classList.toggle('on',G.streak>=3);
-  $('hLives').innerHTML='<small>Vies</small><span>'+'❤️'.repeat(Math.max(0,G.lives))+'</span>';
-  const n=G.cfg.n;
-  $('pFill').style.width = n ? (G.asked/n*100)+'%' : (G.id==='sprint' ? ((180-G.left)/180*100)+'%' : '100%');
+  $('hScore').textContent = G.cfg.shell==='tour'?G.pot:G.score;
+  const m=Math.min(5,1+Math.floor(G.streak/3));
+  $('hComboV').textContent='×'+m;$('hCombo').classList.toggle('on',G.streak>=3);
+}
+function paintArena(){
+  const a=$('pArena');
+  if(G.cfg.shell==='boss'){
+    const b=BOSSES[G.bossI];
+    a.innerHTML='<div class="fighter" id="foeBox"><span class="av">'+b.a+'</span><span class="bar">'+
+      '<span class="nmx"><span>'+esc(b.n)+'</span><em>'+Math.max(0,G.foeHp)+' / '+b.hp+'</em></span>'+
+      '<span class="hp foe"><i style="width:'+Math.max(0,G.foeHp/b.hp*100)+'%"></i></span></span></div>'+
+      '<div class="fighter" id="meBox"><span class="av">🧑‍🎓</span><span class="bar">'+
+      '<span class="nmx"><span>Toi</span><em>'+Math.max(0,G.myHp)+' / 100</em></span>'+
+      '<span class="hp me"><i style="width:'+Math.max(0,G.myHp)+'%"></i></span></span></div>'+
+      '<div class="clock" id="clock"><i id="clockI"></i></div>';
+  }else if(G.cfg.shell==='tour'){
+    let h='<div class="ladder">';
+    FLOORS.forEach((v,i)=>{h+='<div class="rung'+(i<G.floor?' done':(i===G.floor?' now':''))+'"><span>Étage '+(i+1)+'</span><b>'+v+'</b></div>';});
+    a.innerHTML=h+'</div>';
+  }else if(G.cfg.shell==='series'){
+    a.innerHTML='<div class="prog"><i style="width:'+(G.asked/G.cfg.n*100)+'%"></i></div>';
+  }else a.innerHTML='';
 }
 function nextQ(){
-  const n=G.cfg.n;
-  if(n && G.asked>=n) return finish();
-  G.q=makeQ(G.id); G.locked=false;
-  $('pTask').textContent = G.q.task + (n?'  ·  '+(G.asked+1)+'/'+n:'');
+  if(G.cfg.shell==='series'&&G.asked>=G.cfg.n)return finish();
+  G.q=makeQ(G.cfg.types?rnd(G.cfg.types):'mix');G.locked=false;
+  paintArena();paintHud();
+  $('pTask').textContent=G.q.task+(G.cfg.shell==='series'?'  ·  '+(G.asked+1)+'/'+G.cfg.n:'');
   $('pStage').innerHTML=G.q.stage;
-  $('pFix').className='fix';
-  const box=$('pAnswer'); box.innerHTML='';
-  if(G.q.kind==='choice') renderChoice(box); else renderBuild(box);
-  paintHud();
+  $('pFix').className='fix';$('fWhy').style.display='none';$('fCtl').innerHTML='';
+  const box=$('pAnswer');box.innerHTML='';
+  if(G.q.kind==='choice')renderChoice(box);
+  else if(G.q.kind==='build')renderBuild(box);
+  else renderHunt();
+  if(G.cfg.shell==='boss')startQClock();
+}
+function startQClock(){
+  if(qTimer)clearInterval(qTimer);
+  let left=12000;const el=$('clockI'),wrap=$('clock');
+  qTimer=setInterval(()=>{
+    left-=100;const p=Math.max(0,left/12000*100);
+    if(el)el.style.width=p+'%';
+    if(wrap)wrap.classList.toggle('low',p<30);
+    if(left<=0){clearInterval(qTimer);qTimer=null;if(!G.locked)submit(false,null,null);}
+  },100);
 }
 function renderChoice(box){
-  const wrap=document.createElement('div'); wrap.className='opts';
-  G.q.options.forEach((val,i)=>{
-    const b=document.createElement('button');
-    b.className='opt'; b.type='button';
-    b.innerHTML='<span class="k">'+(i+1)+'</span><span class="l">'+esc(val)+'</span>';
-    b.addEventListener('click',()=>answer(val,b,wrap));
-    wrap.appendChild(b);
+  const w=document.createElement('div');w.className='opts';
+  G.q.options.forEach((v,i)=>{
+    const b=document.createElement('button');b.className='opt';b.type='button';
+    b.innerHTML='<span class="k">'+(i+1)+'</span><span class="l">'+esc(v)+'</span>';
+    b.addEventListener('click',()=>submit(v===G.q.answer,b,w));
+    w.appendChild(b);
   });
-  box.appendChild(wrap);
+  box.appendChild(w);
+}
+function renderHunt(){
+  const box=document.getElementById('huntBox');
+  G.q.tokens.forEach((t,i)=>{
+    const b=document.createElement('button');b.className='hw';b.type='button';b.textContent=t;
+    b.addEventListener('click',()=>{
+      if(G.locked)return;
+      const ok=i===G.q.badIndex;
+      document.querySelectorAll('#huntBox .hw').forEach((el,k)=>{if(k===G.q.badIndex)el.classList.add(ok?'good':'bad');});
+      if(!ok)b.classList.add('bad');
+      box.classList.add('locked');
+      submit(ok,null,null);
+    });
+    box.appendChild(b);
+  });
 }
 function renderBuild(box){
-  const tray=document.createElement('div'); tray.className='tray'; tray.id='tray';
-  const bank=document.createElement('div'); bank.className='bank';
+  const tray=document.createElement('div');tray.className='tray';tray.id='tray';
+  const bank=document.createElement('div');bank.className='bank';
   const order=[];
   shuffle(G.q.tokens).forEach(tok=>{
-    const c=document.createElement('button'); c.className='chip'; c.type='button'; c.textContent=tok;
+    const c=document.createElement('button');c.className='chip'+(G.q.lang==='fr'?' fr':'');c.type='button';c.textContent=tok;
     c.addEventListener('click',()=>{
-      if(G.locked) return;
+      if(G.locked)return;
       c.classList.add('used');
-      const p=document.createElement('button'); p.className='chip placed'; p.type='button'; p.textContent=tok;
-      p.addEventListener('click',()=>{ if(G.locked)return; p.remove(); c.classList.remove('used'); order.splice(order.indexOf(p),1); });
-      order.push(p); tray.appendChild(p);
+      const p=document.createElement('button');p.className='chip placed'+(G.q.lang==='fr'?' fr':'');p.type='button';p.textContent=tok;
+      p.addEventListener('click',()=>{if(G.locked)return;p.remove();c.classList.remove('used');order.splice(order.indexOf(p),1);});
+      order.push(p);tray.appendChild(p);
       if(order.length===G.q.tokens.length){
         const built=order.map(x=>x.textContent).join(' ');
-        tray.classList.add(built===G.q.answer?'good':'bad');
-        answer(built,null,null);
+        const ok=built===G.q.answer;
+        tray.classList.add(ok?'good':'bad');
+        submit(ok,null,null);
       }
     });
     bank.appendChild(c);
   });
-  box.appendChild(tray); box.appendChild(bank);
+  box.appendChild(tray);box.appendChild(bank);
 }
-function answer(val,btn,wrap){
-  if(G.locked) return; G.locked=true;
+function pop(t,c){const p=$('pop');p.textContent=t;p.style.color=c;p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}
+
+function submit(ok,btn,wrap){
+  if(G.locked)return;G.locked=true;
+  if(qTimer){clearInterval(qTimer);qTimer=null;}
   G.asked++;
-  const ok = val===G.q.answer;
   if(wrap){
     wrap.classList.add('locked');
     [...wrap.children].forEach(c=>{
       const t=c.querySelector('.l').textContent;
-      if(t===G.q.answer) c.classList.add('good');
-      else if(c===btn) c.classList.add('bad');
+      if(t===G.q.answer)c.classList.add('good');else if(c===btn)c.classList.add('bad');
     });
   }
   const mult=Math.min(5,1+Math.floor(G.streak/3));
-  if(ok){
-    G.right++; G.streak++; G.best=Math.max(G.best,G.streak);
-    const pts=10*mult; G.score+=pts; pop('+'+pts,'var(--jade)');
-  }else{
-    G.streak=0; if(G.id==='survie') G.lives--;
-    pop('✕','var(--rust)');
-    G.review.push(G.q);
+  if(ok){G.right++;G.streak++;G.best=Math.max(G.best,G.streak);}
+  else{G.streak=0;G.review.push(G.q);}
+
+  /* effets par type de jeu */
+  const sh=G.cfg.shell;
+  if(sh==='series'){
+    if(ok){const p=10*mult;G.score+=p;pop('+'+p,'var(--jade)');}else pop('✕','var(--rust)');
+  }else if(sh==='boss'){
+    if(ok){const d=18+(mult-1)*7;G.foeHp-=d;G.score+=10*mult;pop('−'+d+' PV','var(--jade)');
+      const fb=$('foeBox');if(fb)fb.classList.add('hit');}
+    else{G.myHp-=25;pop('−25 PV','var(--rust)');const mb=$('meBox');if(mb)mb.classList.add('hit');}
+    paintArena();
+  }else if(sh==='tour'){
+    if(ok){G.pot=FLOORS[G.floor];G.floor++;G.score=G.pot;pop('+'+G.pot,'var(--gold)');}
+    else{G.pot=0;G.score=0;pop('Tout perdu !','var(--rust)');}
+    paintArena();
   }
   paintHud();
+
   const fix=$('pFix');
   fix.className='fix show '+(ok?'ok':'no');
-  $('fVerdict').textContent = ok ? '✓ Correct'+(mult>1?'  ·  combo ×'+mult:'') : '✗ La bonne réponse :';
-  $('fFr').innerHTML = esc(G.q.fr).replace(esc(G.q.hi),'<b>'+esc(G.q.hi)+'</b>');
-  $('fEn').textContent = G.q.en;
-  if(G.id==='survie' && G.lives<=0){ setTimeout(finish,900); return; }
-  if(ok){ setTimeout(()=>{ if(G) nextQ(); }, 950); }
-}
-function pop(t,c){const p=$('pop');p.textContent=t;p.style.color=c;p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}
-$('fNext').addEventListener('click',()=>{ if(G) nextQ(); });
+  $('fVerdict').textContent=ok?('✓ Correct'+(mult>1?'  ·  combo ×'+mult:'')):(btn||wrap?'✗ La bonne réponse :':'✗ Raté — la phrase correcte :');
+  $('fFr').innerHTML=esc(G.q.fr).replace(esc(G.q.hi),'<b>'+esc(G.q.hi)+'</b>');
+  $('fEn').textContent=G.q.en;
+  if(G.q.why){$('fWhy').innerHTML=G.q.why;$('fWhy').style.display='block';}
 
-/* ---------- fin ---------- */
-function finish(){
-  if(!G) return;
-  if(tick){clearInterval(tick);tick=null;}
-  const g=G.cfg, acc=G.asked?Math.round(G.right/G.asked*100):0;
-  const prev=store('best_'+G.id)||0, record=G.score>prev;
-  if(record) store('best_'+G.id,G.score);
-  const xp=(store('xp')||0)+G.score; store('xp',xp);
-
-  $('play').style.display='none'; $('hud').style.display='none'; $('end').style.display='block';
-  $('ePts').innerHTML=G.score+'<small> pts</small>';
-  $('eRec').textContent = record ? '🎉 Nouveau record personnel !' : 'Record à battre : '+prev+' pts';
-  $('eAcc').textContent=acc+'%';
-  $('eCombo').textContent='×'+Math.min(5,1+Math.floor(G.best/3));
-  $('eRight').textContent=G.right+'/'+G.asked;
-  $('eXp').textContent='+'+G.score;
-  let band;
-  if(G.id==='survie') band='Survie — '+G.right+' bonnes réponses';
-  else if(acc>=95) band='Sans faute ou presque';
-  else if(acc>=80) band='Très solide';
-  else if(acc>=60) band='En progrès';
-  else band='À retravailler';
-  $('eBand').textContent=band;
-  $('ePerfect').style.display = (G.asked>0 && G.review.length===0) ? 'block' : 'none';
-
-  const seen=new Set(), uniq=[];
-  G.review.forEach(q=>{ if(seen.has(q.fr))return; seen.add(q.fr); uniq.push(q); });
-  if(uniq.length===0){ $('eRevw').style.display='none'; }
-  else{
-    $('eRevw').style.display='block';
-    $('eRevwD').textContent=uniq.length+' phrase(s) à revoir — avec la traduction anglaise.';
-    $('eList').innerHTML=uniq.map(q=>'<div class="rv"><div class="f">'+esc(q.fr).replace(esc(q.hi),'<b>'+esc(q.hi)+'</b>')+'</div><div class="e">'+esc(q.en)+'</div></div>').join('');
+  /* fins de partie */
+  if(sh==='boss'){
+    if(G.myHp<=0){setTimeout(()=>finish('Vaincu par « '+BOSSES[G.bossI].n+' »'),1100);return;}
+    if(G.foeHp<=0){
+      G.bossI++;G.score+=100;
+      if(G.bossI>=BOSSES.length){setTimeout(()=>finish('🏆 Les trois boss sont vaincus !'),1100);return;}
+      G.foeHp=BOSSES[G.bossI].hp;G.myHp=Math.min(100,G.myHp+25);
+      pop('Boss vaincu ! +100','var(--gold)');
+    }
   }
-  paintRank();
-  window.scrollTo({top:0,behavior:'smooth'});
+  if(sh==='tour'){
+    if(!ok){setTimeout(()=>finish('Chute au '+(G.floor+1)+'ᵉ étage — cagnotte perdue'),1200);return;}
+    if(G.floor>=FLOORS.length){setTimeout(()=>finish('🏆 Sommet de la tour atteint !'),1100);return;}
+    $('fCtl').innerHTML='<div class="choice2"><button class="cash" id="bCash">Encaisser '+G.pot+'</button><button class="risk" id="bRisk">Étage '+(G.floor+1)+' →</button></div>';
+    $('bCash').addEventListener('click',()=>{G.banked=true;finish('Encaissé à l\'étage '+G.floor);});
+    $('bRisk').addEventListener('click',nextQ);
+    return;
+  }
+  $('fCtl').innerHTML='<button class="next" id="fNext">Continuer →</button>';
+  $('fNext').addEventListener('click',nextQ);
+  if(ok&&sh!=='boss')setTimeout(()=>{if(G&&G.locked)nextQ();},950);
+  if(ok&&sh==='boss')setTimeout(()=>{if(G&&G.locked)nextQ();},1000);
 }
-function toMenu(){
-  if(tick){clearInterval(tick);tick=null;}
-  G=null;
-  $('play').style.display='none'; $('end').style.display='none'; $('hud').style.display='none';
-  $('menu').style.display='block';
-  paintMenu(); window.scrollTo({top:0});
+
+/* ---------- PAIRES ÉCLAIR ---------- */
+function startPairs(){
+  $('pArena').innerHTML='<div class="prog"><i id="pClock" style="width:100%"></i></div>';
+  $('pTask').textContent='Relie chaque phrase à sa traduction';
+  $('pFix').className='fix';
+  G.left=90;
+  gTimer=setInterval(()=>{
+    G.left--;
+    const el=$('pClock');if(el)el.style.width=(G.left/90*100)+'%';
+    $('hScore').textContent=G.score;
+    if(G.left<=0)finish('Temps écoulé');
+  },1000);
+  pairsRound();
 }
+function pairsRound(){
+  const pick=shuffle(SHORT).slice(0,5);
+  G.pairSet=pick;G.sel=null;G.matched=0;
+  $('pStage').innerHTML='<div class="pairs"><div class="pcol" id="colF"></div><div class="pcol" id="colE"></div></div>';
+  $('pAnswer').innerHTML='';
+  const cf=$('colF'),ce=$('colE');
+  shuffle(pick).forEach(s=>{
+    const b=document.createElement('button');b.className='pcard fr';b.type='button';b.textContent=s[0];b.dataset.k=s[0];
+    b.addEventListener('click',()=>{
+      cf.querySelectorAll('.pcard').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');G.sel=b;
+    });
+    cf.appendChild(b);
+  });
+  shuffle(pick).forEach(s=>{
+    const b=document.createElement('button');b.className='pcard';b.type='button';b.textContent=s[1];b.dataset.k=s[0];
+    b.addEventListener('click',()=>{
+      if(!G.sel)return;
+      G.asked++;
+      if(G.sel.dataset.k===b.dataset.k){
+        G.right++;G.streak++;G.best=Math.max(G.best,G.streak);
+        const m=Math.min(5,1+Math.floor(G.streak/3));const p=15*m;G.score+=p;pop('+'+p,'var(--jade)');
+        G.sel.classList.add('done');b.classList.add('done');G.sel.classList.remove('sel');G.sel=null;
+        G.matched++;
+        if(G.matched===5)setTimeout(pairsRound,450);
+      }else{
+        G.streak=0;G.left=Math.max(0,G.left-3);pop('−3 s','var(--rust)');
+        const bad=G.sel;b.classList.add('miss');bad.classList.add('miss');
+        const S=SENTENCES.find(x=>x[0]===bad.dataset.k);
+        if(S)G.review.push({fr:S[0],en:S[1],hi:S[2]});
+        setTimeout(()=>{b.classList.remove('miss');bad.classList.remove('miss','sel');},420);
+        G.sel=null;
+      }
+      paintHud();
+    });
+    ce.appendChild(b);
+  });
+}
+
+/* ---------- FIN ---------- */
+function finish(msg){
+  if(!G)return;const g=G;G=null;clearTimers();
+  const acc=g.asked?Math.round(g.right/g.asked*100):0;
+  const final=g.cfg.shell==='tour'?g.pot:g.score;
+  const prev=store('best_'+g.id)||0,rec=final>prev;
+  if(rec)store('best_'+g.id,final);
+  store('xp',(store('xp')||0)+final);
+  $('play').style.display='none';$('hud').style.display='none';$('end').style.display='block';
+  $('ePts').innerHTML=final+'<small> pts</small>';
+  $('eRec').textContent=rec?'🎉 Nouveau record personnel !':'Record à battre : '+prev+' pts';
+  $('eAcc').textContent=acc+'%';
+  $('eCombo').textContent='×'+Math.min(5,1+Math.floor(g.best/3));
+  $('eRight').textContent=g.right+'/'+g.asked;
+  $('eXp').textContent='+'+final;
+  $('eBand').textContent=msg||(acc>=95?'Sans faute ou presque':acc>=80?'Très solide':acc>=60?'En progrès':'À retravailler');
+  $('ePerfect').style.display=(g.asked>0&&g.review.length===0)?'block':'none';
+  const seen=new Set(),u=[];
+  g.review.forEach(q=>{if(seen.has(q.fr))return;seen.add(q.fr);u.push(q);});
+  if(!u.length)$('eRevw').style.display='none';
+  else{$('eRevw').style.display='block';
+    $('eRevwD').textContent=u.length+' phrase(s) à revoir — avec la traduction anglaise.';
+    $('eList').innerHTML=u.map(q=>'<div class="rv"><div class="f">'+esc(q.fr).replace(esc(q.hi),'<b>'+esc(q.hi)+'</b>')+'</div><div class="e">'+esc(q.en)+'</div></div>').join('');
+  }
+  $('eAgain').dataset.id=g.id;
+  paintRank();window.scrollTo({top:0,behavior:'smooth'});
+}
+function toMenu(){clearTimers();G=null;
+  $('play').style.display='none';$('end').style.display='none';$('hud').style.display='none';
+  $('menu').style.display='block';paintMenu();window.scrollTo({top:0});}
 $('quitBtn').addEventListener('click',toMenu);
 $('eMenu').addEventListener('click',toMenu);
-$('eAgain').addEventListener('click',()=>{ const id=$('eAgain').dataset.id; startGame(id||'gap'); });
-const _f=finish; finish=function(){ const id=G?G.id:'gap'; _f(); $('eAgain').dataset.id=id; };
-
-/* clavier */
+$('eAgain').addEventListener('click',()=>startGame($('eAgain').dataset.id||'boss'));
 document.addEventListener('keydown',e=>{
-  if(!G) return;
-  if(e.key==='Enter' && G.locked){ nextQ(); return; }
-  if(G.locked || G.q.kind!=='choice') return;
+  if(!G)return;
+  if(e.key==='Enter'&&G.locked){const n=$('fNext');if(n)n.click();return;}
+  if(G.locked||!G.q||G.q.kind!=='choice')return;
   const k=parseInt(e.key,10);
-  if(k>=1&&k<=4){ const c=document.querySelectorAll('#pAnswer .opt')[k-1]; if(c)c.click(); }
+  if(k>=1&&k<=4){const c=document.querySelectorAll('#pAnswer .opt')[k-1];if(c)c.click();}
 });
-
 paintMenu();
 </script>
