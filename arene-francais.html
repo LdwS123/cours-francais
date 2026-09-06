@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>L'Arène du français — 8 jeux pour devenir un as</title>
+<title>L'Arène du français — 13 jeux pour devenir un as</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
@@ -218,7 +218,7 @@
     <div class="crest">
       <div class="kicker">Entraînement intensif · B2 · C1</div>
       <h1>L'Arène du français</h1>
-      <p class="tag">Huit jeux pour devenir un as. Ici on ne clique pas des mots isolés : on travaille sur de <b>vraies phrases</b>, on <b>traduit</b>, on traque les erreurs — et l'anglais s'affiche à chaque correction.</p>
+      <p class="tag">Treize jeux pour devenir un as, et un système de révision qui fait revenir tes erreurs jusqu'à ce qu'elles rentrent. Ici on ne clique pas des mots isolés : on travaille sur de <b>vraies phrases</b>, on <b>traduit</b>, on traque les erreurs — et l'anglais s'affiche à chaque correction.</p>
     </div>
     <div class="rank">
       <div class="medal" id="rMedal">🥉</div>
@@ -509,6 +509,136 @@ const NUANCES = [
 ["Ce détail est loin d'être ___ : il change tout.","anodin",["anonyme","antique","ancien"],"<b>Anodin</b> = sans importance, insignifiant.","This detail is far from trivial: it changes everything."]
 ];
 
+// Conjugaison : [phrase avec ___, bonne forme, [3 pièges], temps/règle, anglais]
+const CONJUG = [
+["Il faut que tu ___ plus tôt. (partir)","partes",["pars","partiras","partirais"],"<b>Subjonctif présent</b> après « il faut que ».","You have to leave earlier."],
+["Je doute qu'il ___ raison. (avoir)","ait",["a","aura","aurait"],"<b>Subjonctif</b> après « douter que ».","I doubt he is right."],
+["Bien qu'elle ___ fatiguée, elle continue. (être)","soit",["est","sera","serait"],"« <b>Bien que</b> » exige toujours le subjonctif.","Although she is tired, she keeps going."],
+["Je veux que vous ___ attention. (faire)","fassiez",["faites","ferez","feriez"],"<b>Subjonctif présent</b> de « faire » : que vous fassiez.","I want you to be careful."],
+["Il est possible qu'il ___ demain. (venir)","vienne",["vient","viendra","viendrait"],"<b>Subjonctif</b> après « il est possible que ».","It's possible that he'll come tomorrow."],
+["Avant qu'il ne ___, préviens-moi. (partir)","parte",["part","partira","partirait"],"« <b>Avant que</b> » + subjonctif.","Before he leaves, let me know."],
+["Je cherche quelqu'un qui ___ parler russe. (savoir)","sache",["sait","saura","saurait"],"<b>Subjonctif</b> après un antécédent indéfini (« quelqu'un qui »).","I'm looking for someone who can speak Russian."],
+["Il faut que nous ___ patients. (être)","soyons",["sommes","serons","serions"],"<b>Subjonctif présent</b> : que nous soyons.","We must be patient."],
+["Je suis content que tu ___ réussi. (avoir)","aies",["as","auras","aurais"],"<b>Subjonctif passé</b> : que tu aies réussi.","I'm glad you succeeded."],
+["Je ne pense pas qu'il ___ venir. (pouvoir)","puisse",["peut","pourra","pourrait"],"<b>Subjonctif</b> après « ne pas penser que ».","I don't think he can come."],
+["Il ne faut pas que tu ___ ça. (dire)","dises",["dis","diras","dirais"],"<b>Subjonctif présent</b> de « dire » : que tu dises.","You mustn't say that."],
+["Je souhaite qu'il ___ mieux. (aller)","aille",["va","ira","irait"],"<b>Subjonctif</b> de « aller » : que j'aille, qu'il aille.","I hope he gets better."],
+["Il faut que je ___ ce livre. (lire)","lise",["lis","lirai","lirais"],"<b>Subjonctif présent</b> de « lire » : que je lise.","I have to read this book."],
+["Il faudrait que nous ___ plus tôt. (partir)","partions",["partons","partirons","partirions"],"<b>Subjonctif présent</b>, 1ʳᵉ personne du pluriel.","We should leave earlier."],
+["Si j'avais su, je ne ___ pas venu. (être)","serais",["serai","sois","suis"],"<b>Conditionnel passé</b> : si + plus-que-parfait → conditionnel passé.","If I had known, I wouldn't have come."],
+["Si tu m'avais prévenu, j'___ pu t'aider. (avoir)","aurais",["aurai","aie","avais"],"<b>Conditionnel passé</b> après « si + plus-que-parfait ».","If you had warned me, I could have helped you."],
+["S'il faisait beau, nous ___ à la plage. (aller)","irions",["irons","allions","allons"],"<b>Conditionnel présent</b> après « si + imparfait ».","If the weather were nice, we'd go to the beach."],
+["Je serais venu si tu me l'___ demandé. (avoir)","avais",["as","aurais","aies"],"<b>Plus-que-parfait</b> dans la subordonnée en « si ».","I would have come if you had asked me."],
+["Quand je suis arrivé, il ___ déjà parti. (être)","était",["a été","sera","serait"],"<b>Plus-que-parfait</b> : action antérieure à une autre au passé.","When I arrived, he had already left."],
+["Elle m'a dit qu'elle ___ tout compris. (avoir)","avait",["a","aura","aurait"],"<b>Plus-que-parfait</b> dans le discours indirect au passé.","She told me she had understood everything."],
+["Nous ___ déjà mangé quand il est arrivé. (avoir)","avions",["avons","aurons","aurions"],"<b>Plus-que-parfait</b> : nous avions mangé.","We had already eaten when he arrived."],
+["Quand tu ___ fini, appelle-moi. (avoir)","auras",["as","avais","aurais"],"<b>Futur antérieur</b> après « quand » : quand tu auras fini.","When you have finished, call me."],
+["Dès qu'il ___ arrivé, on commencera. (être)","sera",["est","était","serait"],"<b>Futur antérieur</b> après « dès que ».","As soon as he has arrived, we'll start."],
+["Les fleurs que j'ai ___ sont fanées. (acheter)","achetées",["acheté","achetés","achetée"],"<b>Accord du participe passé</b> avec le COD placé avant (les fleurs, féminin pluriel).","The flowers I bought have wilted."],
+["Elle s'est ___ les mains. (laver)","lavé",["lavée","lavés","lavées"],"<b>Pas d'accord</b> : le COD « les mains » est placé APRÈS le verbe.","She washed her hands."],
+["La lettre qu'il a ___ est longue. (écrire)","écrite",["écrit","écrits","écrites"],"<b>Accord</b> avec le COD « la lettre » placé avant.","The letter he wrote is long."],
+["Ils se sont ___ à huit heures. (lever)","levés",["levé","levée","levées"],"<b>Accord</b> avec le sujet pour un verbe pronominal réfléchi.","They got up at eight."],
+["Ils se sont ___ toute la soirée. (parler)","parlé",["parlés","parlées","parlée"],"<b>Pas d'accord</b> : « se parler » = parler À quelqu'un (COI).","They talked to each other all evening."],
+["Il s'est ___ compte de son erreur. (rendre)","rendu",["rendue","rendus","rendre"],"« Se rendre compte » : le participe reste <b>invariable</b>.","He realized his mistake."],
+["La décision qu'ils ont ___ est bonne. (prendre)","prise",["pris","prises","prennent"],"<b>Accord</b> avec « la décision », COD placé avant.","The decision they made is a good one."],
+["Ce film, je l'ai ___ deux fois. (voir)","vu",["vue","vus","voir"],"« Ce film » est masculin singulier → participe invariable ici.","That film, I've seen it twice."],
+["Nous avons ___ attendre longtemps. (devoir)","dû",["du","due","dus"],"Participe passé de « devoir » : <b>dû</b> (avec accent circonflexe).","We had to wait a long time."],
+["Ils ont ___ la vérité trop tard. (savoir)","su",["sus","sue","savoir"],"Participe passé de « savoir » : <b>su</b>.","They found out the truth too late."],
+["Elle a ___ vivre à Paris. (vouloir)","voulu",["voulue","vouloir","voulait"],"Après « avoir », participe passé : <b>voulu</b>.","She wanted to live in Paris."],
+["Il a ___ de partir sans rien dire. (décider)","décidé",["décider","décidez","décidais"],"Après l'auxiliaire « avoir » → <b>participe passé</b>, pas l'infinitif.","He decided to leave without saying anything."],
+["Je vais ___ un café. (prendre)","prendre",["pris","prends","prenais"],"Après « aller » (futur proche) → <b>infinitif</b>.","I'm going to have a coffee."],
+["Hier, pendant que je ___, il a téléphoné. (travailler)","travaillais",["ai travaillé","travaillerai","travaille"],"<b>Imparfait</b> pour le décor, passé composé pour l'action ponctuelle.","Yesterday, while I was working, he called."],
+["Il ___ trois fois hier soir. (appeler)","a appelé",["appelait","appellera","appelle"],"<b>Passé composé</b> : action ponctuelle et comptée.","He called three times last night."],
+["Il a progressé en ___ tous les jours. (travailler)","travaillant",["travaillé","travailler","travaille"],"<b>Gérondif</b> : « en » + participe présent.","He improved by working every day."],
+["___ arrivé en retard, il n'a pas pu entrer. (être)","Étant",["Été","Être","Est"],"<b>Participe présent</b> pour exprimer la cause.","Having arrived late, he couldn't get in."],
+["Après ___ mangé, il est sorti. (avoir)","avoir",["ayant","eu","avait"],"« Après » + <b>infinitif passé</b> : après avoir mangé.","After eating, he went out."],
+["Il est parti sans ___ au revoir. (dire)","dire",["disant","dit","dise"],"« Sans » est toujours suivi de l'<b>infinitif</b>.","He left without saying goodbye."],
+["Qu'il ___ ce qu'il veut ! (faire)","fasse",["fait","fera","ferait"],"<b>Subjonctif</b> à valeur d'ordre : qu'il fasse.","Let him do what he wants!"]
+];
+
+// Pronoms (en, y, le, lui, dont…) : [phrase, bonne, [3 pièges], explication, anglais]
+const PRONOMS = [
+["Tu as des pommes ? — Oui, j'___ ai trois.","en",["les","y","le"],"« <b>En</b> » remplace une quantité ou un complément avec « de ».","Do you have apples? — Yes, I have three."],
+["Tu penses à ton examen ? — Oui, j'___ pense.","y",["en","le","lui"],"« Penser <b>à</b> » + chose → <b>y</b>.","Are you thinking about your exam? — Yes, I'm thinking about it."],
+["Tu te souviens de cette soirée ? — Oui, je m'___ souviens.","en",["y","la","lui"],"« Se souvenir <b>de</b> » → <b>en</b>.","Do you remember that evening? — Yes, I remember it."],
+["Tu as parlé à Marie ? — Oui, je ___ ai parlé.","lui",["l'","la","y"],"« Parler <b>à</b> quelqu'un » → COI : <b>lui / leur</b>.","Did you talk to Marie? — Yes, I talked to her."],
+["Tu as vu Marie ? — Oui, je ___ ai vue.","l'",["lui","y","en"],"« Voir quelqu'un » = COD direct → <b>le / la / l'</b>.","Did you see Marie? — Yes, I saw her."],
+["Il a besoin d'aide ? — Oui, il ___ a besoin.","en",["y","le","lui"],"« Avoir besoin <b>de</b> » → <b>en</b>.","Does he need help? — Yes, he needs some."],
+["Vas-tu à Paris ? — Oui, j'___ vais.","y",["en","le","la"],"« Aller <b>à</b> » un lieu → <b>y</b>.","Are you going to Paris? — Yes, I'm going there."],
+["Tu as téléphoné à tes parents ? — Oui, je ___ ai téléphoné.","leur",["les","y","en"],"« Téléphoner <b>à</b> » + personnes → <b>leur</b>.","Did you call your parents? — Yes, I called them."],
+["C'est le livre ___ je t'ai parlé.","dont",["que","qui","où"],"« Parler <b>de</b> quelque chose » → <b>dont</b>.","This is the book I told you about."],
+["C'est la ville ___ je suis né.","où",["que","dont","qui"],"<b>Où</b> pour le lieu (et aussi le temps : le jour où…).","This is the city where I was born."],
+["Voici l'homme ___ a gagné le prix.","qui",["que","dont","où"],"<b>Qui</b> = sujet du verbe qui suit.","Here is the man who won the prize."],
+["Le film ___ j'ai vu hier était nul.","que",["qui","dont","où"],"<b>Que</b> = COD du verbe qui suit.","The film I saw yesterday was terrible."],
+["Des gâteaux ? Je n'___ veux plus.","en",["les","y","le"],"« <b>En</b> » remplace « des gâteaux » (quantité indéfinie).","Cakes? I don't want any more."],
+["Tu joues au tennis ? — Oui, j'___ joue.","y",["en","le","lui"],"« Jouer <b>à</b> » un sport → <b>y</b>.","Do you play tennis? — Yes, I play it."],
+["Tu joues du piano ? — Oui, j'___ joue.","en",["y","le","lui"],"« Jouer <b>de</b> » un instrument → <b>en</b>.","Do you play the piano? — Yes, I play it."],
+["Il s'intéresse à la politique ? — Oui, il s'___ intéresse.","y",["en","la","lui"],"« S'intéresser <b>à</b> » → <b>y</b>.","Is he interested in politics? — Yes, he's interested in it."],
+["Elle a envie de partir ? — Oui, elle ___ a envie.","en",["y","le","lui"],"« Avoir envie <b>de</b> » → <b>en</b>.","Does she want to leave? — Yes, she feels like it."],
+["Donne le livre à Paul → Donne-le-___.","lui",["leur","y","en"],"Double pronom : COD + COI → donne-le-<b>lui</b>.","Give the book to Paul → Give it to him."],
+["Ne me parle pas de ça ! → Ne m'___ parle pas !","en",["y","le","la"],"« Parler <b>de</b> ça » → <b>en</b>.","Don't talk to me about it!"],
+["Tu as pensé à acheter du pain ? — Oui, j'___ ai pensé.","y",["en","le","lui"],"« Penser <b>à</b> » + action → <b>y</b>.","Did you remember to buy bread? — Yes, I thought of it."],
+["Il y a du lait ? — Non, il n'y ___ a plus.","en",["y","le","la"],"« <b>En</b> » = du lait (quantité).","Is there milk? — No, there isn't any left."],
+["Tu as réfléchi à ma proposition ? — J'___ réfléchis encore.","y",["en","la","lui"],"« Réfléchir <b>à</b> » → <b>y</b>.","Have you thought about my offer? — I'm still thinking about it."],
+["Ce sont des choses ___ je me méfie.","dont",["que","qui","où"],"« Se méfier <b>de</b> » → <b>dont</b>.","These are things I'm wary of."],
+["Les amis ___ j'ai invités sont venus.","que",["qui","dont","où"],"<b>Que</b> = COD (les amis que j'ai invités).","The friends I invited came."],
+["Il tient à sa voiture ? — Oui, il ___ tient.","y",["en","la","lui"],"« Tenir <b>à</b> » → <b>y</b>.","Is he attached to his car? — Yes, he is."],
+["Elle a peur des chiens ? — Oui, elle ___ a peur.","en",["y","les","leur"],"« Avoir peur <b>de</b> » → <b>en</b>.","Is she afraid of dogs? — Yes, she is."],
+["Vous vous occupez du dossier ? — Oui, nous nous ___ occupons.","en",["y","le","lui"],"« S'occuper <b>de</b> » → <b>en</b>.","Are you handling the file? — Yes, we're handling it."],
+["Tu as répondu à sa lettre ? — Oui, j'___ ai répondu.","y",["en","la","lui"],"« Répondre <b>à</b> » + chose → <b>y</b>.","Did you answer his letter? — Yes, I answered it."],
+["Tu as répondu à ton frère ? — Oui, je ___ ai répondu.","lui",["y","en","l'"],"« Répondre <b>à</b> » + personne → <b>lui</b>. Attention à la différence avec une chose (y) !","Did you answer your brother? — Yes, I answered him."],
+["Il rêve de partir ? — Oui, il ___ rêve.","en",["y","le","lui"],"« Rêver <b>de</b> » → <b>en</b>.","Does he dream of leaving? — Yes, he dreams of it."],
+["Elle pense à ses enfants ? — Oui, elle pense ___.","à eux",["y","leur","en"],"Avec « penser à » + <b>personnes</b>, on garde « à » + pronom tonique : à eux.","Does she think about her children? — Yes, she thinks about them."],
+["Ce sont les outils ___ j'ai besoin.","dont",["que","qui","où"],"« Avoir besoin <b>de</b> » → <b>dont</b>.","These are the tools I need."],
+["Je ___ ai dit toute la vérité (à mes parents).","leur",["les","y","en"],"« Dire <b>à</b> » + personnes → <b>leur</b>.","I told them the whole truth."]
+];
+
+// Verbe + préposition : [phrase, bonne, [3 pièges], explication, anglais]
+const VPREP = [
+["Il a réussi ___ convaincre le jury.","à",["de","—","par"],"<b>Réussir à</b> + infinitif.","He managed to convince the jury."],
+["J'ai décidé ___ partir plus tôt.","de",["à","—","par"],"<b>Décider de</b> + infinitif.","I decided to leave earlier."],
+["Elle a commencé ___ pleurer.","à",["de","—","par"],"<b>Commencer à</b> + infinitif.","She started to cry."],
+["Nous avons essayé ___ comprendre.","de",["à","—","par"],"<b>Essayer de</b> + infinitif.","We tried to understand."],
+["Il refuse ___ répondre.","de",["à","—","par"],"<b>Refuser de</b> + infinitif.","He refuses to answer."],
+["Elle a oublié ___ fermer la porte.","de",["à","—","par"],"<b>Oublier de</b> + infinitif.","She forgot to close the door."],
+["Il m'a aidé ___ déménager.","à",["de","—","par"],"<b>Aider quelqu'un à</b> + infinitif.","He helped me move."],
+["Nous avons accepté ___ venir.","de",["à","—","par"],"<b>Accepter de</b> + infinitif.","We agreed to come."],
+["Il s'attend ___ un refus.","à",["de","—","par"],"<b>S'attendre à</b> quelque chose.","He expects a refusal."],
+["Je me méfie ___ ses promesses.","de",["à","—","par"],"<b>Se méfier de</b> quelque chose.","I'm wary of his promises."],
+["Il a renoncé ___ ce projet.","à",["de","—","par"],"<b>Renoncer à</b> quelque chose.","He gave up on this project."],
+["Elle profite ___ ses vacances.","de",["à","—","par"],"<b>Profiter de</b> quelque chose.","She's enjoying her holiday."],
+["Il tient ___ sa réputation.","à",["de","—","par"],"<b>Tenir à</b> = être attaché à.","He cares about his reputation."],
+["Nous manquons ___ temps.","de",["à","—","par"],"<b>Manquer de</b> quelque chose.","We're short of time."],
+["Elle a hésité ___ répondre.","à",["de","—","par"],"<b>Hésiter à</b> + infinitif.","She hesitated to answer."],
+["Il a fini ___ céder.","par",["de","à","—"],"<b>Finir par</b> + infinitif = to end up doing.","He ended up giving in."],
+["Je me suis habitué ___ ce climat.","à",["de","—","par"],"<b>S'habituer à</b> quelque chose.","I got used to this climate."],
+["Il s'agit ___ un simple malentendu.","de",["à","—","par"],"<b>Il s'agit de</b> = it is about.","It's a simple misunderstanding."],
+["Elle s'occupe ___ ses parents.","de",["à","—","par"],"<b>S'occuper de</b> quelqu'un.","She looks after her parents."],
+["Il a promis ___ venir.","de",["à","—","par"],"<b>Promettre de</b> + infinitif.","He promised to come."],
+["Nous avons hâte ___ te voir.","de",["à","—","par"],"<b>Avoir hâte de</b> + infinitif.","We can't wait to see you."],
+["Elle est capable ___ tout.","de",["à","—","par"],"<b>Être capable de</b>.","She is capable of anything."],
+["Je suis prêt ___ partir.","à",["de","—","par"],"<b>Être prêt à</b> + infinitif.","I'm ready to leave."],
+["Il est difficile ___ comprendre ce texte.","de",["à","—","par"],"« <b>Il est difficile de</b> + infinitif » (tournure impersonnelle).","It's hard to understand this text."],
+["Ce texte est difficile ___ comprendre.","à",["de","—","par"],"« <b>adjectif + à + infinitif</b> » quand on parle d'une chose précise.","This text is hard to understand."],
+["Nous devons ___ partir maintenant.","—",["de","à","par"],"<b>Devoir</b> se construit directement avec l'infinitif, sans préposition.","We must leave now."],
+["Je veux ___ partir tout de suite.","—",["de","à","par"],"<b>Vouloir</b> + infinitif, sans préposition.","I want to leave right away."],
+["Elle aime ___ danser.","—",["de","à","par"],"<b>Aimer</b> + infinitif, sans préposition.","She likes to dance."],
+["Il a permis ___ son fils de sortir.","à",["de","—","par"],"<b>Permettre à</b> quelqu'un <b>de</b> faire quelque chose.","He allowed his son to go out."],
+["Elle a demandé ___ son frère de l'aider.","à",["de","—","par"],"<b>Demander à</b> quelqu'un <b>de</b> faire.","She asked her brother to help her."],
+["Il a empêché son fils ___ sortir.","de",["à","—","par"],"<b>Empêcher quelqu'un de</b> faire.","He stopped his son from going out."],
+["Je me souviens ___ cette journée.","de",["à","—","par"],"<b>Se souvenir de</b>.","I remember that day."],
+["Il s'intéresse ___ l'art contemporain.","à",["de","—","par"],"<b>S'intéresser à</b>.","He's interested in contemporary art."],
+["Nous avons besoin ___ toi.","de",["à","—","par"],"<b>Avoir besoin de</b>.","We need you."],
+["Il a échoué ___ l'examen.","à",["de","—","par"],"<b>Échouer à</b> un examen (jamais « échouer un examen »).","He failed the exam."],
+["Elle a participé ___ la réunion.","à",["de","—","par"],"<b>Participer à</b>.","She took part in the meeting."],
+["Ça ne sert ___ rien d'insister.","à",["de","—","par"],"<b>Servir à</b> quelque chose.","There's no point insisting."],
+["Je compte ___ toi.","sur",["à","de","—"],"<b>Compter sur</b> quelqu'un.","I'm counting on you."],
+["Il s'est plaint ___ ses voisins.","de",["à","—","par"],"<b>Se plaindre de</b> quelque chose ou quelqu'un.","He complained about his neighbours."],
+["Elle a réfléchi ___ la question.","à",["de","—","par"],"<b>Réfléchir à</b>.","She thought about the question."],
+["Nous nous sommes rendu compte ___ l'erreur.","de",["à","—","par"],"<b>Se rendre compte de</b>.","We realized the mistake."],
+["Il a commencé ___ nous expliquer la règle.","par",["de","à","—"],"<b>Commencer par</b> = faire cela en premier.","He started by explaining the rule to us."]
+];
+
 
 const $=id=>document.getElementById(id);
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -566,8 +696,9 @@ function qEn2Fr(s){
     stage:'<div class="sentence en">'+esc(e)+'</div>',
     options:shuffle([f,...d]),answer:f,fr:f,en:e,hi:g};
 }
-function qNuance(){
-  const [t,good,bad,why,en]=rnd(NUANCES);
+function qNuance(i){
+  if(i===undefined)i=Math.floor(Math.random()*NUANCES.length);
+  const [t,good,bad,why,en]=NUANCES[i];
   const full=t.replace('___',good);
   return{kind:'choice',task:'Le mot juste',
     stage:'<div class="sentence">'+esc(t).replace('___','<span class="blank">?</span>')+'</div><div class="cue">'+esc(en)+'</div>',
@@ -597,15 +728,65 @@ function qBuildEn(){
     stage:'<div class="sentence">'+esc(s[0])+'</div><div class="cue">Traduis en cliquant les mots dans l\'ordre</div>',
     tokens:s[1].split(' '),answer:s[1],fr:s[0],en:s[1],hi:s[2]};
 }
-const MIX=[()=>qGap(rnd(SENTENCES)),()=>qFr2En(rnd(SENTENCES)),()=>qEn2Fr(rnd(SENTENCES)),qPrep,qNuance];
+/* --- nouveaux générateurs : conjugaison, pronoms, verbe+préposition --- */
+function qTable(arr,i,task,label,stripParen){
+  if(i===undefined)i=Math.floor(Math.random()*arr.length);
+  const [t,good,bad,why,en]=arr[i];
+  let full=t.replace('___',good);
+  if(stripParen)full=full.replace(/\s*\([^)]*\)/,'');
+  return{kind:'choice',task:task,idx:i,
+    stage:'<div class="sentence">'+esc(t).replace('___','<span class="blank">?</span>')+'</div><div class="cue">'+esc(en)+'</div>',
+    options:shuffle([good,...bad]),answer:good,fr:full,en:en,hi:good,why:why};
+}
+function qConjug(i){return qTable(CONJUG,i,'Conjugaison',0,true);}
+function qPronom(i){return qTable(PRONOMS,i,'Le bon pronom',0,false);}
+function qVprep(i){return qTable(VPREP,i,'Verbe + préposition',0,false);}
+
+/* --- identification pour la répétition espacée --- */
+const IDX_S=new Map(SENTENCES.map((s,i)=>[s[0],i]));
+const IDX_N=new Map(NUANCES.map((s,i)=>[s[0].replace('___',s[1]),i]));
+const IDX_C=new Map(CONJUG.map((s,i)=>[s[0].replace('___',s[1]).replace(/\s*\([^)]*\)/,''),i]));
+const IDX_P=new Map(PRONOMS.map((s,i)=>[s[0].replace('___',s[1]),i]));
+const IDX_V=new Map(VPREP.map((s,i)=>[s[0].replace('___',s[1]),i]));
+function idOf(q){
+  if(IDX_S.has(q.fr))return 'S'+IDX_S.get(q.fr);
+  if(IDX_N.has(q.fr))return 'N'+IDX_N.get(q.fr);
+  if(IDX_C.has(q.fr))return 'C'+IDX_C.get(q.fr);
+  if(IDX_P.has(q.fr))return 'P'+IDX_P.get(q.fr);
+  if(IDX_V.has(q.fr))return 'V'+IDX_V.get(q.fr);
+  return null;
+}
+function weakGet(){return store('weak')||{};}
+function weakAdd(id){if(!id)return;const w=weakGet();w[id]=Math.min(4,(w[id]||0)+2);store('weak',w);}
+function weakOk(id){if(!id)return;const w=weakGet();if(w[id]){w[id]--;if(w[id]<=0)delete w[id];store('weak',w);}}
+function weakIds(){return Object.keys(weakGet());}
+function qFromId(id){
+  const t=id[0],i=parseInt(id.slice(1),10);
+  if(t==='S'&&SENTENCES[i])return rnd([qGap,qFr2En,qEn2Fr])(SENTENCES[i]);
+  if(t==='N'&&NUANCES[i])return qNuance(i);
+  if(t==='C'&&CONJUG[i])return qConjug(i);
+  if(t==='P'&&PRONOMS[i])return qPronom(i);
+  if(t==='V'&&VPREP[i])return qVprep(i);
+  return null;
+}
+const GEN={
+  gap:()=>qGap(rnd(SENTENCES)), fr2en:()=>qFr2En(rnd(SENTENCES)), en2fr:()=>qEn2Fr(rnd(SENTENCES)),
+  prep:qPrep, nuance:()=>qNuance(), hunt:qHunt, buildFr:qBuildFr, buildEn:qBuildEn,
+  conjug:()=>qConjug(), pronom:()=>qPronom(), vprep:()=>qVprep()
+};
+const ALL_TYPES=Object.keys(GEN);
 function makeQ(type){
-  if(type==='gap')return qGap(rnd(SENTENCES));
-  if(type==='prep')return qPrep();
-  if(type==='nuance')return qNuance();
-  if(type==='hunt')return qHunt();
-  if(type==='buildFr')return qBuildFr();
-  if(type==='buildEn')return qBuildEn();
-  return rnd(MIX)();
+  /* répétition espacée : 30 % des questions rejouent une erreur passée */
+  if(type!=='revision'){
+    const w=weakIds();
+    if(w.length&&Math.random()<0.3){const q=qFromId(rnd(w));if(q)return q;}
+  }else{
+    const w=weakIds();
+    if(!w.length)return null;
+    return qFromId(rnd(w))||GEN.gap();
+  }
+  if(GEN[type])return GEN[type]();
+  return GEN[rnd(ALL_TYPES)]();
 }
 
 /* ============ LES JEUX ============ */
@@ -617,7 +798,24 @@ const GAMES=[
  {id:'juste', ico:'🎭',shell:'series',nm:'Le mot juste',        ds:'Les nuances de prof : sentir/ressentir, amener/apporter…',types:['nuance'],n:15},
  {id:'ordre', ico:'🧩',shell:'series',nm:'Reconstruis la phrase',ds:'Les mots sont mélangés, remets-les dans l’ordre.',    types:['buildFr'],n:10},
  {id:'prepo', ico:'🔗',shell:'series',nm:'La bonne préposition',ds:'Le piège nº1 des étrangers : au sein de, faute de…',  types:['prep'],n:12},
- {id:'paires',ico:'⚡',shell:'pairs', nm:'Paires éclair',        ds:'Relie les phrases FR ↔ EN. 90 secondes.'}
+ {id:'paires',ico:'⚡',shell:'pairs', nm:'Paires éclair',        ds:'Relie les phrases FR ↔ EN. 90 secondes.'},
+ {id:'conjug',ico:'🔤',shell:'series',nm:'Conjugaison',         ds:'Subjonctif, conditionnel passé, accords du participe.',types:['conjug'],n:15},
+ {id:'pronom',ico:'🎯',shell:'series',nm:'En, y, lui, dont…',   ds:'Les pronoms qui font trébucher tout le monde.',        types:['pronom'],n:15},
+ {id:'vprep', ico:'⛓️',shell:'series',nm:'Verbe + préposition', ds:'réussir À, décider DE, finir PAR… ou rien du tout.',   types:['vprep'],n:15},
+ {id:'revision',ico:'🔁',shell:'series',nm:'Révision intelligente',ds:'Rejoue exactement ce que tu as raté. C’est ça qui fait rentrer.',types:['revision'],n:15},
+ {id:'camp',  ico:'🏔️',shell:'camp',  nm:'La Campagne',         ds:'10 paliers qui se débloquent, de plus en plus mélangés et durs.'}
+];
+const PALIERS=[
+ {n:8, t:['gap','fr2en']},
+ {n:8, t:['gap','fr2en','en2fr']},
+ {n:10,t:['gap','fr2en','en2fr','prep']},
+ {n:10,t:['prep','vprep','gap','en2fr']},
+ {n:10,t:['pronom','vprep','gap','fr2en']},
+ {n:12,t:['nuance','pronom','vprep','fr2en']},
+ {n:12,t:['conjug','nuance','pronom','en2fr']},
+ {n:12,t:['conjug','hunt','pronom','vprep','nuance']},
+ {n:14,t:['conjug','hunt','nuance','buildEn','pronom','prep']},
+ {n:15,t:ALL_TYPES}
 ];
 const BOSSES=[{n:'Le Faux-Ami',a:'🎭',hp:100},{n:'La Préposition',a:'🪤',hp:130},{n:'Le Subtil',a:'🐉',hp:170}];
 const FLOORS=[10,20,40,70,110,160,230,320,440,600,800,1100];
@@ -627,7 +825,10 @@ function paintMenu(){
   GAMES.forEach(g=>{
     const b=document.createElement('button');b.className='game';b.type='button';
     const best=store('best_'+g.id)||0;
-    b.innerHTML='<span class="ico">'+g.ico+'</span><span class="txt"><span class="nm">'+esc(g.nm)+'</span><span class="ds">'+esc(g.ds)+'</span></span>'+(best?'<span class="bst"><b>'+best+'</b><span>record</span></span>':'');
+    let badge=best?'<span class="bst"><b>'+best+'</b><span>record</span></span>':'';
+    if(g.id==='camp'){const lv=(store('camp')||0);badge='<span class="bst"><b>'+(lv+1>10?10:lv+1)+'/10</b><span>palier</span></span>';}
+    if(g.id==='revision'){const n=weakIds().length;badge='<span class="bst"><b>'+n+'</b><span>à revoir</span></span>';}
+    b.innerHTML='<span class="ico">'+g.ico+'</span><span class="txt"><span class="nm">'+esc(g.nm)+'</span><span class="ds">'+esc(g.ds)+'</span></span>'+badge;
     b.addEventListener('click',()=>startGame(g.id));
     $('games').appendChild(b);
   });
@@ -646,6 +847,12 @@ function startGame(id){
   $('hMode').textContent=cfg.ico+' '+cfg.nm;
   $('hScoreK').textContent = cfg.shell==='tour'?'Cagnotte':'Points';
   if(cfg.shell==='boss')G.foeHp=BOSSES[0].hp;
+  if(cfg.shell==='camp'){
+    G.lvl=Math.min(store('camp')||0,PALIERS.length-1);
+    const p=PALIERS[G.lvl];
+    G.cfg=Object.assign({},cfg,{shell:'series',types:p.t,n:p.n});
+    $('hMode').textContent='🏔️ Palier '+(G.lvl+1)+'/10';
+  }
   clearTimers();
   if(cfg.shell==='pairs')startPairs(); else nextQ();
   window.scrollTo({top:0});
@@ -678,6 +885,7 @@ function paintArena(){
 function nextQ(){
   if(G.cfg.shell==='series'&&G.asked>=G.cfg.n)return finish();
   G.q=makeQ(G.cfg.types?rnd(G.cfg.types):'mix');G.locked=false;
+  if(!G.q)return finish(G.asked?'Révision terminée — plus rien à revoir !':'🎉 Aucune erreur à réviser pour le moment');
   paintArena();paintHud();
   $('pTask').textContent=G.q.task+(G.cfg.shell==='series'?'  ·  '+(G.asked+1)+'/'+G.cfg.n:'');
   $('pStage').innerHTML=G.q.stage;
@@ -760,8 +968,9 @@ function submit(ok,btn,wrap){
     });
   }
   const mult=Math.min(5,1+Math.floor(G.streak/3));
-  if(ok){G.right++;G.streak++;G.best=Math.max(G.best,G.streak);}
-  else{G.streak=0;G.review.push(G.q);}
+  const qid=idOf(G.q);
+  if(ok){G.right++;G.streak++;G.best=Math.max(G.best,G.streak);weakOk(qid);}
+  else{G.streak=0;G.review.push(G.q);weakAdd(qid);}
 
   /* effets par type de jeu */
   const sh=G.cfg.shell;
@@ -868,6 +1077,12 @@ function finish(msg){
   if(!G)return;const g=G;G=null;clearTimers();
   const acc=g.asked?Math.round(g.right/g.asked*100):0;
   const final=g.cfg.shell==='tour'?g.pot:g.score;
+  if(g.id==='camp'&&g.asked){
+    const cur=store('camp')||0;
+    if(acc>=80&&g.lvl>=PALIERS.length-1)msg='👑 Campagne terminée — tu es un as !';
+    else if(acc>=80){if(g.lvl===cur)store('camp',cur+1);msg='🏔️ Palier '+(g.lvl+1)+' réussi — palier '+(g.lvl+2)+' débloqué !';}
+    else msg='Palier '+(g.lvl+1)+' : il faut 80 % pour débloquer la suite (tu as '+acc+' %)';
+  }
   const prev=store('best_'+g.id)||0,rec=final>prev;
   if(rec)store('best_'+g.id,final);
   store('xp',(store('xp')||0)+final);
